@@ -1,0 +1,23 @@
+{
+  "name": "nodepress",
+  "version": "1.0.0",
+  "description": "Dynamic blog engine for node",
+  "main": "nodepress.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rellfy/NodePress.git"
+  },
+  "keywords": [
+    "blog",
+    "engine",
+    "simple",
+    "mongodb",
+    "mongo"
+  ],
+  "author": "Nioel Studios",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rellfy/NodePress/issues"
+  },
+  "homepage": "https://github.com/Rellfy/NodePress#readme"
+}

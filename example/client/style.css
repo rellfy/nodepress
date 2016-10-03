@@ -1,0 +1,174 @@
+html, body{
+	margin: 0;
+	padding: 0;
+	background-color: #f0f0f0;
+	font-family: 'Trebuchet MS';
+	color: #131313;
+}
+*::selection{
+	background-color: #35898b;
+	color: #ddd;
+}
+header{
+	background-color: rgba(0,128,128,0.2);
+	color: #c9c9c9;
+	height: 210px;
+	text-align: center;
+	border-bottom: 2px dashed rgba(0,0,0,0.15);
+	background: -moz-linear-gradient(left, rgba(0,128,128,1) 0%, rgba(62,207,209,1) 100%);
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,128,128,1)), color-stop(100%, rgba(62,207,209,1)));
+	background: -webkit-linear-gradient(left, rgba(0,128,128,1) 0%, rgba(62,207,209,1) 100%);
+	background: -o-linear-gradient(left, rgba(0,128,128,1) 0%, rgba(62,207,209,1) 100%);
+	background: -ms-linear-gradient(left, rgba(0,128,128,1) 0%, rgba(62,207,209,1) 100%);
+	background: linear-gradient(to right, rgba(0,128,128,1) 0%, rgba(62,207,209,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008080', endColorstr='#3ecfd1', GradientType=1 );
+	box-shadow: 2px -2px 40px rgba(0,0,0,0.8);
+}
+.topbar{
+	margin: 0;
+	padding: 0;
+}
+.topbar .button{
+	padding: 6px;
+	background-color: rgba(0,0,0,0.25);
+	color: #c9c9c9;
+	cursor: pointer;
+	border-radius: 6px;
+	letter-spacing: 4px;
+	margin: 0px 4px 0px 4px;
+}
+.topbar a:link, .topbar a:visited{
+	text-decoration: none;
+	color: inherit;
+}
+h1{
+	transition: font-size 0.35s, padding-top 0.25s;
+	font-family: 'Arial Black';
+	font-size: 78px;
+	margin-top: 0;
+	padding-top: 0;
+	margin-bottom: 0px;
+	font-style: italic;
+	color: rgba(0,0,0,0.25);
+	text-shadow: 3px 3px 12px rgba(0,0,0,0.25);
+	cursor: default;
+}
+h2{
+    transition: font-size 0.25s, padding 0.25s, width 0.25s;
+    margin-top: -10px;
+    font-size: 20px;
+    color: #fff;
+    text-shadow: 1px 1px 12px rgba(255,255,255,0.8);
+    display: block;
+    width: 405px;
+    margin: auto;
+    padding: 8px 24px 8px 24px;
+    border-radius: 20px;
+    background: rgba(0,0,0,0.25);
+    border: 2px solid rgba(255,255,255,0.6);
+    cursor: default;
+}
+h3{
+	font-size: 28px;
+}
+.inner{
+	transition: width 0.5s;
+	width: 900px;
+	margin: auto;
+}
+.timeline{
+	transition: width 0.5s;
+	width: 100%;
+	margin: auto;
+}
+.post {
+	margin: 50px 0px 50px 0px;
+	padding: 50px 35px 50px 35px;
+	border: 1px solid #aaa;
+	background-color: #e7e7e7;
+	box-shadow: -1px 1px 16px rgba(0,0,0,0.3);
+}
+.post .top{
+	width: 100%;
+	padding: 10px 0px 10px 0px;
+	border-bottom: 1px dotted #aaa;
+}
+.post .title{
+	font-size: 32px;
+	text-align: left;
+}
+.post .info{
+	font-size: 14px;
+	float: right;
+}
+.post .author, .post .date{
+	font-weight: 800;
+}
+.post .body{
+	margin-top: 50px;
+	font-size: 18px;
+	color: #303030;
+}
+.post-author{
+	margin-bottom: 20px;
+}
+.post-title{
+	width: 100%;
+	margin-bottom: 20px;
+}
+#publish{
+	margin-top: 20px;
+	float: right;
+}
+input[type=text], button{
+	font-size: 18px;
+	display: block;
+	padding: 5px;
+	outline: none;
+	border: 2px solid #bbb;
+	border-radius: 6px;
+}
+button{
+	padding: 10px;
+	cursor: pointer;
+}
+.post-bottom{
+	margin-top: 5px;
+}
+.post-bottom button{
+	float: right;
+}
+.load-more{
+	width: 100%;
+	height: 40px;
+	background-color: #ddd;
+	text-align: center;
+	line-height: 40px;
+	margin-bottom: 40px;
+	cursor: pointer;
+	border-radius: 6px;
+}
+
+@media screen and (max-width: 940px){
+	.inner{
+		width: 100%;
+	}
+	.post{
+		padding: 50px 5% 50px 5%;
+	}
+	.timeline{
+		width: 95%;
+	}
+}
+
+@media screen and (max-width: 550px){
+	h1{
+		font-size: 43px;
+		padding-top: 50px;
+	}
+	h2{
+		font-size: 14px;
+		width: 290px;
+		padding: 4px 8px 4px 8px;
+	}
+}
