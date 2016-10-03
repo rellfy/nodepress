@@ -1,6 +1,13 @@
 # NodePress
-Lightweight, dynamic blog engine for node
+Lightweight, dynamic blog engine for Node.
 
+NodePress is an API-styled blog engine for Node software and servers. It uses Mongo as its DB and Socketio/Express for server-client communication. NodePress was built to be a fast and light alternative for blog integrations with Node.
+
+## How to
+
+> 1. install it with `npm install nodepress`
+> 2. add it to your server by using `var NodePress = require('nodepress'); var nodePress = new NodePress();`
+> 3. take a look at the server and client files at the example directory for an easy setup and a living example after DB config.
 
 ## License
 
