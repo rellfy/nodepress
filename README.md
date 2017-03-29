@@ -14,25 +14,25 @@ const NodePress = require('nodepress');
 const nodePress = new NodePress();
 ```
 
-**3.** Configure nodePress by using 
+**3.** Configure NodePress by using 
 
 ```javascript
 nodePress.config(cfg);
 ```
 
-Where `cfg` needs to have
+Where `cfg` is an object with the following values
 
-`mongoClient` - MongoClient object (`require('mongodb').MongoClient`);
-`mongoURL` - You can get the connection URL by calling `NodePress.getMongoURL` with the following parameters:
-	`ip` - Database's IP (string)
-	`port` - Database's port (string)
-	`name` - Database's name (string)
-	`requireLogon` - Whether your database requires an user and password (bool, optional)
-	`user` - Database's user (string, optional)
-	`password` - Database's password (string, optional)
-`httpServer` - An instance of require('http')
-`postsPerPage` - How many posts to load per page (int)
-`postsCollection` - Database's collection name to store post documents (string)
+`mongoClient` - MongoClient object (`require('mongodb').MongoClient`);  
+`mongoURL` - You can get the connection URL by calling `NodePress.getMongoURL` with the following parameters:  
+	`ip` - Database's IP (string)  
+	`port` - Database's port (string)  
+	`name` - Database's name (string)  
+	`requireLogon` - Whether your database requires an user and password (bool, optional)  
+	`user` - Database's user (string, optional)  
+	`password` - Database's password (string, optional)  
+`httpServer` - An instance of require('http')  
+`postsPerPage` - How many posts to load per page (int)  
+`postsCollection` - Database's collection name to store post documents (string)  
 
 **4.** Initialize NodePress and add listeners.
 
