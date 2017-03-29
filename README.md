@@ -5,61 +5,42 @@ NodePress is an API-styled blog engine for Node software and servers. It will ma
 
 ## How to
 
-**1.** install it with `npm install nodepress`
+**1.** Install it with `npm install nodepress` or `git clone https://github.com/Rellfy/NodePress/`
 
-**2.** add it to your server by using `javascript var NodePress = require('nodepress'); var nodePress = new NodePress();`
-
-**3.** Server example
+**2.** Add it to your server by using
 
 ```javascript
-// Requires
-const http = require('http');
-const app = require('express')();
-const httpServer = http.createServer(app);
-const mongoClient = require('mongodb').MongoClient;
+const NodePress = require('nodepress');
+const nodePress = new NodePress();```
 
-// Internal modules
-const Utils = require('./Utils.js');
-const NodePress = require('./../');
-const nodePress = new NodePress();
+**3.** Configure nodePress by using 
+```javascript
+nodePress.config(cfg);```
 
-const path = __dirname + '/client';
+Where `cfg` needs to have
 
-app.use(express.static(path));
+`mongoClient` - MongoClient object (`require('mongodb').MongoClient`);
+`mongoURL` - You can get the connection URL by calling `NodePress.getMongoURL` with the following parameters:
+	`ip` - Database's IP (string)
+	`port` - Database's port (string)
+	`name` - Database's name (string)
+	`requireLogon` - Whether your database requires an user and password (bool, optional)
+	`user` - Database's user (string, optional)
+	`password` - Database's password (string, optional)
+`httpServer` - An instance of require('http')
+`postsPerPage` - How many posts to load per page (int)
+`postsCollection` - Database's collection name to store post documents (string)
 
-console.log('Starting HTTP server on port 80');
-httpServer.listen(80);
+**4.** Initialize NodePress and add listeners.
 
-// Change the following details to match your Mongo DB info
-const dbInfo = {
-	ip: 'localhost',
-	port: '27017',
-	name: 'myDatabase',
-	requireLogon: false,
-	user: 'myUser',
-	pass: 'myPassword'
-}
-
-const mongoURL = Utils.getMongoURL(dbInfo);
-
-const cfg = {
-	mongoClient: mongoClient,
-	mongoURL: mongoURL,
-	httpServer: httpServer,
-	postsPerPage: 15,
-	postsCollection: 'posts'
-};
-
-nodePress.config(cfg).init(function(err){
-	if (err) { throw err }
-	console.log('NodePress initializated!');
-
+```javascript
+nodePress.init(() => {
 	// Whenever the user/socket emits 'getPage'
-	nodePress.on('getPage', function(user, pg){
+	nodePress.on('getPage', (user, pg) => {
 		console.log('Requesting page  ' + pg);
 		const startTime = new Date().getTime();
 
-		nodePress.getPostsFromPage(pg, function(data){
+		nodePress.getPostsFromPage(pg, (data) =>{
 			// data.last is true if the page the user is requesting
 			// is the last page (which cointains the earlier posts)
 			var totalTime = new Date().getTime();
@@ -70,140 +51,21 @@ nodePress.config(cfg).init(function(err){
 	});
 
 	// Whenever the user/socket emits 'post'
-	nodePress.on('post', function(user, postData){
+	nodePress.on('post', (user, postData) => {
 		// Check if we have all the information needed
 		if (!postData.title || !postData.author || !postData.body)
 			return nodePress.socket.to(user).emit('alert', 'You need to fill in all the fields!');
 
-		nodePress.post(postData, function(err){
+		nodePress.post(postData, (err) => {
 			if (err) { throw err };
 			// Send confirmation to user
 			nodePress.socket.to(user).emit('post-added');
 		});
 	});
-
 });
-```
+``` 
 
-Note that `nodePress.on('something', callback)` works like server-side socket.io, and it will be called everytime the client socket emit's `'something'`, and then you are able to call nodePress functions such as post or getPostsFromPage.
-
-**4.** Client example
-
-This is the index.html file on `/example/`. Check the example folder after install for the post example as well (publish.html).
-
-```html
-<html>
-	<head>
-		<title>NodePress</title>
-		<link rel="stylesheet" type="text/css" href="./style.css">
-	</head>
-	<body>
-		<header>
-			<div class="inner">
-				<div class="topbar">
-					<a href="./"><span class="button">Home</span></a>
-					<a href="./publish.html"><span class="button">Publish</span></a>
-				</div>
-				<h1>NodePress</h1>
-				<h2>Dynamic, lightweight blog engine for node!</h2>
-			</div>
-		</header>
-		<div class="inner">
-			<div class="timeline">
-				<!-- 
-
-				########################################
-				The following will be inserted by jQuery
-				after receiving posts from the server,
-				for each post
-				########################################
-
-				<div class="post">
-					<div class="top">
-						<span class="title">Ghost post!</span>
-						<span class="info">
-							by <span class="author">Harambe</span><br>
-							on <span class="date">17 sep 2016</span>
-						</span>
-					</div>
-					<div class="body">
-						<p>Post content</p>
-					</div>
-				</div>
-
-				-->
-			</div>
-		</div>
-		<script src="/socket.io/socket.io.js"></script>
-		<script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
-		<script>
-			var socket = io();
-
-			var page = 1;
-			var postsPerPage = 5;
-
-			socket.emit('getPage', page);
-
-			socket.on('postsFromPage', function(data){
-				page++;
-				var posts = data.posts.reverse();
-				var last = data.last;
-
-				for (var i = 0; i < posts.length; i++){
-					// Append a new post box for every post at the current page
-					var p = '<div class="post">\
-								<div class="top">\
-									<span class="title">'+posts[i].title+'</span>\
-									<span class="info">\
-										by <span class="author">'+posts[i].author+'</span><br>\
-										on <span class="date">'+getPostDate(posts[i].date)+'</span>\
-									</span>\
-								</div>\
-								<div class="body">\
-									<p>'+posts[i].body+'</p>\
-								</div>\
-							</div>'
-					$('.timeline').append(p);
-				}
-
-				if (!last){
-					$('.timeline').append('<div class="load-more">Load More</div>');
-				}
-			});
-
-			$(document).on('click', '.load-more', function(){
-				console.log('requesting page  ' + page);
-				socket.emit('getPage', page);
-				$(this).hide();
-			});
-
-			function getPostDate(time){
-				time = parseInt(time);
-				var y = new Date(time).getFullYear();
-				var m = new Date(time).getMonth();
-				var d = new Date(time).getDate();
-
-				var month = new Array();
-				month[0] = 'jan';
-				month[1] = 'feb';
-				month[2] = 'mar';
-				month[3] = 'apr';
-				month[4] = 'may';
-				month[5] = 'jun';
-				month[6] = 'jul';
-				month[7] = 'aug';
-				month[8] = 'sep';
-				month[9] = 'oct';
-				month[10] = 'nov';
-				month[11] = 'dec';
-				m = month[m];
-
-				return d + ' ' + m + ' ' + y;
-			}
-		</script>
-	</body>
-</html>
-```
+**5.** You can take a look at the client examples in the folder /example/client
 
 ## License
 

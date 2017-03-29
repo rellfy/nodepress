@@ -26,7 +26,7 @@ const dbInfo = {
 	pass: 'myPassword'
 }
 
-const mongoURL = Utils.getMongoURL(dbInfo);
+const mongoURL = NodePress.getMongoURL(dbInfo);
 
 const cfg = {
 	mongoClient: mongoClient,
