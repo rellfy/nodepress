@@ -11,11 +11,14 @@ NodePress is an API-styled blog engine for Node software and servers. It will ma
 
 ```javascript
 const NodePress = require('nodepress');
-const nodePress = new NodePress();```
+const nodePress = new NodePress();
+```
 
 **3.** Configure nodePress by using 
+
 ```javascript
-nodePress.config(cfg);```
+nodePress.config(cfg);
+```
 
 Where `cfg` needs to have
 
