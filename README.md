@@ -18,7 +18,7 @@ const NodePress = require('nodepress');
 const nodePress = new NodePress();
 ```
 
-**3.** Configure NodePress according to your project
+**3.** Configure NodePress according to your project/database variables and information.
 
 ```javascript
 // Your database info
