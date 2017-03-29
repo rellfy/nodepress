@@ -20,16 +20,16 @@ const nodePress = new NodePress();
 nodePress.config(cfg);
 ```
 
-Where `cfg` is an object with the following values
+Where `cfg` is an object with the following values:
 
 `mongoClient` - MongoClient object (`require('mongodb').MongoClient`);  
 `mongoURL` - You can get the connection URL by calling `NodePress.getMongoURL` with the following parameters:  
-	`ip` - Database's IP (string)  
-	`port` - Database's port (string)  
-	`name` - Database's name (string)  
-	`requireLogon` - Whether your database requires an user and password (bool, optional)  
-	`user` - Database's user (string, optional)  
-	`password` - Database's password (string, optional)  
+&nbsp;&nbsp;&nbsp;&nbsp;`ip` - Database's IP (string)  
+&nbsp;&nbsp;&nbsp;&nbsp;`port` - Database's port (string)  
+&nbsp;&nbsp;&nbsp;&nbsp;`name` - Database's name (string)  
+&nbsp;&nbsp;&nbsp;&nbsp;`requireLogon` - Whether your database requires an user and password (bool, optional)  
+&nbsp;&nbsp;&nbsp;&nbsp;`user` - Database's user (string, optional)  
+&nbsp;&nbsp;&nbsp;&nbsp;`password` - Database's password (string, optional)  
 `httpServer` - An instance of require('http')  
 `postsPerPage` - How many posts to load per page (int)  
 `postsCollection` - Database's collection name to store post documents (string)  
