@@ -1,6 +1,6 @@
 {
   "name": "nodepress",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Dynamic blog engine for node",
   "main": "nodepress.js",
   "repository": {
