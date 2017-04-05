@@ -16,7 +16,9 @@
 		</header>
 		<div class="inner">
 			<div class="timeline">
-				<!-- 
+				<!--
+				Post style:
+
 				<div class="post">
 					<div class="top">
 						<span class="title">Ghost post!</span>
@@ -29,6 +31,7 @@
 						<p>Post content</p>
 					</div>
 				</div>
+
 				-->
 			</div>
 		</div>
@@ -46,22 +49,23 @@
 				var posts = data.posts.reverse();
 				var last = data.last;
 
-				for (var i = 0; i < posts.length; i++){
+
+				posts.forEach((post) => {
 					// Append a new post box for every post at the current page
 					var p = '<div class="post">\
 								<div class="top">\
-									<span class="title">'+posts[i].title+'</span>\
+									<span class="title">'+post.title+'</span>\
 									<span class="info">\
-										by <span class="author">'+posts[i].author+'</span><br>\
-										on <span class="date">'+getPostDate(posts[i].date)+'</span>\
+										by <span class="author">'+post.author+'</span><br>\
+										on <span class="date">'+getPostDate(post.date)+'</span>\
 									</span>\
 								</div>\
 								<div class="body">\
-									<p>'+posts[i].body+'</p>\
+									<p>'+post.body+'</p>\
 								</div>\
 							</div>'
 					$('.timeline').append(p);
-				}
+				});
 
 				if (!last){
 					$('.timeline').append('<div class="load-more">Load More</div>');
