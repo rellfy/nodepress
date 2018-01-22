@@ -5,7 +5,7 @@
   "main": "nodepress.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Rellfy/NodePress.git"
+    "url": "git+https://github.com/Rellfy/nodepress.git"
   },
   "keywords": [
     "blog",
@@ -17,7 +17,7 @@
   "author": "Lorenzo Fontoura",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Rellfy/NodePress/issues"
+    "url": "https://github.com/Rellfy/nodepress/issues"
   },
-  "homepage": "https://github.com/Rellfy/NodePress#readme"
+  "homepage": "https://github.com/Rellfy/nodepress#readme"
 }
