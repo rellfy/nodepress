@@ -1,7 +1,7 @@
 {
   "name": "nodepress",
-  "version": "1.0.5",
-  "description": "Dynamic blog engine for node",
+  "version": "2.0.0",
+  "description": "Lightweight blog engine for node",
   "main": "nodepress.js",
   "repository": {
     "type": "git",
@@ -14,6 +14,28 @@
     "mongodb",
     "mongo"
   ],
+  "dependencies": {
+    "@types/request": "^2.48.1",
+    "bluebird": "^3.5.3",
+    "boom": "^7.3.0",
+    "fastify": "^1.13.4",
+    "fastify-formbody": "^2.0.3",
+    "mongoose": "^5.4.0",
+    "qs": "^6.6.0",
+    "request": "^2.88.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.24",
+    "@types/boom": "^7.2.1",
+    "@types/joi": "^14.0.1",
+    "@types/mongoose": "^5.3.5",
+    "@types/node": "^10.12.12",
+    "@types/qs": "^6.5.1",
+    "@types/uuid": "^3.4.4",
+    "joi": "^14.3.0",
+    "typescript": "^3.2.2"
+  },
   "author": "Lorenzo Fontoura",
   "license": "MIT",
   "bugs": {
