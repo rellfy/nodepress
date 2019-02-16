@@ -1,4 +1,30 @@
 # NodePress
+NodePress is a lightweight blog engine for node.js. At its current state it is mainly focused in the back-end, as a modular and easily extensible framework.
+
+# Database
+NodePress uses MongoDB and intergates with Mongoose.
+
+# Post  schema
+
+The following is the default structure of a post object.
+
+```javascript
+{
+	_id: ObjectId
+	title: string
+	content: string
+	metadata: {
+		date: Date
+		author: string
+		tags: string[]
+		...
+	}
+}
+```
+
+### old
+
+# NodePress
 Lightweight, dynamic blog engine for Node.
 
 NodePress is a blog engine for Node web servers. It's designed to be fast to use and attach to your existing project. It works like a bridge between your database and the client, making it simple to have users posting and fetching posts.
