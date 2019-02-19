@@ -21,8 +21,8 @@ class Router extends EventEmitter {
         super();
     }
 
-    public async initialise(config: RouterConfig) {
-        await this.getRoutes(config.path);
+    public async initialise() {
+        await this.getRoutes(path.resolve(__dirname, 'routes/'));
     }
 
     /**
@@ -86,8 +86,8 @@ class Router extends EventEmitter {
      * @param routePath The path where routes are exportes
      */
     private async getRoutes(routePath: string): Promise<void> {
-        console.log(`retrieving API routes from route directory`);
-        
+        // get routes from plugins
+        console.log(`retrieving core routes from route directory`);
         const absolutePath = path.join(__dirname, routePath)
         const files = await Router.getFilesRecursively(absolutePath);
 
