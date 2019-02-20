@@ -1,4 +1,4 @@
-import { Server } from './Server';
+import { NodePress } from './NodePress';
 import request from 'request';
 
-const instance = new Server(process.argv);
+const instance = new NodePress(process.argv);
