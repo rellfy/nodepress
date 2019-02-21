@@ -1,0 +1,21 @@
+{
+    "net": {
+        "interface": {
+            "ports": {
+                "https": 8080
+            },
+            "https": {
+                "cert": "./some/path/fullchain.pem",
+                "key": "./some/path/privkey.pem"
+            }
+        }
+    },
+    "db": {
+        "uri": "secret"
+    },
+    "user": {
+        "secret": {
+            "token": "secret"
+        }
+    }
+}
