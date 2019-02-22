@@ -5,6 +5,7 @@ import fs from "fs";
 import { Route } from "./NetRoute";
 import { NetInterfaceModule } from "../interface/NetInterfaceModule";
 import { NetInterface } from "../interface/NetInterface";
+import { PluginManager } from "../../plugins/PluginManager";
 
 export interface RouterConfig {
     path: string
@@ -16,9 +17,12 @@ export interface RouterConfig {
 class Router extends EventEmitter {
 
     private routes: Route[] = [];
+    private pluginManager: PluginManager;
 
-    constructor() {
+    constructor(pluginManager: PluginManager) {
         super();
+
+        this.pluginManager = pluginManager;
     }
 
     public async initialise() {
@@ -85,11 +89,31 @@ class Router extends EventEmitter {
      * Retrieve routes from path
      * @param routePath The path where routes are exportes
      */
-    private async getRoutes(routePath: string): Promise<void> {
-        // get routes from plugins
-        console.log(`retrieving core routes from route directory`);
+    private async getRoutes(input?: string): Promise<void> {
+        let routes: typeof Route[] = [];
+
+        // Get routes
+        if (input != null && input.length > 0) {
+            routes = await this.getRoutesFromFiles(input);
+        } else {
+            this.pluginManager.Plugins.forEach((plugin) => {
+                routes.concat(plugin.route());
+            });
+        }
+
+        // Register routes
+        routes.forEach((PluginRoute: typeof Route) => {
+            const route = new PluginRoute();
+            route.Router = this;
+            
+            this.routes.push(route);
+        });
+    }
+
+    private async getRoutesFromFiles(routePath: string): Promise<typeof Route[]> {
         const absolutePath = path.join(__dirname, routePath)
         const files = await Router.getFilesRecursively(absolutePath);
+        const routes: typeof Route[] = [];
 
         files.forEach((file) => {
             let Route = require(path.resolve(absolutePath, file)).Route;
@@ -97,11 +121,10 @@ class Router extends EventEmitter {
             if (Route == null)
                 return;
 
-            const route = new Route();
-            route.Router = this;
-            
-            this.routes.push(route);
+            routes.push(Route);
         });
+
+        return routes;
     }
 
     private getRoute(endpoint: string): Route {

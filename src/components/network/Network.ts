@@ -1,20 +1,20 @@
 import { NetInterface, NetInterfaceConfig } from "./interface/NetInterface";
 import { EventEmitter } from "events";
 import { Router, RouterConfig } from "./router/Router";
-import { Server } from "../../Server";
+import { NodePress } from "../../NodePress";
 
 class Network extends EventEmitter {
 
     private interface: NetInterface;
     private router: Router;
-    private server: Server;
+    private server: NodePress;
 
-    constructor(config: NetConfig, server: Server) {
+    constructor(config: NetConfig, server: NodePress) {
         super();
         
         this.server = server;
         this.interface = new NetInterface(config.interface);
-        this.router = new Router();
+        this.router = new Router(this.server.PluginManager);
     }
     
     /**
@@ -22,7 +22,7 @@ class Network extends EventEmitter {
      * @param config Network configuration object
      */
     async listen(config: any) {
-        await this.router.initialise(config.router);
+        await this.router.initialise();
         this.router.handle(this.interface);
         
         await this.interface.initialise(config.interface);
