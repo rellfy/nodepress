@@ -5,29 +5,49 @@ import path from "path";
 import cache from "./Cache";
 import { Config } from "./Config";
 import { Network } from "./components/network/Network";
+import { PluginManager } from "./components/plugins/PluginManager";
+import { User } from "./components/user/User";
+import { Plugin } from "./components/plugins/Plugin";
+import { object, array } from "joi";
 
 /**
  * Server instance
  */
-class Server extends EventEmitter {
+class NodePress extends EventEmitter {
 
+    private pluginManager!: PluginManager;
     private network: Network;
     private config!: Config;
+
+    public get PluginManager(): PluginManager {
+        return this.pluginManager;
+    }
 
     constructor(args: string[]) {
         super();
 
         // Load configuration files
         this.fetchConfig(this.getArg('--config') || '../config.json');
+        User.fetchConfig();
 
         // Set cache
         cache.set('dev_env', args.includes('--dev'));
 
         // Load modules
         this.network = new Network(this.config.net, this);
+        this.pluginManager = new PluginManager();
         
         // Initialise modules
         this.run();
+    }
+
+    public plugin(plugin: typeof Plugin | typeof Plugin[]) {
+        if (Array.isArray(plugin)) {
+            this.pluginManager.addPlugins(plugin);
+            return;
+        }
+
+        this.pluginManager.addPlugin(plugin);
     }
 
     private getArg(arg: string): any {
@@ -63,4 +83,4 @@ class Server extends EventEmitter {
     }
 }
 
-export { Server };
+export { NodePress };

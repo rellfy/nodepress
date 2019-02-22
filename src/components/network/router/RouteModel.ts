@@ -10,7 +10,7 @@ class RouteModel {
     public schema: any;
     public handler: Function;
 
-    constructor(model: { method: "DELETE" | "GET" | "HEAD" | "PATCH" | "POST" | "PUT", endpoint: string, auth?: any, schema: any, handler: Function }) {
+    constructor(model: { method: "DELETE" | "GET" | "HEAD" | "PATCH" | "POST" | "PUT", endpoint: string, auth?: boolean, schema: any, handler: Function }) {
         this.method = model.method;
         this.endpoint = model.endpoint;
         this.auth = model.auth ? true : false;
