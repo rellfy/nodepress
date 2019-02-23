@@ -1,4 +1,4 @@
-import { Route } from "../network/router/NetRoute";
+import { Route } from "../network/router/Route";
 
 class Plugin {
 

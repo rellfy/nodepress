@@ -55,8 +55,6 @@ class Route {
 		return this.model.endpoint;
     } 
 
-	constructor() { }
-	
 	protected route(): RouteModel {
 		return new RouteModel({
 			method: 'GET',
