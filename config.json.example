@@ -17,5 +17,8 @@
         "secret": {
             "token": "secret"
         }
+    },
+    "api": {
+        "np_epoch": 1550620800000
     }
 }

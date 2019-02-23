@@ -3,9 +3,9 @@ import path from "path";
 import fs from "fs";
 
 import { Route } from "./Route";
-import { NetInterfaceModule } from "../interface/NetInterfaceModule";
-import { NetInterface } from "../interface/NetInterface";
-import { PluginManager } from "../../plugins/PluginManager";
+import { NetInterfaceModule } from "../network/interface/NetInterfaceModule";
+import { NetInterface } from "../network/interface/NetInterface";
+import { PluginManager } from "../plugins/PluginManager";
 
 export interface RouterConfig {
     path: string
@@ -26,7 +26,7 @@ class Router extends EventEmitter {
     }
 
     public async initialise() {
-        await this.getRoutes(path.resolve(__dirname, 'routes/'));
+        await this.getRoutes();
     }
 
     /**
@@ -97,7 +97,7 @@ class Router extends EventEmitter {
             routes = await this.getRoutesFromFiles(input);
         } else {
             this.pluginManager.Plugins.forEach((plugin) => {
-                routes.concat(plugin.route());
+                routes = routes.concat(plugin.route().server);
             });
         }
 

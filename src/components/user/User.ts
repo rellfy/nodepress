@@ -1,6 +1,5 @@
 import { UserModel, IUser, IUserDocument } from "./UserModel";
 import Mongoose, { model } from "mongoose";
-import { SocialConfig } from "./components/social/Social";
 import { Security } from "../crypto/Security";
 import fs from 'fs';
 import cache from "../../Cache";
@@ -26,7 +25,7 @@ class User implements IUser {
 
     public cached: boolean = false;
 
-    private static config: UserConfig;
+    public static config: UserConfig;
 
     constructor(options: { _id?: Mongoose.Types.ObjectId, token?: string, document?: IUserDocument }) {
         if (options == null)
@@ -49,8 +48,8 @@ class User implements IUser {
     }
    
     static generateToken(rawPayload: any, date?: Date) {
-        const NIOEL_EPOCH = cache.get('nioel_epoch');
-        const rawDelta = (date ? date.getTime() : Date.now()) - NIOEL_EPOCH;
+        const NP_EPOCH = cache.get('np_epoch_epoch');
+        const rawDelta = (date ? date.getTime() : Date.now()) - NP_EPOCH;
         
         const payload = Security.encodeBase64(rawPayload);
         const delta = Security.encodeBase64Number(rawDelta);
@@ -75,10 +74,10 @@ class User implements IUser {
                 return false;
         }
 
-        const NIOEL_EPOCH = cache.get('nioel_epoch');
+        const NP_EPOCH = cache.get('np_epoch_epoch');
 
         const payload = Security.decodeBase64(sections[0]);
-        const date = Security.decodeBase64Number(sections[1]) + NIOEL_EPOCH;
+        const date = Security.decodeBase64Number(sections[1]) + NP_EPOCH;
         const signature = sections[2];
         
         const match = User.generateToken(payload, date) === token;
@@ -187,7 +186,6 @@ class User implements IUser {
 }
 
 export interface UserConfig {
-    social: SocialConfig;
     secret: {
         token: string
     }
