@@ -1,4 +1,4 @@
-import { Route } from "../../components/network/router/NetRoute";
+import { Route } from "../../components/network/router/Route";
 import { RouteModel } from "../../components/network/router/RouteModel";
 import { Router } from "../../components/network/router/Router";
 
@@ -21,7 +21,7 @@ class PostPanel extends Route {
 
     public async process(request: any, reply: any) {
         await super.process(request, reply);
-
+        
         const str = (
             `index page!`
         );

@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import path from "path";
 import fs from "fs";
 
-import { Route } from "./NetRoute";
+import { Route } from "./Route";
 import { NetInterfaceModule } from "../interface/NetInterfaceModule";
 import { NetInterface } from "../interface/NetInterface";
 import { PluginManager } from "../../plugins/PluginManager";

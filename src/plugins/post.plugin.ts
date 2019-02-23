@@ -1,7 +1,7 @@
 import { Plugin } from "../components/plugins/Plugin";
 import { Router } from "../components/network/router/Router";
 import { RouteModel } from "../components/network/router/RouteModel";
-import { Route } from "../components/network/router/NetRoute";
+import { Route } from "../components/network/router/Route";
 import { PostPanel } from "./post/postpanel";
 
 class Post extends Plugin {
@@ -10,7 +10,7 @@ class Post extends Plugin {
         super();
     }
 
-    route(): typeof Route {
+    route() {
         return PostPanel;
     }
 

@@ -1,4 +1,4 @@
-import { Route } from "../NetRoute";
+import { Route } from "../Route";
 import { RouteModel } from "../RouteModel";
 import { Router } from "../Router";
 
