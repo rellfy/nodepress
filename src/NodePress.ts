@@ -9,6 +9,7 @@ import { PluginManager } from "./components/plugins/PluginManager";
 import { User } from "./components/user/User";
 import { Plugin } from "./components/plugins/Plugin";
 import { object, array } from "joi";
+import Post from "./plugins/post/post.plugin";
 
 /**
  * Server instance
@@ -34,8 +35,9 @@ class NodePress extends EventEmitter {
         cache.set('dev_env', args.includes('--dev'));
 
         // Load modules
-        this.network = new Network(this.config.net, this);
         this.pluginManager = new PluginManager();
+        this.pluginManager.addPlugin(Post);
+        this.network = new Network(this.config.net, this);
         
         // Initialise modules
         this.run();

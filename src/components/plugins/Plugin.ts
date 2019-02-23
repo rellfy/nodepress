@@ -1,4 +1,10 @@
-import { Route } from "../network/router/Route";
+import { Route } from "../router/Route";
+import * as React from 'react';
+
+interface IPluginRoute {
+    server: typeof Route | typeof Route[];
+    client?: typeof React.Component;
+}
 
 class Plugin {
 
@@ -10,9 +16,11 @@ class Plugin {
         
     }
 
-    public route(): typeof Route | typeof Route[] {
-        return [];
+    public route(): IPluginRoute {
+        return {
+            server: []
+        };
     }
 }
 
-export { Plugin };
+export { Plugin, IPluginRoute };

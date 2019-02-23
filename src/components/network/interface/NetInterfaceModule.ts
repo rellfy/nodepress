@@ -1,4 +1,4 @@
-import { RouteModel } from "../router/RouteModel";
+import { RouteModel } from "../../router/RouteModel";
 
 class NetInterfaceModule {
 

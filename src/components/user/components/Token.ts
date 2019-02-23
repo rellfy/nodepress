@@ -34,8 +34,8 @@ class Token {
                 // Initialise Token from payload/date object.
                 this.date = input.date ? input.date : new Date();
 
-                const NIOEL_EPOCH = cache.get('nioel_epoch');
-                const rawDelta = this.date.getTime() - NIOEL_EPOCH;
+                const NP_EPOCH = cache.get('np_epoch_epoch');
+                const rawDelta = this.date.getTime() - NP_EPOCH;
                 
                 const payload = Security.encodeBase64(input.payload);
                 const delta = Security.encodeBase64Number(rawDelta);
@@ -69,10 +69,10 @@ class Token {
                 return null;
         }
 
-        const NIOEL_EPOCH = cache.get('nioel_epoch');
+        const NP_EPOCH = cache.get('np_epoch_epoch');
 
         const payload = Security.decodeBase64(sections[0]);
-        const date = new Date(Security.decodeBase64Number(sections[1]) + NIOEL_EPOCH);
+        const date = new Date(Security.decodeBase64Number(sections[1]) + NP_EPOCH);
         const signature = sections[2];
         
         // Ensure token is valid before returning sections.

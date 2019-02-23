@@ -1,8 +1,8 @@
-import { Route } from "../../components/network/router/Route";
-import { RouteModel } from "../../components/network/router/RouteModel";
-import { Router } from "../../components/network/router/Router";
+import { Route } from "../../components/router/Route";
+import { RouteModel } from "../../components/router/RouteModel";
+import { Router } from "../../components/router/Router";
 
-class PostPanel extends Route {
+class PostRoute extends Route {
 
     constructor() {
         super();
@@ -30,4 +30,4 @@ class PostPanel extends Route {
     }
 }
 
-export { PostPanel }
+export { PostRoute }

@@ -1,6 +1,6 @@
 import { NetInterface, NetInterfaceConfig } from "./interface/NetInterface";
 import { EventEmitter } from "events";
-import { Router, RouterConfig } from "./router/Router";
+import { Router, RouterConfig } from "../router/Router";
 import { NodePress } from "../../NodePress";
 
 class Network extends EventEmitter {

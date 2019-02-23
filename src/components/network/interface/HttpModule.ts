@@ -3,7 +3,7 @@ import qs from "qs";
 import Boom from 'boom';
 
 import { NetInterfaceModule } from './NetInterfaceModule';
-import { RouteModel } from '../router/RouteModel';
+import { RouteModel } from '../../router/RouteModel';
 import fs from 'fs';
 
 class HttpModule extends NetInterfaceModule {
