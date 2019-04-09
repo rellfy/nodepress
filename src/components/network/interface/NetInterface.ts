@@ -17,6 +17,10 @@ export interface NetInterfaceConfig {
 class NetInterface {
 
     private httpModule: HttpModule;
+    
+    public get HttpModule(): HttpModule {
+        return this.httpModule;
+    }
 
     constructor(config: NetInterfaceConfig) {
         this.httpModule = new HttpModule(config.https);

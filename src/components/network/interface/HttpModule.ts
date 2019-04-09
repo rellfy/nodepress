@@ -1,10 +1,12 @@
 import Fastify, { FastifyInstance, FastifyReply } from 'fastify';
 import qs from "qs";
+import path from "path";
 import Boom from 'boom';
 
 import { NetInterfaceModule } from './NetInterfaceModule';
 import { RouteModel } from '../../router/RouteModel';
 import fs from 'fs';
+import cache from '../../../Cache';
 
 class HttpModule extends NetInterfaceModule {
 
@@ -12,10 +14,18 @@ class HttpModule extends NetInterfaceModule {
     
     private ssl!: { cert: string, key: string };
 
+    public get Server(): FastifyInstance {
+        return this.server;
+    }
+
     constructor(https: { cert: string, key: string }) {
         super();
         
         this.server = Fastify(this.getServerConfig(https));
+        this.server.register(require('fastify-static'), {
+            root: path.resolve(cache.get('root_path'), 'public/'),
+            prefix: '/public-np/'
+        });
     }
 
     private getServerConfig(https: { cert: string, key: string }): object {
@@ -39,7 +49,12 @@ class HttpModule extends NetInterfaceModule {
             schema: model.schema,
             handler: async (request, reply) => {
                 try {
-                    await model.handler(request, reply);
+                    let handler = await model.handler(request, reply);
+
+                    if (handler != null)
+                        reply.status(200)
+                             .header('Content-Type', 'text/html')
+                             .send(handler);
                 } catch(e) {
                     let error: Boom;
 

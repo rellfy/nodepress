@@ -20,10 +20,13 @@
     "mongo"
   ],
   "dependencies": {
+    "awesome-typescript-loader": "^5.2.1",
     "bluebird": "^3.5.3",
     "boom": "^7.3.0",
     "fastify": "^1.13.4",
     "fastify-formbody": "^2.0.3",
+    "fastify-static": "^1.1.0",
+    "gulp": "^4.0.0",
     "history": "^4.7.2",
     "mongoose": "^5.4.0",
     "qs": "^6.6.0",
@@ -31,7 +34,9 @@
     "react-dom": "^16.8.3",
     "react-router-dom": "^4.3.1",
     "request": "^2.88.0",
-    "uuid": "^3.3.2"
+    "source-map-loader": "^0.2.4",
+    "uuid": "^3.3.2",
+    "webpack": "^4.29.5"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.24",
@@ -46,6 +51,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/request": "^2.48.1",
     "@types/uuid": "^3.4.4",
+    "@types/webpack": "^4.4.24",
     "joi": "^14.3.0",
     "typescript": "^3.2.2"
   },

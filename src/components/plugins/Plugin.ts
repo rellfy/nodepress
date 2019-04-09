@@ -1,9 +1,10 @@
 import { Route } from "../router/Route";
+import { Router } from "../router/Router";
 import * as React from 'react';
 
 interface IPluginRoute {
     server: typeof Route | typeof Route[];
-    client?: typeof React.Component;
+    client?: React.ReactElement<Route>;
 }
 
 class Plugin {

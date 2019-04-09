@@ -9,12 +9,16 @@ class Network extends EventEmitter {
     private router: Router;
     private server: NodePress;
 
+    public get Interface(): NetInterface {
+        return this.interface;
+    }
+
     constructor(config: NetConfig, server: NodePress) {
         super();
         
         this.server = server;
         this.interface = new NetInterface(config.interface);
-        this.router = new Router(this.server.PluginManager);
+        this.router = new Router(this, this.server.PluginManager);
     }
     
     /**

@@ -1,4 +1,6 @@
 /out
+src./
+src../
 example.js
 config.json
 *.pem

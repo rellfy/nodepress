@@ -1,11 +1,16 @@
 import { EventEmitter } from "events";
 import path from "path";
 import fs from "fs";
+import util from "util";
 
 import { Route } from "./Route";
 import { NetInterfaceModule } from "../network/interface/NetInterfaceModule";
 import { NetInterface } from "../network/interface/NetInterface";
 import { PluginManager } from "../plugins/PluginManager";
+import * as React from "react";
+import { Route as DOMRoute } from "react-router-dom";
+import { Network } from "../network/Network";
+import a from "../../webpack.config";
 
 export interface RouterConfig {
     path: string
@@ -16,17 +21,28 @@ export interface RouterConfig {
  */
 class Router extends EventEmitter {
 
+    private network: Network;
     private routes: Route[] = [];
     private pluginManager: PluginManager;
 
-    constructor(pluginManager: PluginManager) {
+    public get Network(): Network {
+        return this.Network;
+    }
+
+    public get PluginManager(): PluginManager {
+        return this.pluginManager;
+    }
+
+    constructor(network: Network, pluginManager: PluginManager) {
         super();
 
+        this.network = network;
         this.pluginManager = pluginManager;
     }
 
     public async initialise() {
         await this.getRoutes();
+        await this.compileIndexPage();
     }
 
     /**
@@ -94,8 +110,10 @@ class Router extends EventEmitter {
 
         // Get routes
         if (input != null && input.length > 0) {
+            // Retrieve from path
             routes = await this.getRoutesFromFiles(input);
         } else {
+            // Retrieve from registered plugins (default)
             this.pluginManager.Plugins.forEach((plugin) => {
                 routes = routes.concat(plugin.route().server);
             });
@@ -135,6 +153,27 @@ class Router extends EventEmitter {
         
         throw new Error(`route "${path}" not found`);
     }
+
+    private async compileIndexPage(): Promise<void> {
+        // make /public dir if needed
+        /* 
+            <Router history={history}>
+                <Switch>
+                    { plugin routes here }
+                </Switch>
+            </Router>
+
+            => transpile this into js, save into /public/main.np.js
+        */
+
+
+    }
+}
+
+class Test extends React.Component {
+	render() {
+		return <div>test</div>
+	}
 }
 
 export { Router };
