@@ -33,10 +33,11 @@ class NodePress extends EventEmitter {
 
         // Set cache
         cache.set('dev_env', args.includes('--dev'));
+        cache.set('root_path', __dirname);
 
         // Load modules
         this.pluginManager = new PluginManager();
-        this.pluginManager.addPlugin(Post);
+        this.pluginManager.addPlugins([Post]);
         this.network = new Network(this.config.net, this);
         
         // Initialise modules

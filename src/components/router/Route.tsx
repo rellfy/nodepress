@@ -1,34 +1,36 @@
 import Boom from 'boom';
+import fs from 'fs';
+import path from 'path';
 
 import { RouteModel } from "./RouteModel";
 import { Router } from "./Router";
 import { NetInterface } from "../network/interface/NetInterface";
 import { Schema } from 'mongoose';
 import * as React from 'react';
+import cache from '../../Cache';
 
 /* 
-
 {
-	method: 'GET',
-	url: '/',
-	schema: {
-	  querystring: {
-		name: { type: 'string' },
-		excitement: { type: 'integer' }
-	  },
-	  response: {
-		200: {
-		  type: 'object',
-		  properties: {
-			hello: { type: 'string' }
-		  }
-		}
-	  }
-	},
-	handler: function (request, reply) {
-	  reply.send({ hello: 'world' })
-	}
-  }
+    method: 'GET',
+    url: '/',
+    schema: {
+        querystring: {
+        name: { type: 'string' },
+        excitement: { type: 'integer' }
+        },
+        response: {
+        200: {
+            type: 'object',
+            properties: {
+            hello: { type: 'string' }
+            }
+        }
+        }
+    },
+    handler: function (request, reply) {
+        reply.send({ hello: 'world' })
+    }
+}
 */
 
 class Route {
@@ -118,6 +120,22 @@ class Route {
 			throw Boom.badRequest();
 
 		Route.iterate(request, this.route().schema);
+
+        // Currently, all requests are redirected to the index page.
+        // The front end decides what page to render.
+        return `
+        <html>
+            <header>
+                <title>NodePress</title>
+            </header>
+            <body>
+                <div id="root"></div>
+                <script>
+                ${fs.readFileSync(path.resolve(__dirname, '../../public/np-build.js'))}
+                </script>
+            </body>
+        </html>
+        `;
 	}
 }
 

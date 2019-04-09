@@ -2,8 +2,8 @@ import { Plugin } from "../../components/plugins/Plugin";
 import { Router } from "../../components/router/Router";
 import { RouteModel } from "../../components/router/RouteModel";
 import { Route } from "../../components/router/Route";
-import { PostRoute } from "./PostRoute";
-import { PostComponent } from "./PostComponent";
+import { PostRoute, PostRoute2 } from "./PostRoute";
+import { PostRouteComponent } from "./PostComponent";
 
 class Post extends Plugin {
 
@@ -13,8 +13,8 @@ class Post extends Plugin {
 
     route() {
         return {
-            server: PostRoute,
-            client: PostComponent
+            server: [PostRoute, PostRoute2],
+            client: PostRouteComponent
         };
     }
 }
