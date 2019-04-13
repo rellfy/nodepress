@@ -10,7 +10,6 @@ import { PluginManager } from "../plugins/PluginManager";
 import * as React from "react";
 import { Route as DOMRoute } from "react-router-dom";
 import { Network } from "../network/Network";
-import a from "../../webpack.config";
 
 export interface RouterConfig {
     path: string

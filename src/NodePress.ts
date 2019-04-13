@@ -10,6 +10,7 @@ import { User } from "./components/user/User";
 import { Plugin } from "./components/plugins/Plugin";
 import { object, array } from "joi";
 import Post from "./plugins/post/post.plugin";
+import { NodeBuilder } from "./NodeBuilder";
 
 /**
  * Server instance
@@ -40,8 +41,11 @@ class NodePress extends EventEmitter {
         this.pluginManager.addPlugins([Post]);
         this.network = new Network(this.config.net, this);
         
+        this.pluginManager.on('add_plugin', this.buildIndex.bind(this));
+
         // Initialise modules
         this.run();
+        this.buildIndex();
     }
 
     public plugin(plugin: typeof Plugin | typeof Plugin[]) {
@@ -83,6 +87,13 @@ class NodePress extends EventEmitter {
     private async run() {
         await this.network.listen(this.config.net);
         console.log(`This server instance is now running`);
+    }
+
+    private async buildIndex() {
+        let inputPath = path.resolve(__dirname, 'pages/index.tsx');
+
+        let page = await NodeBuilder.BuildPage(this.PluginManager.Plugins)
+        cache.set('router_index', page);
     }
 }
 

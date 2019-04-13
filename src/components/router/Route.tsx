@@ -8,6 +8,7 @@ import { NetInterface } from "../network/interface/NetInterface";
 import { Schema } from 'mongoose';
 import * as React from 'react';
 import cache from '../../Cache';
+import { NodeBuilder } from '../../NodeBuilder';
 
 /* 
 {
@@ -122,7 +123,8 @@ class Route {
 		Route.iterate(request, this.route().schema);
 
         // Currently, all requests are redirected to the index page.
-        // The front end decides what page to render.
+		// The front end decides what page to render.
+		return cache.get('router_index');
         return `
         <html>
             <header>
