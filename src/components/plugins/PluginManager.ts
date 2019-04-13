@@ -1,6 +1,7 @@
 import { Plugin } from "./Plugin";
+import { EventEmitter } from "events";
 
-class PluginManager {
+class PluginManager extends EventEmitter {
 
     private plugins: Plugin[] = [];
 
@@ -9,10 +10,12 @@ class PluginManager {
     }
 
     public addPlugin(plugin: typeof Plugin) {
+        this.emit('add_plugin');
         this.initialisePlugin(plugin);
     }
 
     public addPlugins(plugins: typeof Plugin[]) {
+        this.emit('add_plugin');
         plugins.forEach((plugin) => {
             this.initialisePlugin(plugin);
         });

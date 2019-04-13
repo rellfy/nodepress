@@ -18,3 +18,4 @@ class PostComponent extends React.Component<IProps, IState> {
 const PostRouteComponent = <Route path="/post" component={PostComponent} />
 
 export { PostRouteComponent }
+module.exports = PostComponent;
