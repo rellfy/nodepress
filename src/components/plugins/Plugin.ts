@@ -3,8 +3,8 @@ import { Router } from "../router/Router";
 import * as React from 'react';
 
 interface IPluginRoute {
-    server: typeof Route | typeof Route[];
-    client?: React.ReactElement<Route>;
+    server: typeof Route;
+    client?: string;
 }
 
 class Plugin {
@@ -16,11 +16,9 @@ class Plugin {
     public static load(path: string) {
         
     }
-
-    public route(): IPluginRoute {
-        return {
-            server: []
-        };
+    
+    public routes(): IPluginRoute[] {
+        return [ ];
     }
 }
 

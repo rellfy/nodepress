@@ -7,10 +7,10 @@ class PostRoute extends Route {
     constructor() {
         super();
 
-        this.initialise(this.route());
+        this.initialise(PostRoute.route());
     }
 
-    protected route(): RouteModel {
+    public static route(): RouteModel {
         return new RouteModel({
             method: 'GET',
             endpoint: '/post',
@@ -25,10 +25,10 @@ class PostRoute2 extends Route {
     constructor() {
         super();
 
-        this.initialise(this.route());
+        this.initialise(PostRoute2.route());
     }
 
-    protected route(): RouteModel {
+    public static route(): RouteModel {
         return new RouteModel({
             method: 'GET',
             endpoint: '/',

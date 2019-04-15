@@ -1,4 +1,4 @@
-import { Plugin } from "./components/plugins/Plugin";
+import { Plugin, IPluginRoute } from "./components/plugins/Plugin";
 import cache from "./Cache";
 import path from "path";
 import util from "util";
@@ -16,32 +16,56 @@ class NodeBuilder {
     }
 
     /**
-     * This script will be generated in the output folder (FolderPath)
-     */
-    public static Page() {
-        const React = require('react');
-        const ReactDOM = require('react-dom');
-        const ReactRouterDOM = require('react-router-dom');
-        const Router = ReactRouterDOM.BrowserRouter;
-        const Route = ReactRouterDOM.Route;
-        //const History = require('history');
-
-        const Post = require('../plugins/post/PostComponent.js');
-
-        const element = (
-            <Router>
-                 <Route path="/" component={Post} />
-            </Router>
-        );
-
-        ReactDOM.render(element, document.getElementById('root'));
-    }
-
-    /**
      * Returns the input page as a string
      */
-    public static get PageString() {
-        return `(${NodeBuilder.Page.toString()})();`
+    public static PageString(plugins: Plugin[]) {
+        const routes: IPluginRoute[] = [];
+
+        plugins.forEach((plugin, i) => {
+            plugin.routes().forEach((route) => {
+                if (route.client == null)
+                    return;
+                    
+                routes.push(route);
+            });
+        });
+
+        let pluginDefinitionStr = '';
+
+        routes.forEach((route, i) => {
+            if (route.client == null)
+                return;
+
+            pluginDefinitionStr += `const Plugin${i} = require("${route.client.replace(/\\/g, '/')}.js");\n`
+        });
+
+        let routeDeclarationStr = '';
+
+        routes.forEach((route, i) => {
+            routeDeclarationStr += `<Route path="${route.server.route().endpoint}" component={Plugin${i}} />\n`
+        });
+
+        //return `(${NodeBuilder.Page.toString()})();`
+        return `(function() {
+            const React = require('react');
+            const ReactDOM = require('react-dom');
+            const ReactRouterDOM = require('react-router-dom');
+            const Router = ReactRouterDOM.BrowserRouter;
+            const Route = ReactRouterDOM.Route;
+            //const History = require('history');
+
+            ${pluginDefinitionStr}
+
+            const element = (
+                <Router>
+                    <div>
+                        ${routeDeclarationStr}
+                    </div>
+                </Router>
+            );
+
+            ReactDOM.render(element, document.getElementById('root'));
+        })();`
     }
 
     public static WebpackConfig(): webpack.Configuration {
@@ -53,12 +77,12 @@ class NodeBuilder {
             },
             devtool: 'source-map',
             resolve: {
-                extensions: ['.jsx', '.js', '.json']
+                extensions: ['.tsx', '.jsx', '.js', '.json']
             },
             module: {
                 rules: [
                     { test: /\.(js|jsx)$/, exclude: /node_modules/, use: ['babel-loader'] },
-                    // { test: /\.tsx?$/, loader: "awesome-typescript-loader", exclude: /node_modules/ },
+                    { test: /\.tsx?$/, loader: "awesome-typescript-loader", exclude: /node_modules/ },
                     { enforce: "pre", test: /\.js$/, loader: "source-map-loader", exclude: /node_modules/ }
                 ]
             }
@@ -69,7 +93,7 @@ class NodeBuilder {
         let output = '';
 
         NodeBuilder.CreateFolder();
-        await NodeBuilder.CreateFile(NodeBuilder.InputFilename, NodeBuilder.PageString);
+        await NodeBuilder.CreateFile(NodeBuilder.InputFilename, NodeBuilder.PageString(plugins));
 
         let e;
         try {
@@ -79,10 +103,7 @@ class NodeBuilder {
             throw error;
         }
 
-        console.log(e);
-
-        //NodeBuilder.CreateFile('../router.js', output);
-        //NodeBuilder.DeleteFolder();
+        NodeBuilder.DeleteFolder();
 
         return output;
     }

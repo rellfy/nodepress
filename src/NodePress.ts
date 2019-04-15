@@ -90,8 +90,6 @@ class NodePress extends EventEmitter {
     }
 
     private async buildIndex() {
-        let inputPath = path.resolve(__dirname, 'pages/index.tsx');
-
         let page = await NodeBuilder.BuildPage(this.PluginManager.Plugins)
         cache.set('router_index', page);
     }
