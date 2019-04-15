@@ -114,7 +114,7 @@ class Router extends EventEmitter {
         } else {
             // Retrieve from registered plugins (default)
             this.pluginManager.Plugins.forEach((plugin) => {
-                routes = routes.concat(plugin.route().server);
+                routes = routes.concat(plugin.routes().map(r => r.server));
             });
         }
 

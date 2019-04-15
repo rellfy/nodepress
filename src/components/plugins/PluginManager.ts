@@ -1,5 +1,6 @@
 import { Plugin } from "./Plugin";
 import { EventEmitter } from "events";
+import Post from "../../plugins/post/post.plugin";
 
 class PluginManager extends EventEmitter {
 

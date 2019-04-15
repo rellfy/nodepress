@@ -60,7 +60,7 @@ class Route {
 		return this.model.endpoint;
 	} 
 
-	protected route(): RouteModel {
+	public static route(): RouteModel {
 		return new RouteModel({
 			method: 'GET',
 			endpoint: '/',
@@ -70,6 +70,8 @@ class Route {
 	}
 	
 	protected initialise(route: RouteModel) {
+		// Todo: remove the need for manually initialising with the RouterModel
+		// (should get own type's RouterModel)
 		this.model = route;
 	}
 
@@ -110,7 +112,7 @@ class Route {
 		return false;
 	}
 
-	public async process(request: any, reply: any) {
+	public static async process(request: any, reply: any) {
 		// Check authentication
 		if (this.route().auth == true && !Route.isAuthenticated(this.route(), request))
 			throw Boom.unauthorized();
