@@ -10,6 +10,7 @@ class NodeBuilder {
 
     private static InputFilename: string = 'np.jsx';
     private static OutputFilename: string = 'np.js';
+    private static LayoutFolder: string = '../layout/';
 
     private static get FolderPath(): string {
         return path.resolve(__dirname, 'np_builder');
@@ -25,7 +26,7 @@ class NodeBuilder {
             plugin.routes().forEach((route) => {
                 if (route.client == null)
                     return;
-                    
+
                 routes.push(route);
             });
         });
@@ -90,8 +91,6 @@ class NodeBuilder {
     }
 
     public static async BuildPage(plugins: Plugin[]): Promise<string> {
-        let output = '';
-
         NodeBuilder.CreateFolder();
         await NodeBuilder.CreateFile(NodeBuilder.InputFilename, NodeBuilder.PageString(plugins));
 
@@ -105,7 +104,16 @@ class NodeBuilder {
 
         NodeBuilder.DeleteFolder();
 
-        return output;
+        const script = await util.promisify(fs.readFile)(path.resolve(NodeBuilder.FolderPath, '../', NodeBuilder.OutputFilename));
+
+        return this.GetHTML(script.toString('utf8'));
+    }
+
+    private static async GetHTML(script: string) {
+        const head = await util.promisify(fs.readFile)(path.resolve(__dirname, NodeBuilder.LayoutFolder, 'head.html'));
+        const body = await util.promisify(fs.readFile)(path.resolve(__dirname, NodeBuilder.LayoutFolder, 'body.html'));
+
+        return `<html><head>${head.toString('utf8')}</head><body><div id="root"></div>${body.toString('utf8')}<script type="text/javascript">${script}</script></body></html>`;
     }
 
     public static async CreateFile(name: string, data: any) {
