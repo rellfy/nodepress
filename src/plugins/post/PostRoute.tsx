@@ -14,28 +14,11 @@ class PostRoute extends Route {
         return new RouteModel({
             method: 'GET',
             endpoint: '/post',
+            // auth: true,
             schema : null,
             handler: this.process.bind(this)
         });
     }
 }
 
-class PostRoute2 extends Route {
-
-    constructor() {
-        super();
-
-        this.initialise(PostRoute2.route());
-    }
-
-    public static route(): RouteModel {
-        return new RouteModel({
-            method: 'GET',
-            endpoint: '/',
-            schema : null,
-            handler: this.process.bind(this)
-        });
-    }
-}
-
-export { PostRoute, PostRoute2 }
+export { PostRoute }
