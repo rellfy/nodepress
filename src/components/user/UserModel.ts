@@ -14,10 +14,6 @@ export interface IUser {
         password: string;
         salt: string;
     }
-    wallet?: {
-        nc: number;
-        rc: number;
-    }
 }
 
 class Model {
@@ -45,10 +41,6 @@ class Model {
             credentials: {
                 password: { type: String, required: true },
                 salt: { type: String, required: true },
-            },
-            wallet: {
-                nc: { type: Number, required: true, default: 0 },
-                rc: { type: Number, required: true, default: 0 }
             }
         }, options);
 
@@ -67,10 +59,6 @@ class Model {
             credentials: Joi.object().keys({
                 salt: Joi.string().min(3),
                 password: Joi.string().min(3),
-            }),
-            wallet: Joi.object().keys({
-                nc: Joi.number(),
-                rc: Joi.number()
             })
         });
     }
