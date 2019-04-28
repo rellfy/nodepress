@@ -1,9 +1,6 @@
 import Mongoose from 'mongoose';
 import { UserModel } from '../user/UserModel';
 
-/**
- * The Database class communicates directly with the Azure Cosmos DB API
- */
 class Database {
 
     private connection!: Mongoose.Connection;
@@ -16,13 +13,13 @@ class Database {
     constructor(config: DbConfig) {
         this.config = config;
     }
-    
-    async connect() {
+
+    public async connect() {
         // this.connection = await Mongoose.createConnection(this.uri, this.options);
         await Mongoose.connect(this.config.uri, this.config.options);
     }
 
-    async disconnect() {
+    public async disconnect() {
         await Mongoose.disconnect();
     }
 }

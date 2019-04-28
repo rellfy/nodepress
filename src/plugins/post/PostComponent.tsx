@@ -14,7 +14,7 @@ const PostPanel = styled.div`
     grid-template-columns: repeat(4, 20vw);
     grid-template-rows: 7vh 83vh;
     grid-template-areas:
-    "h h h ."
+    "h h h s"
     "p p p s";
 `;
 const Title = styled.input`

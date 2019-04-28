@@ -2,6 +2,9 @@ import { Plugin, IPluginRoute } from "../../components/plugins/Plugin";
 import { PostRoute } from "./PostRoute";
 import path from "path";
 
+/**
+ * This core plugin handles the post process and post page.
+ */
 class Post extends Plugin {
 
     constructor() {

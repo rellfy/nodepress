@@ -18,10 +18,6 @@ class User implements IUser {
     public username?: string;
     public password?: string;
     public salt?: string;
-    public wallet?: {
-        nc: number;
-        rc: number;
-    }
 
     public cached: boolean = false;
 
@@ -43,7 +39,6 @@ class User implements IUser {
             this.username = options.document.username;
             this.password = options.document.credentials ? options.document.credentials.password : undefined;
             this.salt = options.document.credentials ? options.document.credentials.salt : undefined;
-            this.wallet = options.document.wallet;
         }
     }
    
@@ -129,14 +124,9 @@ class User implements IUser {
             email: input.email ? {
                 address: input.email
             } : undefined,
-            credentials: encrypted,
-            wallet: {
-                nc: 0,
-                rc: 0
-            }
+            credentials: encrypted
         };
 
-        
         const document: IUserDocument = await UserModel.create(user);
         
         console.log(`Registered user ${user.username}`);
