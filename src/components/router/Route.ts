@@ -124,22 +124,10 @@ class Route {
 
 		Route.iterate(request, this.route().schema);
 
-        // Currently, all requests are redirected to the index page.
+        // Currently, all GET requests are redirected to the index page.
 		// The front end decides what page to render.
-		return cache.get('router_index');
-        return `
-        <html>
-            <header>
-                <title>NodePress</title>
-            </header>
-            <body>
-                <div id="root"></div>
-                <script>
-                ${fs.readFileSync(path.resolve(__dirname, '../../public/np-build.js'))}
-                </script>
-            </body>
-        </html>
-        `;
+		if (this.route().method == "GET")
+			return cache.get('router_index');
 	}
 }
 
