@@ -9,6 +9,8 @@ import { Schema } from 'mongoose';
 import * as React from 'react';
 import cache from '../../Cache';
 import { NodeBuilder } from '../../NodeBuilder';
+import Fastify from 'fastify';
+import { ServerResponse } from 'http';
 
 /* 
 {
@@ -112,22 +114,23 @@ class Route {
 		return false;
 	}
 
-	public static async process(request: any, reply: any) {
+	public static async process(request: any, reply: Fastify.FastifyReply<ServerResponse>) {
 		// Check authentication
 		if (this.route().auth == true && !Route.isAuthenticated(this.route(), request))
 			throw Boom.unauthorized();
-		
+
 		const schemaNullOrEmpty = this.route().schema == null || Object.keys(this.route().schema).length < 1;
+
+		if (!schemaNullOrEmpty && this.route().schema.indexRoute) {
+			// Send index react-router route.
+			reply.header('Content-Type', 'text/html');
+			return cache.get('router_index');
+		}
 
 		if (request == null || (request.body == null && !schemaNullOrEmpty))
 			throw Boom.badRequest();
 
 		Route.iterate(request, this.route().schema);
-
-        // Currently, all GET requests are redirected to the index page.
-		// The front end decides what page to render.
-		if (this.route().method == "GET")
-			return cache.get('router_index');
 	}
 }
 
