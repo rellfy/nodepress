@@ -51,6 +51,9 @@ class HttpModule extends NetInterfaceModule {
                 try {
                     let handler = await model.handler(request, reply);
 
+                    if (typeof(handler) == 'object')
+                        handler = JSON.stringify(handler);
+
                     if (handler != null)
                         reply.status(200)
                              .header('Content-Type', 'text/html')
