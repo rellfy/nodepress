@@ -50,13 +50,13 @@ class HttpModule extends NetInterfaceModule {
             handler: async (request, reply) => {
                 try {
                     let handler = await model.handler(request, reply);
-
-                    if (typeof(handler) == 'object')
-                        handler = JSON.stringify(handler);
-
+                    let contentType = reply.getHeader('Content-Type') ?
+                        reply.getHeader('Content-Type') :
+                        'application/json';
+                        
                     if (handler != null)
                         reply.status(200)
-                             .header('Content-Type', 'text/html')
+                             .header('Content-Type',  contentType)
                              .send(handler);
                 } catch(e) {
                     let error: Boom;
