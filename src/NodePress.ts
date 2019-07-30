@@ -11,12 +11,14 @@ import { Plugin } from "./components/plugins/Plugin";
 import { object, array } from "joi";
 import Post from "./plugins/post/post.plugin";
 import { NodeBuilder } from "./NodeBuilder";
+import { Database } from "./components/database/Database";
 
 /**
  * Server instance
  */
 class NodePress extends EventEmitter {
 
+    private database: Database;
     private pluginManager!: PluginManager;
     private network: Network;
     private config!: Config;
@@ -40,6 +42,7 @@ class NodePress extends EventEmitter {
         this.pluginManager = new PluginManager();
         this.pluginManager.addPlugins([Post]);
         this.network = new Network(this.config.net, this);
+        this.database = new Database(this.config.db);
         
         this.pluginManager.on('add_plugin', this.buildIndex.bind(this));
 
@@ -85,8 +88,18 @@ class NodePress extends EventEmitter {
     }
 
     private async run() {
+        await this.initialiseDatabase();
         await this.network.listen(this.config.net);
         console.log(`This server instance is now running`);
+    }
+
+    private async initialiseDatabase() {
+        try {
+            await this.database.connect();
+            console.log(`database connection established`);
+        } catch(e) {
+            console.error(`could not connect to the database`, e);
+        }
     }
 
     private async buildIndex() {
