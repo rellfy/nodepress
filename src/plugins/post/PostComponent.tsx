@@ -1,12 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components'
 
-interface IProps { }
-interface IState {
-    textbox: string;
-    title: string;
-}
-
 const PostPanel = styled.div`
     display: grid;
     width: 80vw;
@@ -61,18 +55,37 @@ const SidebarButton = styled.div`
         cursor: pointer;
     }    
 `;
+const SidebarInput = styled.input`
+    background: rgba(255, 255, 255, 0.024);
+    color: #ccc;
+    text-align: left;
+    padding: 20px;
+    width: 75%;
+    margin: auto;
+    margin-top: 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+    display: block;
+`;
+
+interface IProps { }
+interface IState {
+    content: string;
+    title: string;
+    author: string;
+}
 
 class PostComponent extends React.Component<IProps, IState> {
 
     componentWillMount() {
         this.setState({
-            textbox: '',
-            title: ''
+            content: '',
+            title: '',
+            author: ''
         });
     }
 
     get canPublish() {
-        return this.state.textbox.length > 0 && this.state.title.length > 0;
+        return this.state.content.length > 0 && this.state.title.length > 0;
     }
 
     updateInput(event: React.ChangeEvent<any>) {
@@ -84,8 +97,29 @@ class PostComponent extends React.Component<IProps, IState> {
     publish() {
         if (!this.canPublish)
             return;
+        
+        console.log('Publishing...');
 
-        console.log('CLICKED');
+        const formData = JSON.stringify({
+            post_title: this.state.title,
+            author: this.state.author || 'anonynous',
+            content: this.state.content
+        });
+
+        fetch('/post', {
+            method: 'post',
+            body: formData,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => {
+            this.setState({
+                content: '',
+                title: ''
+            });
+
+            console.log('Published');
+        })
     }
 
     render() {
@@ -96,12 +130,17 @@ class PostComponent extends React.Component<IProps, IState> {
                            placeholder="Post title"
                            value={this.state.title}
                            onChange={this.updateInput.bind(this)} />
-                    <TextBox name="textbox"
+                    <TextBox name="content"
                              placeholder="Write your quality content here"
-                             onChange={this.updateInput.bind(this)}>{this.state.textbox}</TextBox>
+                             onChange={this.updateInput.bind(this)}>{this.state.content}</TextBox>
                     <Sidebar>
                         <SidebarButton className={this.canPublish ? 'active' : ''}
                                        onClick={this.publish.bind(this)}>Publish</SidebarButton>
+                        <SidebarInput className={this.canPublish ? 'active' : ''}
+                                      name="author"
+                                      value={this.state.author}
+                                      onChange={this.updateInput.bind(this)}
+                                      placeholder="Author" />
                     </Sidebar>
                 </PostPanel>
             </div>

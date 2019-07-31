@@ -1,6 +1,10 @@
+import Fastify from 'fastify';
 import { Route } from "../../components/router/Route";
 import { RouteModel } from "../../components/router/RouteModel";
 import { Router } from "../../components/router/Router";
+import { IPost, IPostDocument, PostModel } from "./PostModel";
+import Mongoose from "mongoose";
+import { ServerResponse, IncomingMessage } from 'http';
 
 class PostRoute extends Route {
 
@@ -15,7 +19,7 @@ class PostRoute extends Route {
             method: 'GET',
             endpoint: '/post',
             // auth: true,
-            schema : null,
+            schema : { indexRoute: true },
             handler: this.process.bind(this)
         });
     }
@@ -34,15 +38,39 @@ class PostPublish extends Route {
             method: 'POST',
             endpoint: '/post',
             // auth: true,
-            schema : null,
+            schema : {
+                body: {
+                    post_title: { type: 'string', required: true },
+                    content: { type: 'string', required: true },
+                    author: { type: 'string', required: true },
+                }
+            },
             handler: this.process.bind(this)
         });
     }
 
-    public static async process(request: any, reply: any) {
-        super.process(request, reply);
+    public static async process(request: Fastify.FastifyRequest<IncomingMessage>, reply: Fastify.FastifyReply<ServerResponse>) {
+        await super.process(request, reply);
 
-        return JSON.stringify({object:'test'});
+        const post: IPost = {
+            title: request.body.post_title,
+            content: request.body.content,
+            metadata: {
+                date: new Date(),
+                author: request.body.author,
+            }
+        }
+
+        await this.createPost(post);
+        return { success: true };
+    }
+
+    public static async createPost(post: IPost) {
+        const objectId = new Mongoose.Types.ObjectId();
+
+        post._id = objectId;
+
+        const document: IPostDocument = await PostModel.create(post);
     }
 }
 

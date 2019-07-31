@@ -65,7 +65,7 @@ class Model {
         return Schema;
     }
 
-    static async DuplicatePostVerification(model: IUserDocument) {
+    static async DuplicatePostVerification(model: IPostDocument) {
 
         const query: any = {
             title: new RegExp('^' + model.title + '$', 'i')
@@ -78,8 +78,8 @@ class Model {
     };
 }
 
-export type IUserDocument = Mongoose.Document & IPost;
+export type IPostDocument = Mongoose.Document & IPost;
 
-const PostModel: Mongoose.Model<IUserDocument> = Mongoose.model<IUserDocument>(Model.Name, Model.Schema);
+const PostModel: Mongoose.Model<IPostDocument> = Mongoose.model<IPostDocument>(Model.Name, Model.Schema);
 
 export { PostModel };
