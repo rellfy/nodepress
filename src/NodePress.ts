@@ -9,9 +9,12 @@ import { PluginManager } from "./components/plugins/PluginManager";
 import { User } from "./components/user/User";
 import { Plugin } from "./components/plugins/Plugin";
 import { object, array } from "joi";
-import Post from "./plugins/post/post.plugin";
 import { NodeBuilder } from "./NodeBuilder";
 import { Database } from "./components/database/Database";
+// Core plugins
+import Post from "./plugins/post/post.plugin";
+import Fetch from "./plugins/fetch/fetch.plugin";
+import Feed from "./plugins/feed/feed.plugin";
 
 /**
  * Server instance
@@ -40,7 +43,7 @@ class NodePress extends EventEmitter {
 
         // Load modules
         this.pluginManager = new PluginManager();
-        this.pluginManager.addPlugins([Post]);
+        this.pluginManager.addPlugins([Post, Fetch, Feed]);
         this.network = new Network(this.config.net, this);
         this.database = new Database(this.config.db);
         
