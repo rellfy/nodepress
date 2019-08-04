@@ -2,6 +2,10 @@ import Mongoose, { MongooseDocument, DocumentQuery } from 'mongoose';
 import Joi, { strict, string } from 'joi';
 import Boom from 'boom';
 
+//
+// There are three identical schemas in this file. Something is not right.
+//
+
 export interface IPost {
     _id?: Mongoose.Types.ObjectId;
     title?: string;
