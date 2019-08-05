@@ -142,7 +142,7 @@ export class PostView extends React.Component<IProps, IState> {
     }
 
     render() {
-        if (this.state.post == null)
+        if (this.state.post == null || this.Content == null)
             return (
                 <div>{/* loading */}</div>
             )
