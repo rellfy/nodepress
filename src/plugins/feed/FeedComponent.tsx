@@ -15,7 +15,7 @@ import { PostView, IPost } from '../reader/PostView';
 `;*/
 const FeedContainer = styled.div`
     display: grid;
-    width: 100vw;
+    width: 100%;
     margin: 0;
     grid-template-columns: auto;
     grid-template-rows: auto;
@@ -86,7 +86,7 @@ class FeedComponent extends React.Component<IProps, IState> {
                 {/*<Sidebar>
                 </Sidebar>*/}
                 <Feed>
-                   { this.state.posts.map((post, key) => {
+                   { this.state.posts.reverse().map((post, key) => {
                        console.log('returning post ', post);
                        return <PostView retracted post={post} key={key} />
                    }) }
