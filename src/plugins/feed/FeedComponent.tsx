@@ -87,7 +87,6 @@ class FeedComponent extends React.Component<IProps, IState> {
                 </Sidebar>*/}
                 <Feed>
                    { this.state.posts.reverse().map((post, key) => {
-                       console.log('returning post ', post);
                        return <PostView retracted post={post} key={key} />
                    }) }
                 </Feed>

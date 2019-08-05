@@ -15,6 +15,7 @@ import { Database } from "./components/database/Database";
 import Post from "./plugins/post/post.plugin";
 import Fetch from "./plugins/fetch/fetch.plugin";
 import Feed from "./plugins/feed/feed.plugin";
+import Reader from "./plugins/reader/reader.plugin";
 
 /**
  * Server instance
@@ -43,7 +44,7 @@ class NodePress extends EventEmitter {
 
         // Load modules
         this.pluginManager = new PluginManager();
-        this.pluginManager.addPlugins([Post, Fetch, Feed]);
+        this.pluginManager.addPlugins([Post, Fetch, Feed, Reader]);
         this.network = new Network(this.config.net, this);
         this.database = new Database(this.config.db);
         
