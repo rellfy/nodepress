@@ -32,6 +32,7 @@
     "fastify-static": "^1.1.0",
     "gulp": "^4.0.0",
     "history": "^4.7.2",
+    "lodash": "^4.17.15",
     "mongoose": "^5.4.0",
     "qs": "^6.6.0",
     "react": "^16.8.3",
