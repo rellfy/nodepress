@@ -96,9 +96,9 @@ export class PostView extends React.Component<IProps, IState> {
         });
     }
     
-    get Content() {
+    get Content(): string {
         if (this.state.post == null)
-            return null;
+            return '';
 
         if (this.state.expanded || this.state.post.content.length <= max_retracted_char_count)
             return this.state.post.content;
@@ -149,7 +149,9 @@ export class PostView extends React.Component<IProps, IState> {
                 <Title onClick={this.expand.bind(this)} className="title">{ this.state.post.title }</Title>
                 <Banner />
                 <Info />
-                <Content>{ this.Content }</Content>
+                <Content>{ this.Content.split('\n').map((paragraph, key) => {
+                    return <p key={key}>{ paragraph }</p>
+                }) }</Content>
                 { this.renderExpandButton() }
                 <Footer />
             </PostContainer>

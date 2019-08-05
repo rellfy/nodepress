@@ -5,7 +5,7 @@ const PostPanel = styled.div`
     display: grid;
     width: 80vw;
     margin: 3vh auto;
-    grid-template-columns: repeat(4, 20vw);
+    grid-template-columns: repeat(4, 19.9vw);
     grid-template-rows: 7vh 83vh;
     grid-template-areas:
     "h h h s"
@@ -35,6 +35,7 @@ const TextBox = styled.textarea`
     padding: 2.5%;
     resize: none;
     font-size: 1em;
+    white-space: pre-wrap;
 `;
 const Sidebar = styled.aside`
     grid-area: s;
@@ -118,8 +119,9 @@ class PostComponent extends React.Component<IProps, IState> {
                 title: ''
             });
 
-            console.log('Published');
-        })
+            alert('Published');
+            location.reload();
+        });
     }
 
     render() {
