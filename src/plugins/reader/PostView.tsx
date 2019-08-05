@@ -20,6 +20,7 @@ const Title = styled.div`
     font-size: 6em;
     color: #f0f0f0;
     padding-bottom: 1.5rem;
+    cursor: pointer;
 `;
 const Banner = styled.div`
     grid-area: b;
@@ -44,6 +45,17 @@ const Footer = styled.div`
     height: 1px;
     background: rgba(255,255,255,0.1);
 `;
+const ExpandButton = styled.div`
+    grid-area: f;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.5);;
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 2.5rem;
+    height: 2.5rem;
+    width: 100%;
+    user-select: none;
+`;
 
 export interface IPost {
     title: string;
@@ -53,25 +65,48 @@ export interface IPost {
 }
 
 interface IProps {
-    query: any;
+    query?: any; // Used to search for a post once mounted.
+    post?: any; // Used to directly pass post data from feed.
+    retracted?: boolean;
 }
 interface IState {
     post: IPost | null;
     expanded: boolean;
 }
 
+const max_retracted_char_count = 500;
+
 export class PostView extends React.Component<IProps, IState> {
 
     componentWillMount() {
         this.setState({
-            post: null,
-            expanded: false
+            post: this.props.post,
+            expanded: !this.props.retracted
         });
-    
-        this.fetchPost(this.props.query);
     }
 
-    fetchPost(query: any) {
+    componentDidMount() {
+        if (this.props.post != null)
+            return;
+
+        PostView.fetchPost(this.props.query, (post: any) => {
+            this.setState({
+                post
+            });
+        });
+    }
+    
+    get Content() {
+        if (this.state.post == null)
+            return null;
+
+        if (this.state.expanded || this.state.post.content.length <= max_retracted_char_count)
+            return this.state.post.content;
+
+        return this.state.post.content.substring(0, max_retracted_char_count - 1);
+    }
+
+    public static fetchPost(query: any, cb: any) {
         const formData = JSON.stringify(query);
 
         fetch('/fetch', {
@@ -82,17 +117,25 @@ export class PostView extends React.Component<IProps, IState> {
             }
         }).then(async (response: any) => {
             const post = await response.json();
-            console.log('post: ', post);
 
-            this.setState({
-                post
-            });
+            cb(post);
         });
     }
 
     expand() {
-        if (this.state.expanded)
+        if (this.state.expanded || this.state.post == null)
             return;
+
+        // Redirect user to post page.
+        let parsedTitle = this.state.post.title.replace(/ /g, '_');
+        location.href = location.origin + '/' + encodeURI(parsedTitle);
+    }
+
+    renderExpandButton() {
+        if (!this.props.retracted || this.state.post == null || this.state.post.content.length <= max_retracted_char_count)
+            return;
+
+        return <ExpandButton onClick={this.expand.bind(this)}>view full post</ExpandButton>
     }
 
     render() {
@@ -103,10 +146,11 @@ export class PostView extends React.Component<IProps, IState> {
 
         return (
             <PostContainer>
-                <Title className="title">{ this.state.post.title }</Title>
+                <Title onClick={this.expand.bind(this)} className="title">{ this.state.post.title }</Title>
                 <Banner />
                 <Info />
-                <Content>{ this.state.post.content }</Content>
+                <Content>{ this.Content }</Content>
+                { this.renderExpandButton() }
                 <Footer />
             </PostContainer>
         )

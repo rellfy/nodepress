@@ -29,28 +29,70 @@ const FeedContainer = styled.div`
 const Feed = styled.div`
     grid-area: f;
 `;
+const LoadMore = styled.div`
+    grid-area: f;
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.25);;
+    text-align: center;
+    font-size: 0.9rem;
+    line-height: 3.5rem;
+    height: 3.5rem;
+    width: 100%;
+    user-select: none;
+`;
 
 interface IProps { }
 interface IState { 
     posts: IPost[]
+    currentDescendingPostIndex: number;
+    loading: boolean;
+    loadedAll: boolean;
 }
 
 class FeedComponent extends React.Component<IProps, IState> {
 
     componentWillMount() {
         this.setState({
-            posts: []
+            posts: [],
+            currentDescendingPostIndex: 0,
+            loading: true,
+            loadedAll: false
         });
     }
+    
+    componentDidMount() {
+        this.loadPosts(5);
+    }
+    
+    loadPosts(quantity: number) {
+        const query = {
+            from_descending_index: this.state.currentDescendingPostIndex,
+            to_descending_index: this.state.currentDescendingPostIndex + quantity
+        };
 
+        PostView.fetchPost(query, (posts: IPost[]) => {
+            this.setState({
+                currentDescendingPostIndex: this.state.currentDescendingPostIndex + quantity,
+                posts: [...this.state.posts, ...posts],
+                loading: false,
+                loadedAll: posts.length < quantity
+            });
+        });
+    }
+    
     render() {
         return (
             <FeedContainer>
                 {/*<Sidebar>
                 </Sidebar>*/}
                 <Feed>
-                   <PostView query={{post_title: 'Nodepress'}} />
+                   { this.state.posts.map((post, key) => {
+                       console.log('returning post ', post);
+                       return <PostView retracted post={post} key={key} />
+                   }) }
                 </Feed>
+            { !this.state.loading && !this.state.loadedAll &&
+                <LoadMore onClick={() => { this.loadPosts(5) }}>load more</LoadMore> }
             </FeedContainer>
         )
     }
