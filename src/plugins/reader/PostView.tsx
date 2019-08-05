@@ -25,10 +25,13 @@ const Title = styled.div`
 const Banner = styled.div`
     grid-area: b;
     width: 100%;
-    height: 3rem;
-    background: white;
     border-radius: 0.25rem;
-`;
+    background-color: white;
+    background-size: cover;
+    height: 0;
+    background-repeat: no-repeat;
+    padding-top: 2%;
+    `;
 const Info = styled.div`
     grid-area: i;
     padding: 1rem;
