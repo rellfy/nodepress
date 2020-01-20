@@ -3,7 +3,7 @@ import { ReaderRoute } from "./ReaderRoute";
 import path from "path";
 
 /**
- * This core plugin handles the post process and post page.
+ * This core plugin handles the individual viewing of posts.
  */
 class Reader extends Plugin {
 

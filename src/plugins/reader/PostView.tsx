@@ -31,7 +31,7 @@ const Banner = styled.div`
     height: 0;
     background-repeat: no-repeat;
     padding-top: 2%;
-    `;
+`;
 const Info = styled.div`
     grid-area: i;
     padding: 1rem;
