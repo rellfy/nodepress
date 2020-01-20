@@ -42,7 +42,9 @@
     "source-map-loader": "^0.2.4",
     "styled-components": "^4.2.0",
     "uuid": "^3.3.2",
-    "webpack": "^4.29.5"
+    "webpack": "^4.29.5",
+    "set-value": ">=3.0.1",
+    "serialize-javascript": ">=2.1.1"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.24",
