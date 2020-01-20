@@ -18,15 +18,15 @@ interface IState { }
 
 class PostComponent extends React.Component<IProps, IState> {
 
-    componentWillMount() {
+    public componentWillMount() {
         this.setState({ });
     }
 
-    get postTitle(): string {
+    public get postTitle(): string {
         return location.pathname.replace(/\//g, '').replace(/_/g, ' ');
     }
 
-    render() {
+    public render() {
         return (
             <ReaderContainer>
                 <PostView query={{title:'Nodepress'}} />

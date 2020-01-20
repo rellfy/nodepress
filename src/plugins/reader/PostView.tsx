@@ -81,14 +81,14 @@ const max_retracted_char_count = 500;
 
 export class PostView extends React.Component<IProps, IState> {
 
-    componentWillMount() {
+    public componentWillMount() {
         this.setState({
             post: this.props.post,
             expanded: !this.props.retracted
         });
     }
 
-    componentDidMount() {
+    public componentDidMount() {
         if (this.props.post != null)
             return;
 
@@ -99,7 +99,7 @@ export class PostView extends React.Component<IProps, IState> {
         });
     }
     
-    get Content(): string {
+    public get Content(): string {
         if (this.state.post == null)
             return '';
 
@@ -125,7 +125,7 @@ export class PostView extends React.Component<IProps, IState> {
         });
     }
 
-    expand() {
+    public expand() {
         if (this.state.expanded || this.state.post == null)
             return;
 
@@ -134,14 +134,14 @@ export class PostView extends React.Component<IProps, IState> {
         location.href = location.origin + '/' + encodeURI(parsedTitle);
     }
 
-    renderExpandButton() {
+    public renderExpandButton() {
         if (!this.props.retracted || this.state.post == null || this.state.post.content.length <= max_retracted_char_count)
             return;
 
         return <ExpandButton onClick={this.expand.bind(this)}>view full post</ExpandButton>
     }
 
-    render() {
+    public render() {
         if (this.state.post == null || this.Content == null)
             return (
                 <div>{/* loading */}</div>

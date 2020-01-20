@@ -51,7 +51,7 @@ interface IState {
 
 class FeedComponent extends React.Component<IProps, IState> {
 
-    componentWillMount() {
+    public componentWillMount() {
         this.setState({
             posts: [],
             currentDescendingPostIndex: 0,
@@ -60,11 +60,11 @@ class FeedComponent extends React.Component<IProps, IState> {
         });
     }
     
-    componentDidMount() {
+    public componentDidMount() {
         this.loadPosts(5);
     }
     
-    loadPosts(quantity: number) {
+    public loadPosts(quantity: number) {
         const query = {
             from_descending_index: this.state.currentDescendingPostIndex,
             to_descending_index: this.state.currentDescendingPostIndex + quantity
@@ -80,7 +80,7 @@ class FeedComponent extends React.Component<IProps, IState> {
         });
     }
     
-    render() {
+    public render() {
         return (
             <FeedContainer>
                 {/*<Sidebar>
