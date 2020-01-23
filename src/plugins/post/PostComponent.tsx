@@ -128,21 +128,25 @@ class PostComponent extends React.Component<IProps, IState> {
         return (
             <div>
                 <PostPanel>
-                    <Title name="title"
-                           placeholder="Post title"
-                           value={this.state.title}
-                           onChange={this.updateInput.bind(this)} />
-                    <TextBox name="content"
-                             placeholder="Write your quality content here"
-                             onChange={this.updateInput.bind(this)}>{this.state.content}</TextBox>
+                    <Title
+                        name="title"
+                        placeholder="Post title"
+                        value={this.state.title}
+                        onChange={this.updateInput.bind(this)} />
+                    <TextBox
+                        name="content"
+                        placeholder="Write your quality content here"
+                        onChange={this.updateInput.bind(this)}>{this.state.content}</TextBox>
                     <Sidebar>
-                        <SidebarButton className={this.canPublish ? 'active' : ''}
-                                       onClick={this.publish.bind(this)}>Publish</SidebarButton>
-                        <SidebarInput className={this.canPublish ? 'active' : ''}
-                                      name="author"
-                                      value={this.state.author}
-                                      onChange={this.updateInput.bind(this)}
-                                      placeholder="Author" />
+                        <SidebarButton
+                            className={this.canPublish ? 'active' : ''}
+                            onClick={this.publish.bind(this)}>Publish</SidebarButton>
+                        <SidebarInput
+                            className={this.canPublish ? 'active' : ''}
+                            name="author"
+                            value={this.state.author}
+                            onChange={this.updateInput.bind(this)}
+                            placeholder="Author" />
                     </Sidebar>
                 </PostPanel>
             </div>
