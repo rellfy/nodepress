@@ -3,7 +3,7 @@ import { PostRoute, PostPublish } from "./PostRoute";
 import path from "path";
 
 /**
- * This core plugin handles the post process and post page.
+ * This core plugin handles the post process and publishing page.
  */
 class Post extends Plugin {
 

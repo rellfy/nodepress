@@ -10,7 +10,8 @@ import * as React from 'react';
 import cache from '../../Cache';
 import { NodeBuilder } from '../../NodeBuilder';
 import Fastify from 'fastify';
-import { ServerResponse } from 'http';
+import { ServerResponse, IncomingMessage } from 'http';
+import { Token } from '../user/components/Token';
 
 /* 
 {
@@ -106,18 +107,22 @@ class Route {
 		}
 	}
 
-	static isAuthenticated(route: RouteModel, request: any): boolean {
-		/*
-			handle authentication here
-		*/
-		console.log('should be handling request authentication');
-		return false;
+	static isAuthenticated(route: RouteModel, request: Fastify.FastifyRequest<IncomingMessage>): boolean {
+		if (!request.headers['auth'])
+			return false;
+
+		return Token.validate(request.headers['auth']);
 	}
 
-	public static async process(request: any, reply: Fastify.FastifyReply<ServerResponse>) {
+	public static async process(request: any, reply: Fastify.FastifyReply<ServerResponse>, unauthorizedRedirectUrl?: string) {
 		// Check authentication
-		if (this.route().auth == true && !Route.isAuthenticated(this.route(), request))
-			throw Boom.unauthorized();
+		if (this.route().auth == true && !Route.isAuthenticated(this.route(), request)) {
+			if (!unauthorizedRedirectUrl)
+				throw Boom.unauthorized();
+
+			reply.redirect(unauthorizedRedirectUrl);
+			return;
+		}
 
 		const schemaNullOrEmpty = this.route().schema == null || Object.keys(this.route().schema).length < 1;
 

@@ -18,9 +18,9 @@ class PostRoute extends Route {
         return new RouteModel({
             method: 'GET',
             endpoint: '/post',
-            // auth: true,
+            auth: true,
             schema : { indexRoute: true },
-            handler: this.process.bind(this)
+            handler: (request: Fastify.FastifyRequest<IncomingMessage>, response: Fastify.FastifyReply<ServerResponse>) => this.process(request, response, '/login')
         });
     }
 }
@@ -37,7 +37,7 @@ class PostPublish extends Route {
         return new RouteModel({
             method: 'POST',
             endpoint: '/post',
-            // auth: true,
+            auth: true,
             schema : {
                 body: {
                     post_title: { type: 'string', required: true },

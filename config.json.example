@@ -14,6 +14,9 @@
         "uri": "secret"
     },
     "user": {
+        "root": {
+            "password": "secret"
+        },
         "secret": {
             "token": "secret"
         }

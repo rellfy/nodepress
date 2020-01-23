@@ -26,7 +26,6 @@ class Model {
 
         const options: Mongoose.SchemaOptions = {
             strict: true,
-            shardKey: true,
             collection: 'posts'
         };
 
