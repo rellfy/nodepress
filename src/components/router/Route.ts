@@ -11,7 +11,7 @@ import cache from '../../Cache';
 import { NodeBuilder } from '../../NodeBuilder';
 import Fastify from 'fastify';
 import { ServerResponse, IncomingMessage } from 'http';
-import { Token } from '../user/components/Token';
+import { Token } from '../../plugins/user/Token';
 
 /* 
 {
@@ -108,19 +108,31 @@ class Route {
 	}
 
 	static isAuthenticated(route: RouteModel, request: Fastify.FastifyRequest<IncomingMessage>): boolean {
-		if (!request.headers['auth'])
-			return false;
+		let cookie: string = request.headers['cookie'];
+		let authCookie: string = cookie?.replace('auth=', '');
 
-		return Token.validate(request.headers['auth']);
+		if (authCookie == null && !request.headers['auth'])
+			return false;
+		
+		return Token.validate(authCookie == null ? request.headers['auth'] : authCookie);
 	}
 
-	public static async process(request: any, reply: Fastify.FastifyReply<ServerResponse>, unauthorizedRedirectUrl?: string) {
+	public static async process(request: any, reply: Fastify.FastifyReply<ServerResponse>, redirectUrl?: string) {
 		// Check authentication
-		if (this.route().auth == true && !Route.isAuthenticated(this.route(), request)) {
-			if (!unauthorizedRedirectUrl)
-				throw Boom.unauthorized();
+		const isAuthenticated: boolean = Route.isAuthenticated(this.route(), request);
 
-			reply.redirect(unauthorizedRedirectUrl);
+		if (this.route().auth == true && !isAuthenticated) {
+			// redirectUrl here is 'unauthorized redirect url', e.g. from post page to login.
+			if (!redirectUrl)
+				throw Boom.unauthorized();
+			
+			reply.redirect(redirectUrl);
+			return;
+		}
+
+		if (this.route().auth == false && isAuthenticated && redirectUrl) {
+			// redirectUrl here is 'authorised redirect url', e.g. from login page to index.
+			reply.redirect(redirectUrl);
 			return;
 		}
 

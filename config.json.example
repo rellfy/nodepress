@@ -18,7 +18,7 @@
             "password": "secret"
         },
         "secret": {
-            "token": "secret"
+            "key": "secret"
         }
     },
     "api": {

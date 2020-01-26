@@ -1,7 +1,7 @@
 import Mongoose from "mongoose";
-import { User } from "../User";
-import { Security } from "../../crypto/Security";
-import cache from "../../../Cache";
+import { User } from "./User";
+import { Security } from "../../components/crypto/Security";
+import cache from "../../Cache";
 import Boom from "boom";
 
 /**
@@ -17,7 +17,7 @@ class Token {
      * @param input Value containing either the encoded Token string or
      * an object with the raw payload and date object
      */
-    constructor(input: string | { payload: string, date?: Date }) {
+    constructor(input: string | { payload: string, date: Date }, isDeltaDate?: boolean) {
         switch(typeof input) {
             case "string":
                 // Initialise Token from encoded string.
@@ -32,24 +32,24 @@ class Token {
                 break;
             case "object":
                 // Initialise Token from payload/date object.
-                this.date = input.date ? input.date : new Date();
+                this.date = input.date;
 
-                const NP_EPOCH = cache.get('np_epoch_epoch');
-                const rawDelta = this.date.getTime() - NP_EPOCH;
+                const NP_EPOCH = cache.get('np_epoch');
+                const delta = isDeltaDate ? this.date.getTime() : this.date.getTime() - NP_EPOCH;
                 
                 const payload = Security.encodeBase64(input.payload);
-                const delta = Security.encodeBase64Number(rawDelta);
+                const deltaEncoded = Security.encodeBase64Number(delta);
         
-                const signature = Security.HMAC({ payload, delta }, User.config.secret.token);
+                const signature = Security.HMAC({ payload, delta }, User.config.secret.key);
 
-                this.encoded = `${payload}.${delta}.${signature}`;
+                this.encoded = `${payload}.${deltaEncoded}.${signature}`;
                 break;
             default:
                 throw new Error('Initialised Token with no arguments');
         }
     }
 
-    static getSections(encoded: string): IToken | null {
+    public static getSections(encoded: string): IToken | null {
         // Token structure:
         // {payload}.{deltatime}.{signature}
         if (typeof encoded !== 'string')
@@ -59,7 +59,7 @@ class Token {
             return null;
 
         const sections: string[] = encoded.split('.');
-        const base64Regex: RegExp = /^[A-Za-z0-9-_]{2,}$/;
+        const base64Regex: RegExp = /^[A-Za-z0-9-_]{1,}$/;
 
         if (sections.length != 3)
             return null;
@@ -69,7 +69,7 @@ class Token {
                 return null;
         }
 
-        const NP_EPOCH = cache.get('np_epoch_epoch');
+        const NP_EPOCH: number = cache.get('np_epoch');
 
         const payload = Security.decodeBase64(sections[0]);
         const date = new Date(Security.decodeBase64Number(sections[1]) + NP_EPOCH);
@@ -84,11 +84,11 @@ class Token {
         return { payload, date, signature };
     }
 
-    static validate(encoded: string): boolean {
-        return Token.getSections(encoded) != null;
+    public static validate(encoded: string): boolean {
+        return Token.getSections(encoded) !== null;
     }
 
-    getDate(): Date | undefined {
+    public getDate(): Date | undefined {
         const token = Token.getSections(this.encoded);
 
         if (token == null)
@@ -97,7 +97,6 @@ class Token {
         return token.date;
     }
 }
-
 
 export interface IToken {
     encoded?: string,

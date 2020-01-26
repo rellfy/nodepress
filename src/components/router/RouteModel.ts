@@ -8,6 +8,10 @@ class RouteModel {
     public method: HTTPMethod;
     public endpoint: string;
     public auth: boolean;
+    /**
+     * Whether to render this route only if the current path matches the route's endpoint exactly.
+     */
+    public exactPath: boolean = true;
     public schema: any;
     public handler: Function;
 

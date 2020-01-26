@@ -5,6 +5,7 @@ import util from "util";
 import fs from "fs";
 
 import webpack = require("webpack");
+import { RouteModel } from "./components/router/RouteModel";
 
 class NodeBuilder {
 
@@ -31,7 +32,7 @@ class NodeBuilder {
             });
         });
 
-        let pluginDefinitionStr = '';
+        let pluginDefinitionStr: string = '';
 
         routes.forEach((route, i) => {
             if (route.client == null)
@@ -40,10 +41,11 @@ class NodeBuilder {
             pluginDefinitionStr += `const Plugin${i} = require("${route.client.replace(/\\/g, '/')}.js");\n`
         });
 
-        let routeDeclarationStr = '';
+        let routeDeclarationStr: string = '';
 
         routes.forEach((route, i) => {
-            routeDeclarationStr += `<Route path="${route.server.route().endpoint}" component={Plugin${i}} />\n`
+            let model: RouteModel = route.server.route();
+            routeDeclarationStr += `<Route ${model.exactPath ? 'exact' : ''} path="${model.endpoint}" component={Plugin${i}} />\n`
         });
 
         //return `(${NodeBuilder.Page.toString()})();`
@@ -99,7 +101,7 @@ class NodeBuilder {
             e = await util.promisify(webpack)([NodeBuilder.WebpackConfig()]);
         } catch(error) {
             if (error)
-            throw error;
+                throw error;
         }
 
         NodeBuilder.DeleteFolder();

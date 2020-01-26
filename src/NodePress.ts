@@ -6,7 +6,7 @@ import cache from "./Cache";
 import { Config } from "./Config";
 import { Network } from "./components/network/Network";
 import { PluginManager } from "./components/plugins/PluginManager";
-import { User } from "./components/user/User";
+import { User } from "./plugins/user/User";
 import { Plugin } from "./components/plugins/Plugin";
 import { object, array } from "joi";
 import { NodeBuilder } from "./NodeBuilder";
@@ -42,6 +42,7 @@ class NodePress extends EventEmitter {
         // Set cache
         cache.set('dev_env', args.includes('--dev'));
         cache.set('root_path', __dirname);
+        cache.set('np_epoch', this.config.api.np_epoch);
 
         // Load modules
         this.pluginManager = new PluginManager();

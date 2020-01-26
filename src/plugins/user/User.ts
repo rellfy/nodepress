@@ -1,6 +1,6 @@
 import { UserModel, IUser, IUserDocument } from "./UserModel";
 import Mongoose, { model } from "mongoose";
-import { Security } from "../crypto/Security";
+import { Security } from "../../components/crypto/Security";
 import fs from 'fs';
 import cache from "../../Cache";
 import { Config } from "../../Config";
@@ -43,13 +43,13 @@ class User implements IUser {
     }
    
     static generateToken(rawPayload: any, date?: Date) {
-        const NP_EPOCH = cache.get('np_epoch_epoch');
+        const NP_EPOCH = cache.get('np_epoch');
         const rawDelta = (date ? date.getTime() : Date.now()) - NP_EPOCH;
         
         const payload = Security.encodeBase64(rawPayload);
         const delta = Security.encodeBase64Number(rawDelta);
 
-        const signature = Security.HMAC({ payload, delta }, User.config.secret.token);
+        const signature = Security.HMAC({ payload, delta }, User.config.secret.key);
 
         return `${payload}.${delta}.${signature}`;
     }
@@ -69,7 +69,7 @@ class User implements IUser {
                 return false;
         }
 
-        const NP_EPOCH = cache.get('np_epoch_epoch');
+        const NP_EPOCH = cache.get('np_epoch');
 
         const payload = Security.decodeBase64(sections[0]);
         const date = Security.decodeBase64Number(sections[1]) + NP_EPOCH;
@@ -133,7 +133,7 @@ class User implements IUser {
         return new User(document);
     }
     
-    static async login(input: { username: string, rawPassword: string }): Promise<User> {
+    public static async login(input: { username: string, rawPassword: string }): Promise<User> {
         let query = {
             username: new RegExp('^' + input.username + '$', 'i')
         };
@@ -151,7 +151,7 @@ class User implements IUser {
         if (user.credentials.password != encrypted.password)
             throw Boom.unauthorized('Invalid password');
         
-        console.log(`User ${user.username} logged in`);
+        console.log(`"${user.username}" logged in`);
         return new User({ document: user });
     }
 
@@ -176,8 +176,11 @@ class User implements IUser {
 }
 
 export interface UserConfig {
+    root: {
+        password: string
+    }
     secret: {
-        token: string
+        key: string
     }
 }
 
