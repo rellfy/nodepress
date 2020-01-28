@@ -24,5 +24,24 @@ class FeedRoute extends Route {
     }
 }
 
+class FeedTagRoute extends Route {
 
-export { FeedRoute }
+    constructor() {
+        super();
+
+        this.initialise(FeedRoute.route());
+    }
+
+    public static route(): RouteModel {
+        return new RouteModel({
+            method: 'GET',
+            endpoint: '/tag/',
+            // auth: true,
+            schema : { indexRoute: true },
+            handler: this.process.bind(this)
+        });
+    }
+}
+
+
+export { FeedRoute, FeedTagRoute }
