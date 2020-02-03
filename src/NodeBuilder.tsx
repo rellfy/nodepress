@@ -18,7 +18,7 @@ class NodeBuilder {
     }
 
     /**
-     * Returns the input page as a string
+     * Returns the input page as a string (JS)
      */
     public static PageString(plugins: Plugin[]) {
         const routes: IPluginRoute[] = [];
@@ -38,37 +38,35 @@ class NodeBuilder {
             if (route.client == null)
                 return;
 
-            pluginDefinitionStr += `const Plugin${i} = require("${route.client.replace(/\\/g, '/')}.js");\n`
+            pluginDefinitionStr += `var Plugin${i} = require("${route.client.replace(/\\/g, '/')}.js");\n`
         });
 
         let routeDeclarationStr: string = '';
 
         routes.forEach((route, i) => {
             let model: RouteModel = route.server.route();
-            routeDeclarationStr += `<Route ${model.exactPath ? 'exact' : ''} path="${model.endpoint}" component={Plugin${i}} />\n`
+            routeDeclarationStr += `React.createElement(Route, { ${model.exactPath ? 'exact:true,':''} path:"${model.endpoint}", component:Plugin${i} })${i < routes.length-1 ? ',\n':''}`;
         });
 
-        //return `(${NodeBuilder.Page.toString()})();`
+        // Note this is not transpiled by Typescript, and hence needs to be written in JS.
         return `(function() {
-            const React = require('react');
-            const ReactDOM = require('react-dom');
-            const ReactRouterDOM = require('react-router-dom');
-            const Router = ReactRouterDOM.BrowserRouter;
-            const Route = ReactRouterDOM.Route;
-            //const History = require('history');
+            var React = require('react');
+            var ReactDOM = require('react-dom');
+            var ReactRouterDOM = require('react-router-dom');
+            var Router = ReactRouterDOM.BrowserRouter;
+            var Route = ReactRouterDOM.Route;
+            var History = require('history');
 
             ${pluginDefinitionStr}
 
-            const element = (
-                <Router>
-                    <div>
-                        ${routeDeclarationStr}
-                    </div>
-                </Router>
-            );
-
+            var element = (React.createElement(Router, null,
+                React.createElement("div", null,
+                    ${routeDeclarationStr}
+                )
+            ));
+            
             ReactDOM.render(element, document.getElementById('root'));
-        })();`
+        })();`;
     }
 
     public static WebpackConfig(): webpack.Configuration {
@@ -103,9 +101,10 @@ class NodeBuilder {
             if (error)
                 throw error;
         }
-
+        
         NodeBuilder.DeleteFolder();
-
+        
+        // Error here - not found
         const script = await util.promisify(fs.readFile)(path.resolve(NodeBuilder.FolderPath, '../', NodeBuilder.OutputFilename));
 
         return this.GetHTML(script.toString('utf8'));

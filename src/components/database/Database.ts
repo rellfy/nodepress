@@ -1,5 +1,4 @@
 import Mongoose from 'mongoose';
-import { UserModel } from '../user/UserModel';
 
 class Database {
 

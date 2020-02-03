@@ -33,6 +33,7 @@
     "gulp": "^4.0.2",
     "history": "^4.10.1",
     "lodash": "^4.17.15",
+    "marked-katex": "^0.3.8",
     "mongoose": "^5.7.5",
     "qs": "^6.9.1",
     "react": "^16.12.0",
@@ -44,12 +45,13 @@
     "source-map-loader": "^0.2.4",
     "styled-components": "^4.4.1",
     "uuid": "^3.4.0",
-    "webpack": "^4.41.5"
+    "webpack": "4.29.5"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.29",
     "@types/boom": "^7.3.0",
     "@types/history": "^4.7.4",
+    "@types/hoist-non-react-statics": "^3.3.1",
     "@types/joi": "^14.3.4",
     "@types/mongoose": "^5.5.42",
     "@types/node": "^10.17.13",
@@ -61,6 +63,7 @@
     "@types/styled-components": "^4.4.2",
     "@types/uuid": "^3.4.6",
     "@types/webpack": "^4.41.3",
+    "hoist-non-react-statics": "^3.3.2",
     "joi": "^14.3.0",
     "typescript": "^3.7.5"
   },

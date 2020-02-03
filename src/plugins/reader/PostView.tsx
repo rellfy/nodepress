@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 
 const PostContainer = styled.div`
     display: grid;
@@ -26,7 +26,7 @@ const Title = styled.div`
 const Banner = styled.img`
     display: inline-block;
     grid-area: b;
-    padding: 2px ${props => props.horizontalPadding};
+    padding: 2px ${props => props.theme.horizontalPadding};
     user-select: none;
     -moz-user-select: none;
     -webkit-user-drag: none;
@@ -116,6 +116,22 @@ export class PostView extends React.Component<IProps, IState> {
             imageWidth: 0,
             windowWidth: window.innerWidth
         });
+
+        // //@ts-ignore
+        // window.marked = require('marked-katex');
+
+        // //@ts-ignore
+        // window.marked.setOptions({
+        //     //@ts-ignore
+        //     renderer: new (window.marked).Renderer(),
+        //     gfm: true,
+        //     tables: true,
+        //     breaks: false,
+        //     pedantic: false,
+        //     sanitize: false,
+        //     smartLists: true,
+        //     smartypants: false
+        // });
     }
 
     public componentDidMount() {
@@ -180,14 +196,14 @@ export class PostView extends React.Component<IProps, IState> {
             windowWidth: window.innerWidth
         });
     }
-
+    
     private expand() {
         if (this.state.expanded || this.state.post == null)
             return;
 
         // Redirect user to post page.
         let parsedTitle = this.state.post.title.replace(/ /g, '_');
-        location.href = location.origin + '/' + encodeURI(parsedTitle);
+        location.href = location.origin + '/read/' + encodeURI(parsedTitle);
     }
 
     private renderExpandButton() {
@@ -248,7 +264,10 @@ export class PostView extends React.Component<IProps, IState> {
         return (
             <PostContainer>
                 <Title onClick={this.expand.bind(this)} className="title">{ this.state.post.title }</Title>
-                { this.state.post.metadata.image != null && <Banner horizontalPadding={`${(this.state.windowWidth - this.state.imageWidth)/2}px`} src={this.state.post.metadata.image} onLoad={this.onImageLoad.bind(this)} /> }
+                { this.state.post.metadata.image != null &&
+                    <ThemeProvider theme={{ horizontalPadding: `${(this.state.windowWidth - this.state.imageWidth)/2}px`}}>
+                        <Banner src={this.state.post.metadata.image} onLoad={this.onImageLoad.bind(this)} />
+                    </ThemeProvider> }
                 <Info>{ this.renderInfo().map((text, key) => {
                     return <InfoElement key={key}>{ text }</InfoElement>
                 }) }</Info>
