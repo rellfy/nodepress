@@ -6,6 +6,7 @@ import cache from "../../Cache";
 import { Config } from "../../Config";
 import { reject } from "bluebird";
 import Boom from 'boom';
+import CacheKeys from "../../CacheKeys";
 
 /**
  * The User class is the requester of a Client, which communicates to the
@@ -43,7 +44,7 @@ class User implements IUser {
     }
    
     static generateToken(rawPayload: any, date?: Date) {
-        const NP_EPOCH = cache.get('np_epoch');
+        const NP_EPOCH = cache.get(CacheKeys.NP_EPOCH);
         const rawDelta = (date ? date.getTime() : Date.now()) - NP_EPOCH;
         
         const payload = Security.encodeBase64(rawPayload);
@@ -69,7 +70,7 @@ class User implements IUser {
                 return false;
         }
 
-        const NP_EPOCH = cache.get('np_epoch');
+        const NP_EPOCH = cache.get(CacheKeys.NP_EPOCH);
 
         const payload = Security.decodeBase64(sections[0]);
         const date = Security.decodeBase64Number(sections[1]) + NP_EPOCH;
@@ -165,7 +166,7 @@ class User implements IUser {
         let config: Config;
 
         try {
-            const path = cache.get('config_path');
+            const path = cache.get(CacheKeys.CONFIG_PATH);
             config = JSON.parse(fs.readFileSync(path).toString());
         } catch(e) {
             throw e;

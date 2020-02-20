@@ -3,6 +3,7 @@ import { User } from "./User";
 import { Security } from "../../components/crypto/Security";
 import cache from "../../Cache";
 import Boom from "boom";
+import CacheKeys from "../../CacheKeys";
 
 /**
  * Implements a controller for the user authentication Token
@@ -34,7 +35,7 @@ class Token {
                 // Initialise Token from payload/date object.
                 this.date = input.date;
 
-                const NP_EPOCH = cache.get('np_epoch');
+                const NP_EPOCH = cache.get(CacheKeys.NP_EPOCH);
                 const delta = isDeltaDate ? this.date.getTime() : this.date.getTime() - NP_EPOCH;
                 
                 const payload = Security.encodeBase64(input.payload);
@@ -69,7 +70,7 @@ class Token {
                 return null;
         }
 
-        const NP_EPOCH: number = cache.get('np_epoch');
+        const NP_EPOCH: number = cache.get(CacheKeys.NP_EPOCH);
 
         const payload = Security.decodeBase64(sections[0]);
         const date = new Date(Security.decodeBase64Number(sections[1]) + NP_EPOCH);

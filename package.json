@@ -32,6 +32,7 @@
     "fastify-static": "^1.1.0",
     "gulp": "^4.0.2",
     "history": "^4.10.1",
+    "katex": "^0.11.1",
     "lodash": "^4.17.15",
     "marked-katex": "^0.3.8",
     "mongoose": "^5.7.5",

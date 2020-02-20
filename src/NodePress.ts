@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 
 import cache from "./Cache";
-import { Config } from "./Config";
+import { Config, Arguments } from "./Config";
 import { Network } from "./components/network/Network";
 import { PluginManager } from "./components/plugins/PluginManager";
 import { User } from "./plugins/user/User";
@@ -17,6 +17,7 @@ import Fetch from "./plugins/fetch/fetch.plugin";
 import Feed from "./plugins/feed/feed.plugin";
 import Reader from "./plugins/reader/reader.plugin";
 import UserPlugin from "./plugins/user/user.plugin";
+import CacheKeys from "./CacheKeys";
 
 /**
  * Server instance
@@ -32,21 +33,33 @@ class NodePress extends EventEmitter {
         return this.pluginManager;
     }
 
-    constructor(args: string[]) {
+    constructor(args: Arguments) {
         super();
-
+        
         // Load configuration files
-        this.fetchConfig(this.getArg('--config') || '../config.json');
+        this.fetchConfig(args.configPath ?? '../config.json');
         User.fetchConfig();
 
+        // Set config.args.
+        this.config.args = {
+            ...args,
+            // Set optional values to default.
+            dev: args.dev ?? false,
+            ignoreCorePlugins: args.ignoreCorePlugins ?? false
+        };
+        
         // Set cache
-        cache.set('dev_env', args.includes('--dev'));
-        cache.set('root_path', __dirname);
-        cache.set('np_epoch', this.config.api.np_epoch);
+        cache.set(CacheKeys.IS_DEV_ENV, this.config.args.dev);
+        cache.set(CacheKeys.ROOT_PATH, __dirname);
+        cache.set(CacheKeys.NP_EPOCH, this.config.api.np_epoch);
 
         // Load modules
         this.pluginManager = new PluginManager();
-        this.pluginManager.addPlugins([Post, Fetch, Feed, Reader, UserPlugin]);
+
+        if (!this.config.args.ignoreCorePlugins)
+            this.pluginManager.addPlugins([Post, Fetch, Feed, Reader, UserPlugin]);
+        
+        // Add default components.
         this.network = new Network(this.config.net, this);
         this.database = new Database(this.config.db);
         
@@ -66,17 +79,6 @@ class NodePress extends EventEmitter {
         this.pluginManager.addPlugin(plugin);
     }
 
-    private getArg(arg: string): any {
-        for (let i = 0; i < process.argv.length; i++) {
-            if (!process.argv[i].startsWith(arg))
-                continue;
-            
-            return process.argv.length > (i - 1) ? !process.argv[i + 1].startsWith('-') ? process.argv[i + 1] : true : true;
-        }
-
-        return null;
-    }
-
     private fetchConfig(configPath: string) {
         if (typeof configPath != 'string')
             throw new Error('Config path not passed in arguments. Use --config');
@@ -90,7 +92,7 @@ class NodePress extends EventEmitter {
             throw new Error(`Failed to load config file from "${configPath}"`);
         }
 
-        cache.set('config_path', absolutePath);
+        cache.set(CacheKeys.CONFIG_PATH, absolutePath);
     }
 
     private async run() {
@@ -110,7 +112,7 @@ class NodePress extends EventEmitter {
 
     private async buildIndex() {
         let page = await NodeBuilder.BuildPage(this.PluginManager.Plugins)
-        cache.set('router_index', page);
+        cache.set(CacheKeys.ROUTER_INDEX_SRC, page);
     }
 }
 

@@ -94,8 +94,8 @@ export interface IPost {
 }
 
 interface IProps {
-    query?: any; // Used to search for a post once mounted.
     post?: any; // Used to directly pass post data from feed.
+    query?: any;
     retracted?: boolean;
 }
 interface IState {
@@ -117,21 +117,40 @@ export class PostView extends React.Component<IProps, IState> {
             windowWidth: window.innerWidth
         });
 
-        // //@ts-ignore
-        // window.marked = require('marked-katex');
+        //@ts-ignore
+        window.marked = require('marked-katex');
+        //@ts-ignore
+        window.katex = require('katex');
 
-        // //@ts-ignore
-        // window.marked.setOptions({
-        //     //@ts-ignore
-        //     renderer: new (window.marked).Renderer(),
-        //     gfm: true,
-        //     tables: true,
-        //     breaks: false,
-        //     pedantic: false,
-        //     sanitize: false,
-        //     smartLists: true,
-        //     smartypants: false
-        // });
+        //@ts-ignore
+        window.marked.setOptions({
+            //@ts-ignore
+            renderer: new (window.marked).Renderer(),
+            gfm: true,
+            tables: true,
+            breaks: false,
+            pedantic: false,
+            sanitize: false,
+            smartLists: true,
+            smartypants: false
+        });
+        
+        //@ts-ignore
+        window.marked.setOptions({
+            highlight: (code: any, lang: any) => {
+                //if (typeof lang === 'undefined') {
+                   // return hljs.highlightAuto(code).value;
+                //} else if (lang === 'nohighlight') {
+                    //return code;
+                //}
+                
+                ///return hljs.highlight(lang, code).value;
+                
+                return code;
+            },
+            //@ts-ignore
+            kaTex: window.katex
+        });
     }
 
     public componentDidMount() {
@@ -141,7 +160,12 @@ export class PostView extends React.Component<IProps, IState> {
         if (this.props.post != null)
             return;
 
-        PostView.fetchPost(this.props.query, (post: any) => {
+        const path = location.pathname;
+        let pathPostName = path.slice(path.lastIndexOf('/') + 1, path.indexOf('?') > -1 ? path.indexOf('?') : path.length);
+
+        const query = this.props.query ?? { post_title: pathPostName };
+        
+        PostView.fetchPost(query, (post: any) => {
             this.setPost(post);
         });
     }
@@ -151,8 +175,9 @@ export class PostView extends React.Component<IProps, IState> {
     }
     
     private setPost(post: IPost) {
+        console.log('post: ', post);
         // @ts-ignore - Convert date from string to object.
-        post.metadata.date = new Date(post.metadata.date);
+        post?.metadata.date = new Date(post?.metadata.date);
 
         this.setState({
             post

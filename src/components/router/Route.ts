@@ -12,6 +12,7 @@ import { NodeBuilder } from '../../NodeBuilder';
 import Fastify from 'fastify';
 import { ServerResponse, IncomingMessage } from 'http';
 import { Token } from '../../plugins/user/Token';
+import CacheKeys from '../../CacheKeys';
 
 /* 
 {
@@ -141,7 +142,7 @@ class Route {
 		if (!schemaNullOrEmpty && this.route().schema.indexRoute) {
 			// Send index react-router route.
 			reply.header('Content-Type', 'text/html');
-			return cache.get('router_index');
+			return cache.get(CacheKeys.ROUTER_INDEX_SRC);
 		}
 
 		if (request == null || (request.body == null && !schemaNullOrEmpty))

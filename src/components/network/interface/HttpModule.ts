@@ -7,6 +7,7 @@ import { NetInterfaceModule } from './NetInterfaceModule';
 import { RouteModel } from '../../router/RouteModel';
 import fs from 'fs';
 import cache from '../../../Cache';
+import CacheKeys from '../../../CacheKeys';
 
 class HttpModule extends NetInterfaceModule {
 
@@ -22,7 +23,7 @@ class HttpModule extends NetInterfaceModule {
         super();
         
         this.server = Fastify(this.getServerConfig(https));
-        let publicPath: string = path.resolve(cache.get('root_path'), 'public/');
+        let publicPath: string = path.resolve(cache.get(CacheKeys.ROOT_PATH), 'public/');
 
         if (!fs.existsSync(publicPath))
             return;
