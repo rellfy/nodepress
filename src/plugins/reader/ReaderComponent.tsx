@@ -23,13 +23,15 @@ class PostComponent extends React.Component<IProps, IState> {
     }
 
     public get postTitle(): string {
-        return location.pathname.replace(/\//g, '').replace(/_/g, ' ');
+        const i = location.pathname.lastIndexOf('/');
+        const l = location.pathname.length;
+        return location.pathname.substr(i + 1, l - 1)
     }
 
     public render() {
         return (
             <ReaderContainer>
-                <PostView query={{title:'Nodepress'}} />
+                <PostView query={{post_title: this.postTitle}} />
             </ReaderContainer>
         )
     }

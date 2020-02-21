@@ -20,4 +20,19 @@
     .title {
         font-family: 'Six Caps', sans-serif;
     }
+
+    .katex {
+        color: #91bdff;
+    }
+
+    /* FIX:
+        :only-child is true if there is
+        a span element along with just text
+        inside <p>. This needs to be fixed somehow.
+    */
+    p > span.katex:only-child {
+        text-align: center;
+        display: block;
+        margin: 2em 0;
+    }
 </style>

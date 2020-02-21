@@ -114,7 +114,7 @@ class NodeBuilder {
         const head = await util.promisify(fs.readFile)(path.resolve(__dirname, NodeBuilder.LayoutFolder, 'head.html'));
         const body = await util.promisify(fs.readFile)(path.resolve(__dirname, NodeBuilder.LayoutFolder, 'body.html'));
 
-        return `<html><head>${head.toString('utf8')}</head><body><div id="root"></div>${body.toString('utf8')}<script type="text/javascript">${script}</script></body></html>`;
+        return `<!DOCTYPE html><html><head>${head.toString('utf8')}</head><body><div id="root"></div>${body.toString('utf8')}<script type="text/javascript">${script}</script></body></html>`;
     }
 
     public static async CreateFile(name: string, data: any) {

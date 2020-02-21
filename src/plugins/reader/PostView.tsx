@@ -1,10 +1,14 @@
-import * as React from 'react';
-import styled, { ThemeProvider } from 'styled-components'
+import * as React from "react";
+import styled, { ThemeProvider } from "styled-components";
+import marked from "marked";
+import katex from "katex";
+import { number } from "joi";
 
 const PostContainer = styled.div`
     display: grid;
     width: 100%;
     margin: 2.5rem auto;
+    grid-area: f;
     grid-template-columns: repeat(1, 100%);
     grid-template-rows: auto;
     grid-template-areas:
@@ -103,6 +107,8 @@ interface IState {
     expanded: boolean;
     imageWidth: number;
     windowWidth: number;
+    message?: string;
+    processedContent?: string;
 }
 
 const max_retracted_char_count = 500;
@@ -117,43 +123,29 @@ export class PostView extends React.Component<IProps, IState> {
             windowWidth: window.innerWidth
         });
 
-        //@ts-ignore
-        window.marked = require('marked-katex');
-        //@ts-ignore
-        window.katex = require('katex');
-
-        //@ts-ignore
-        window.marked.setOptions({
-            //@ts-ignore
-            renderer: new (window.marked).Renderer(),
+        marked.setOptions({
+            renderer: new marked.Renderer(),
             gfm: true,
-            tables: true,
             breaks: false,
             pedantic: false,
             sanitize: false,
             smartLists: true,
-            smartypants: false
-        });
-        
-        //@ts-ignore
-        window.marked.setOptions({
-            highlight: (code: any, lang: any) => {
-                //if (typeof lang === 'undefined') {
-                   // return hljs.highlightAuto(code).value;
-                //} else if (lang === 'nohighlight') {
-                    //return code;
-                //}
+            smartypants: false,
+            // highlight: (code: any, lang: any) => {
+            //     //if (typeof lang === 'undefined') {
+            //        // return hljs.highlightAuto(code).value;
+            //     //} else if (lang === 'nohighlight') {
+            //         //return code;
+            //     //}
                 
-                ///return hljs.highlight(lang, code).value;
+            //     ///return hljs.highlight(lang, code).value;
                 
-                return code;
-            },
-            //@ts-ignore
-            kaTex: window.katex
+            //     return code;
+            // },
         });
     }
 
-    public componentDidMount() {
+    public async componentDidMount() {
         this.handleResize();
         window.addEventListener('resize', this.handleResize);
 
@@ -164,49 +156,65 @@ export class PostView extends React.Component<IProps, IState> {
         let pathPostName = path.slice(path.lastIndexOf('/') + 1, path.indexOf('?') > -1 ? path.indexOf('?') : path.length);
 
         const query = this.props.query ?? { post_title: pathPostName };
+        const post = await PostView.fetchPost(query);
+
+        if (post == null) {
+            this.setState({
+                message: 'not found'
+            });
+            return;
+        }
         
-        PostView.fetchPost(query, (post: any) => {
-            this.setPost(post);
-        });
+        await this.setPost(post);
     }
     
     public componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize)
     }
     
-    private setPost(post: IPost) {
-        console.log('post: ', post);
+    private async setPost(post: IPost) {
         // @ts-ignore - Convert date from string to object.
         post?.metadata.date = new Date(post?.metadata.date);
+        // Process marked.
+        let processedContent = await this.processMarked(post?.content ?? '');
+        // Process katex.
+        processedContent = this.processKatex(processedContent);
 
         this.setState({
-            post
+            post,
+            processedContent
         });
     }
     
-    public get Content(): string {
+    public get content(): string {
         if (this.state.post == null)
             return '';
 
         if (this.state.expanded || this.state.post.content.length <= max_retracted_char_count)
             return this.state.post.content;
 
-        return this.state.post.content.substring(0, max_retracted_char_count - 1);
+        return this.state.processedContent?.substring(0, max_retracted_char_count - 1) ?? '';
+        //return this.state.post.content.substring(0, max_retracted_char_count - 1);
     }
 
-    public static fetchPost(query: any, cb: any) {
+    public static async fetchPost(query: any): Promise<any> {
         const formData = JSON.stringify(query);
 
-        fetch('/fetch', {
-            method: 'post',
-            body: formData,
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then(async (response: any) => {
-            const post = await response.json();
-
-            cb(post);
+        return new Promise((resolve) => {
+            fetch('/fetch', {
+                method: 'post',
+                body: formData,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(async (response: any) => {
+                try {
+                    const post = await response.json();
+                    resolve(post);
+                } catch(error) {
+                    resolve(null);
+                }
+            });
         });
     }
 
@@ -250,6 +258,63 @@ export class PostView extends React.Component<IProps, IState> {
         }
     }
 
+    private processMarked(input: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            marked.parse(input, (error, result) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve(result);
+            });
+        });
+    }
+
+    private processKatex(input: string): string {
+        interface KatexMatch {
+            startIndex?: number;
+            endIndex: number;
+            length?: number;
+            string?: string;
+        };
+        
+        const toProcess: KatexMatch[] = [];
+
+        function replaceAdditive(str: string, i: number, length: number, replacement: string): string {
+            return str.substr(0, i) + replacement + str.substr(i + length);
+        }
+
+        for (let i = input.length; i-- > 1;) {
+            const current = toProcess[toProcess.length - 1];
+            const foundStart = current != null && current.length == null;
+            const foundKatex = input[i] == '$' && input[i - 1] == '$';
+
+            if (!foundKatex)
+                continue;
+
+            if (!foundStart) {
+                toProcess.push({
+                    endIndex: i
+                });
+                continue;
+            }
+         
+            current.startIndex = i - 1;
+            current.length = current.endIndex - current.startIndex - 1;
+            current.string = katex.renderToString(input.substr(current.startIndex + 2, current.length - 2));
+
+            // Store current input length.
+            let length = input.length;
+            // Replace string with processed formula.
+            input = replaceAdditive(input, current.startIndex, current.length + 2, current.string);
+            // Compensate for length change.
+            i -= length - input.length;
+        }
+
+        return input;
+    }
+
     private renderInfo(): string[] {
         let info: string[] = [];
 
@@ -281,9 +346,9 @@ export class PostView extends React.Component<IProps, IState> {
     }
 
     public render() {
-        if (this.state.post == null || this.Content == null)
+        if (this.state.post == null || this.content == null)
             return (
-                <div>{/* loading */}</div>
+                <div>{ this.state.message ? this.state.message : '' }</div>
             );
 
         return (
@@ -296,9 +361,7 @@ export class PostView extends React.Component<IProps, IState> {
                 <Info>{ this.renderInfo().map((text, key) => {
                     return <InfoElement key={key}>{ text }</InfoElement>
                 }) }</Info>
-                <Content>{ this.Content.split('\n').map((paragraph, key) => {
-                    return <p key={key}>{ paragraph }</p>
-                }) }</Content>
+                <Content dangerouslySetInnerHTML={{__html: this.state.processedContent ?? ''}} ></Content>
                 { this.renderExpandButton() }
                 <Footer />
             </PostContainer>

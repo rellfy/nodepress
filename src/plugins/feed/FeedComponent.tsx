@@ -2,17 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components'
 import { PostView, IPost } from '../reader/PostView';
 
-// TODO: Implement a responsive sidebar layout.
-/*const FeedContainer = styled.div`
-    display: grid;
-    width: 100vw;
-    margin: 0;
-    grid-template-columns: 15% auto;
-    grid-template-rows: auto;
-    grid-template-areas:
-    "s f f f"
-    "s f f f";
-`;*/
 const FeedContainer = styled.div`
     display: grid;
     width: 100%;
@@ -23,9 +12,6 @@ const FeedContainer = styled.div`
     "f f f"
     "f f f";
 `;
-/*const Sidebar = styled.aside`
-    grid-area: s;
-`;*/
 const Feed = styled.div`
     grid-area: f;
 `;
@@ -60,23 +46,23 @@ class FeedComponent extends React.Component<IProps, IState> {
         });
     }
     
-    public componentDidMount() {
-        this.loadPosts(5);
+    public async componentDidMount() {
+        await this.loadPosts(5);
     }
     
-    public loadPosts(quantity: number) {
+    public async loadPosts(quantity: number) {
         const query = {
             from_descending_index: this.state.currentDescendingPostIndex,
             to_descending_index: this.state.currentDescendingPostIndex + quantity
         };
 
-        PostView.fetchPost(query, (posts: IPost[]) => {
-            this.setState({
-                currentDescendingPostIndex: this.state.currentDescendingPostIndex + quantity,
-                posts: [...this.state.posts, ...posts],
-                loading: false,
-                loadedAll: posts.length < quantity
-            });
+        const posts: IPost[] = await PostView.fetchPost(query);
+
+        this.setState({
+            currentDescendingPostIndex: this.state.currentDescendingPostIndex + quantity,
+            posts: [...this.state.posts, ...posts],
+            loading: false,
+            loadedAll: posts.length < quantity
         });
     }
     
