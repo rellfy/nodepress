@@ -28,11 +28,12 @@
         cursor: default;
     }
 
-    /* FIX:
-        :only-child is true if there is
-        a span element along with just text
-        inside <p>. This needs to be fixed somehow.
-    */
+    /* Inline styling for katex equations with text */
+    p.inline .katex {
+        display: inline-block !important;
+        text-align: left !important;
+    }
+
     p > span.katex:only-child {
         text-align: center;
         display: block;

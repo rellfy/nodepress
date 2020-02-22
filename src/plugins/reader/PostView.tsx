@@ -280,8 +280,8 @@ export class PostView extends React.Component<IProps, IState> {
         
         const toProcess: KatexMatch[] = [];
 
-        function replaceAdditive(str: string, i: number, length: number, replacement: string): string {
-            return str.substr(0, i) + replacement + str.substr(i + length);
+        function replaceAdditive(str: string, i: number, removeLength: number, add: string): string {
+            return str.substr(0, i) + add + str.substr(i + removeLength);
         }
 
         for (let i = input.length; i-- > 1;) {
@@ -302,11 +302,30 @@ export class PostView extends React.Component<IProps, IState> {
             current.startIndex = i - 1;
             current.length = current.endIndex - current.startIndex - 1;
             current.string = katex.renderToString(input.substr(current.startIndex + 2, current.length - 2));
-
+            
             // Store current input length.
             let length = input.length;
             // Replace string with processed formula.
             input = replaceAdditive(input, current.startIndex, current.length + 2, current.string);
+            // Compensate for length change.
+            i -= length - input.length;
+            
+            let classIndex = -1;
+            // Add inline class to element if it contains text along the equation.
+            if (current.startIndex > 0 && current.endIndex < input.length - 1 && input[current.startIndex - 1] != '>' && input[current.endIndex + 1] != '<') {
+                for (let j = current.startIndex; j-- > 0;) {
+                    if (input[j] != '<' || input[j + 1] != 'p')
+                        continue;
+
+                    classIndex = j + 2;
+                    break;
+                }
+            }
+
+            // Add inline class if needed.
+            if (classIndex > -1)
+                input = replaceAdditive(input, classIndex, 0, ' class="inline"');
+
             // Compensate for length change.
             i -= length - input.length;
         }
