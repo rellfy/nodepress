@@ -42,7 +42,8 @@ class FetchRoute extends Route {
         if (request.body.post_id != null) {
             query._id = request.body.post_id;
         } else if (request.body.post_title != null) {
-            query.title = request.body.post_title;
+            // Case insensitive title search.
+            query.title = new RegExp(request.body.post_title, 'i');
         } else if (request.body.from_descending_index != null && request.body.to_descending_index != null) {
             fetchMultiple = true;
         } else {

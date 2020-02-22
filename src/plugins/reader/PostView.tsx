@@ -80,6 +80,7 @@ const ExpandButton = styled.div`
     height: 2.5rem;
     width: 80%;
     margin: auto;
+    margin-bottom: 10em;
     user-select: none;
 `;
 
@@ -175,8 +176,17 @@ export class PostView extends React.Component<IProps, IState> {
     private async setPost(post: IPost) {
         // @ts-ignore - Convert date from string to object.
         post?.metadata.date = new Date(post?.metadata.date);
+        // Limit post count.
+        let processedContent = this.state?.expanded ?
+            post?.content :
+            post?.content.substr(0, max_retracted_char_count) ?? '';
+        // Check number of times "$$" happens in the split content.
+        const katexCount = (processedContent.split('$$').length - 1)
+        // Append "$$" to processed content if cut within a katex input.
+        if (!this.state?.expanded && katexCount % 2 != 0)
+            processedContent += '$$';
         // Process marked.
-        let processedContent = await this.processMarked(post?.content ?? '');
+        processedContent = await this.processMarked(processedContent);
         // Process katex.
         processedContent = this.processKatex(processedContent);
 
@@ -184,17 +194,6 @@ export class PostView extends React.Component<IProps, IState> {
             post,
             processedContent
         });
-    }
-    
-    public get content(): string {
-        if (this.state.post == null)
-            return '';
-
-        if (this.state.expanded || this.state.post.content.length <= max_retracted_char_count)
-            return this.state.post.content;
-
-        return this.state.processedContent?.substring(0, max_retracted_char_count - 1) ?? '';
-        //return this.state.post.content.substring(0, max_retracted_char_count - 1);
     }
 
     public static async fetchPost(query: any): Promise<any> {
@@ -346,7 +345,7 @@ export class PostView extends React.Component<IProps, IState> {
     }
 
     public render() {
-        if (this.state.post == null || this.content == null)
+        if (this.state.post == null || this.state.processedContent == null)
             return (
                 <div>{ this.state.message ? this.state.message : '' }</div>
             );
