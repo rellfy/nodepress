@@ -116,4 +116,4 @@ class NodePress extends EventEmitter {
     }
 }
 
-export { NodePress };
+export { NodePress, Config, Arguments };
