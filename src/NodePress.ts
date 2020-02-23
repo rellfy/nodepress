@@ -37,13 +37,13 @@ class NodePress extends EventEmitter {
         super();
         
         // Load configuration files
-        this.fetchConfig(args.configPath ?? '../config.json');
+        this.fetchConfig(args.config);
         User.fetchConfig();
 
         // Set config.args.
         this.config.args = {
             ...args,
-            // Set optional values to default.
+            // Set optional values to their default.
             dev: args.dev ?? false,
             ignoreCorePlugins: args.ignoreCorePlugins ?? false
         };
@@ -83,16 +83,10 @@ class NodePress extends EventEmitter {
         if (typeof configPath != 'string')
             throw new Error('Config path not passed in arguments. Use --config');
         
-        let absolutePath = path.join(__dirname, configPath);
+        console.log(`Loading config from ${configPath}`)
+        this.config = JSON.parse(fs.readFileSync(configPath).toString());
 
-        try {
-            console.log(`Loading config from ${configPath}`)
-            this.config = JSON.parse(fs.readFileSync(absolutePath).toString());
-        } catch(e) {
-            throw new Error(`Failed to load config file from "${configPath}"`);
-        }
-
-        cache.set(CacheKeys.CONFIG_PATH, absolutePath);
+        cache.set(CacheKeys.CONFIG_PATH, configPath);
     }
 
     private async run() {
@@ -111,9 +105,11 @@ class NodePress extends EventEmitter {
     }
 
     private async buildIndex() {
-        let page = await NodeBuilder.BuildPage(this.PluginManager.Plugins)
+        let page = await NodeBuilder.BuildPage(this.config.args.layout, this.PluginManager.Plugins);
         cache.set(CacheKeys.ROUTER_INDEX_SRC, page);
     }
 }
 
 export { NodePress, Config, Arguments };
+export default NodePress;
+module.exports = NodePress;

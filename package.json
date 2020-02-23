@@ -4,9 +4,8 @@
   "description": "Lightweight blog engine for node",
   "main": "nodepress.js",
   "scripts": {
-    "start": "npm run build & node ./out/index.js",
-    "dev": "npm run build & node ./out/index.js --dev",
-    "build": "tsc --p ./src"
+    "build": "tsc --p ./src",
+    "dev": "npm run build && node example.js --dev"
   },
   "repository": {
     "type": "git",

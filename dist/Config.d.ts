@@ -2,7 +2,6 @@ import { NetConfig } from "./components/network/Network";
 import { DbConfig } from "./components/database/Database";
 import { UserConfig } from "./plugins/user/User";
 import { Plugin } from "./components/plugins/Plugin";
-
 export interface Arguments {
     config: string;
     layout: {
@@ -13,7 +12,6 @@ export interface Arguments {
     ignoreCorePlugins?: boolean;
     dev?: boolean;
 }
-
 export interface Config {
     args: Arguments;
     net: NetConfig;
@@ -21,7 +19,6 @@ export interface Config {
     db: DbConfig;
     api: ApiConfig;
 }
-
 export interface ApiConfig {
     np_epoch: number;
 }

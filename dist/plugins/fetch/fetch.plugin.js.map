@@ -1,0 +1,1 @@
+{"version":3,"file":"fetch.plugin.js","sourceRoot":"","sources":["../../../src/plugins/fetch/fetch.plugin.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;AAAA,0DAAuE;AACvE,2CAA0C;AAG1C;;GAEG;AACH;IAAoB,yBAAM;IAEtB;eACI,iBAAO;IACX,CAAC;IAEM,sBAAM,GAAb;QACI,OAAO,CAAC;gBACJ,MAAM,EAAE,uBAAU;aACrB,CAAC,CAAC;IACP,CAAC;IACL,YAAC;AAAD,CAAC,AAXD,CAAoB,eAAM,GAWzB;AAED,kBAAe,KAAK,CAAC"}

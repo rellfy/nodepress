@@ -1,7 +1,5 @@
-/out
 src./
 src../
-example.js
 config.json
 *.pem
 
@@ -11,6 +9,11 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# NodeBuilder
+np.js
+np.js.map
+np_builder/
 
 # Runtime data
 pids

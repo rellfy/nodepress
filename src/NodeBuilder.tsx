@@ -11,7 +11,6 @@ class NodeBuilder {
 
     private static InputFilename: string = 'np.jsx';
     private static OutputFilename: string = 'np.js';
-    private static LayoutFolder: string = '../layout/';
 
     private static get FolderPath(): string {
         return path.resolve(__dirname, 'np_builder');
@@ -90,7 +89,7 @@ class NodeBuilder {
         }
     }
 
-    public static async BuildPage(plugins: Plugin[]): Promise<string> {
+    public static async BuildPage(layout: { body: string, head: string }, plugins: Plugin[]): Promise<string> {
         NodeBuilder.CreateFolder();
         await NodeBuilder.CreateFile(NodeBuilder.InputFilename, NodeBuilder.PageString(plugins));
 
@@ -107,12 +106,12 @@ class NodeBuilder {
         // Error here - not found
         const script = await util.promisify(fs.readFile)(path.resolve(NodeBuilder.FolderPath, '../', NodeBuilder.OutputFilename));
 
-        return this.GetHTML(script.toString('utf8'));
+        return this.GetHTML(layout.body, layout.head, script.toString('utf8'));
     }
 
-    private static async GetHTML(script: string) {
-        const head = await util.promisify(fs.readFile)(path.resolve(__dirname, NodeBuilder.LayoutFolder, 'head.html'));
-        const body = await util.promisify(fs.readFile)(path.resolve(__dirname, NodeBuilder.LayoutFolder, 'body.html'));
+    private static async GetHTML(bodyPath: string, headPath: string, script: string) {
+        const head = await util.promisify(fs.readFile)(bodyPath);
+        const body = await util.promisify(fs.readFile)(headPath);
 
         return `<!DOCTYPE html><html><head>${head.toString('utf8')}</head><body><div id="root"></div>${body.toString('utf8')}<script type="text/javascript">${script}</script></body></html>`;
     }
