@@ -3,8 +3,28 @@ NodePress is a lightweight blog engine for node.js. At its current state it is u
 
 NodePress' web server is built on top of [node-router](https://github.com/rellfy/node-router). What is added on top of the server is a plugin functionality which renders one, or multiple, pair or individual set of client and server endpoints. Client endpoints being react components. This can be seen in any of the core plugin implementations, on `/src/plugins`.
 
+# Plugin system
+NodePress relies on a plugin system to function. A plugin is an object that indexes frontend (React components) and backend (Fastify routes) endpoints to be served via the server. For that reason, NodePress allows for easily extendible and naturally modular projects. 
+
+By default, NodePress contains five plugins which make up a simple blog engine that renders markdown and latex math equations (using [marked](https://github.com/markedjs/marked) and [katex](https://github.com/KaTeX/KaTeX)). Those plugins are `reader`, `feed`, `fetch`, `post`, and `user`. The `user` plugin contains essential user authorisation and management, while the other four make up the blog engine. It is possible to ignore all those plugins by initialising NodePress with the boolean `ignoreCorePlugins`. If you ignore core plugins, you can still manually load one or many of them, such as if you wish to use the `user` plugin but not provide a blog.
+
+# Initialisation example
+```javascript
+import { NodePress, Arguments } from 'NodePress';
+
+const isDevEnv = process.argv.includes('--dev');
+const config: Arguments = {
+    dev: isDevEnv,
+    plugins: [],
+    ignoreCorePlugins: false
+};
+
+const instance = new NodePress(config);
+```
+
+
 # Database
-NodePress uses MongoDB and Mongoose as interface by default.
+NodePress uses MongoDB for database and Mongoose as interface by default.
 
 # Post  schema
 
