@@ -60,6 +60,8 @@ class NodePress extends EventEmitter {
         // Load modules
         this.pluginManager = new PluginManager();
 
+        this.pluginManager.addPlugins(this.config.args.plugins);
+
         if (!this.config.args.ignoreCorePlugins)
             this.pluginManager.addPlugins([Post, Fetch, Feed, Reader, UserPlugin]);
         
