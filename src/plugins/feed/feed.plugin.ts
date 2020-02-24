@@ -1,4 +1,4 @@
-import { Plugin, IPluginRoute } from "../../components/plugins/Plugin";
+import { Plugin, PluginRoute } from "../../components/plugins/Plugin";
 import path from "path";
 import { FeedRoute } from "./FeedRoute";
 
@@ -11,7 +11,7 @@ class Feed extends Plugin {
         super();
     }
 
-    public routes(): IPluginRoute[] {
+    public routes(): PluginRoute[] {
         return [{
             server: FeedRoute,
             client: path.resolve(__dirname, 'FeedComponent')

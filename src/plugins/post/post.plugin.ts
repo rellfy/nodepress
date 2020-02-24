@@ -1,4 +1,4 @@
-import { Plugin, IPluginRoute } from "../../components/plugins/Plugin";
+import { Plugin, PluginRoute } from "../../components/plugins/Plugin";
 import { PostRoute, PostPublish } from "./PostRoute";
 import path from "path";
 
@@ -11,7 +11,7 @@ class Post extends Plugin {
         super();
     }
 
-    public routes(): IPluginRoute[] {
+    public routes(): PluginRoute[] {
         return [{
             server: PostRoute,
             client: path.resolve(__dirname, 'PostComponent')

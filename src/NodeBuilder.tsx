@@ -1,4 +1,4 @@
-import { Plugin, IPluginRoute } from "./components/plugins/Plugin";
+import { Plugin, PluginRoute } from "./components/plugins/Plugin";
 import cache from "./Cache";
 import path from "path";
 import util from "util";
@@ -20,7 +20,7 @@ class NodeBuilder {
      * Returns the input page as a string (JS)
      */
     public static PageString(plugins: Plugin[]) {
-        const routes: IPluginRoute[] = [];
+        const routes: PluginRoute[] = [];
 
         plugins.forEach((plugin, i) => {
             plugin.routes().forEach((route) => {

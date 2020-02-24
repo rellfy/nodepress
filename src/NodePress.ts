@@ -7,10 +7,14 @@ import { Config, Arguments } from "./Config";
 import { Network } from "./components/network/Network";
 import { PluginManager } from "./components/plugins/PluginManager";
 import { User } from "./plugins/user/User";
-import { Plugin } from "./components/plugins/Plugin";
+import { Plugin, PluginRoute } from "./components/plugins/Plugin";
 import { object, array } from "joi";
 import { NodeBuilder } from "./NodeBuilder";
 import { Database } from "./components/database/Database";
+import { Security } from "./components/crypto/Security";
+import { Route } from "./components/router/Route";
+import { RouteModel } from "./components/router/RouteModel";
+import { Router } from "./components/router/Router";
 // Core plugins
 import Post from "./plugins/post/post.plugin";
 import Fetch from "./plugins/fetch/fetch.plugin";
@@ -110,6 +114,18 @@ class NodePress extends EventEmitter {
     }
 }
 
-export { NodePress, Config, Arguments };
 export default NodePress;
 module.exports = NodePress;
+
+export { 
+    NodePress,
+    Config,
+    Arguments,
+    Plugin,
+    PluginRoute,
+    Database,
+    Security,
+    Route,
+    RouteModel,
+    Router
+};

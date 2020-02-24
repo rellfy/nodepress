@@ -1,4 +1,4 @@
-import { Plugin, IPluginRoute } from "../../components/plugins/Plugin";
+import { Plugin, PluginRoute } from "../../components/plugins/Plugin";
 import { LoginRoute, LoginAction } from "./login/LoginRoute";
 import path from "path";
 
@@ -11,7 +11,7 @@ class User extends Plugin {
         super();
     }
 
-    public routes(): IPluginRoute[] {
+    public routes(): PluginRoute[] {
         return [{
             server: LoginRoute,
             client: path.resolve(__dirname, 'login/LoginComponent')

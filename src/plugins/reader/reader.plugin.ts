@@ -1,4 +1,4 @@
-import { Plugin, IPluginRoute } from "../../components/plugins/Plugin";
+import { Plugin, PluginRoute } from "../../components/plugins/Plugin";
 import { ReaderRoute } from "./ReaderRoute";
 import path from "path";
 
@@ -11,7 +11,7 @@ class Reader extends Plugin {
         super();
     }
 
-    public routes(): IPluginRoute[] {
+    public routes(): PluginRoute[] {
         return [{
             server: ReaderRoute,
             client: path.resolve(__dirname, 'ReaderComponent')

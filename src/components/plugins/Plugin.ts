@@ -2,7 +2,7 @@ import { Route } from "../router/Route";
 import { Router } from "../router/Router";
 import * as React from 'react';
 
-interface IPluginRoute {
+interface PluginRoute {
     server: typeof Route;
     client?: string;
 }
@@ -17,9 +17,9 @@ class Plugin {
         
     }
     
-    public routes(): IPluginRoute[] {
+    public routes(): PluginRoute[] {
         return [ ];
     }
 }
 
-export { Plugin, IPluginRoute };
+export { Plugin, PluginRoute };
