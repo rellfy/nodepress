@@ -8,7 +8,7 @@ export interface Arguments {
         head: string;
         body: string;
     };
-    plugins: Plugin[];
+    plugins: typeof Plugin[];
     ignoreCorePlugins?: boolean;
     dev?: boolean;
 }

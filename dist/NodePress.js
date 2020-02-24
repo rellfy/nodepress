@@ -110,6 +110,7 @@ var NodePress = /** @class */ (function (_super) {
         Cache_1.default.set(CacheKeys_1.default.NP_EPOCH, _this.config.api.np_epoch);
         // Load modules
         _this.pluginManager = new PluginManager_1.PluginManager();
+        _this.pluginManager.addPlugins(_this.config.args.plugins);
         if (!_this.config.args.ignoreCorePlugins)
             _this.pluginManager.addPlugins([post_plugin_1.default, fetch_plugin_1.default, feed_plugin_1.default, reader_plugin_1.default, user_plugin_1.default]);
         // Add default components.
