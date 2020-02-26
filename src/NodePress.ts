@@ -117,8 +117,6 @@ class NodePress extends EventEmitter {
 }
 
 export default NodePress;
-module.exports = NodePress;
-
 export { 
     NodePress,
     Config,
@@ -131,3 +129,12 @@ export {
     RouteModel,
     Router
 };
+
+module.exports = NodePress;
+module.exports.NodePress = NodePress;
+module.exports.Plugin = Plugin;
+module.exports.Database = Database;
+module.exports.Security = Security;
+module.exports.Route = Route;
+module.exports.RouteModel = RouteModel;
+module.exports.Router = Router;
