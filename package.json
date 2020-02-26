@@ -1,6 +1,6 @@
 {
   "name": "nodepress",
-  "version": "2.0.10-beta",
+  "version": "2.0.11-beta",
   "description": "Lightweight blog engine for node",
   "main": "dist/NodePress.js",
   "types": "dist/NodePress.d.ts",
@@ -23,7 +23,6 @@
     "@types/react": "^16.9.18",
     "@types/react-dom": "^16.9.5",
     "@types/react-router-dom": "^4.3.5",
-    "@types/styled-components": "^4.4.2",
     "@types/mongoose": "^5.5.42",
     "@types/node": "^10.17.13",
     "@types/hoist-non-react-statics": "^3.3.1",
@@ -51,13 +50,14 @@
     "serialize-javascript": ">=2.1.1",
     "set-value": ">=3.0.1",
     "source-map-loader": "^0.2.4",
-    "styled-components": "^4.4.1",
     "uuid": "^3.4.0",
     "joi": "^14.3.0",
     "hoist-non-react-statics": "^3.3.2",
+    "styled-components": "^4.4.1",
     "webpack": "4.29.5"
   },
   "devDependencies": {
+    "@types/styled-components": "^4.4.2",
     "@types/bluebird": "^3.5.29",
     "@types/boom": "^7.3.0",
     "@types/history": "^4.7.4",
