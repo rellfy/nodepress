@@ -110,8 +110,8 @@ class NodeBuilder {
     }
 
     private static async GetHTML(bodyPath: string, headPath: string, script: string) {
-        const head = await util.promisify(fs.readFile)(bodyPath);
-        const body = await util.promisify(fs.readFile)(headPath);
+        const head = await util.promisify(fs.readFile)(headPath);
+        const body = await util.promisify(fs.readFile)(bodyPath);
 
         return `<!DOCTYPE html><html><head>${head.toString('utf8')}</head><body><div id="root"></div>${body.toString('utf8')}<script type="text/javascript">${script}</script></body></html>`;
     }
