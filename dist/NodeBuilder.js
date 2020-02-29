@@ -59,7 +59,7 @@ var NodeBuilder = /** @class */ (function () {
     NodeBuilder.PageString = function (plugins) {
         var routes = [];
         plugins.forEach(function (plugin, i) {
-            plugin.routes().forEach(function (route) {
+            plugin.routes.forEach(function (route) {
                 if (route.client == null)
                     return;
                 routes.push(route);
@@ -73,10 +73,7 @@ var NodeBuilder = /** @class */ (function () {
         });
         var routeDeclarationStr = '';
         routes.forEach(function (route, i) {
-            // Instantiate plugin server route and grab the route;
-            // Typescript does not allow for properties that are
-            // both static and abstract.
-            var model = (new (route.server)).route;
+            var model = route.server.route;
             routeDeclarationStr += "React.createElement(Route, { " + (model.exactPath ? 'exact:true,' : '') + " path:\"" + model.endpoint + "\", component:Plugin" + i + " })" + (i < routes.length - 1 ? ',\n' : '');
         });
         // Note this is not transpiled by Typescript, and hence needs to be written in JS.

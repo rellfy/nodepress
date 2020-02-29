@@ -13,27 +13,35 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Route_1 = require("../../components/router/Route");
-var RouteModel_1 = require("../../components/router/RouteModel");
-var FeedTagRoute = /** @class */ (function (_super) {
-    __extends(FeedTagRoute, _super);
-    function FeedTagRoute() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var RouteModel_1 = require("./RouteModel");
+var Route_1 = require("./Route");
+var IndexRoute = /** @class */ (function (_super) {
+    __extends(IndexRoute, _super);
+    function IndexRoute(endpoint, auth, authRedirect) {
+        if (auth === void 0) { auth = false; }
+        var _this = _super.call(this) || this;
+        _this.endpoint = endpoint;
+        _this.auth = auth;
+        _this.authRedirect = authRedirect;
+        return _this;
     }
-    Object.defineProperty(FeedTagRoute.prototype, "route", {
+    Object.defineProperty(IndexRoute.prototype, "route", {
         get: function () {
+            var _this = this;
             return new RouteModel_1.RouteModel({
                 method: 'GET',
-                endpoint: '/tag/',
-                // auth: true,
+                endpoint: this.endpoint,
+                auth: this.auth,
                 schema: { indexRoute: true },
-                handler: this.process.bind(this)
+                handler: function (request, response) {
+                    return _this.process(request, response, _this.authRedirect);
+                }
             });
         },
         enumerable: true,
         configurable: true
     });
-    return FeedTagRoute;
+    return IndexRoute;
 }(Route_1.Route));
-exports.FeedTagRoute = FeedTagRoute;
-//# sourceMappingURL=FeedRoute.js.map
+exports.IndexRoute = IndexRoute;
+//# sourceMappingURL=IndexRoute.js.map

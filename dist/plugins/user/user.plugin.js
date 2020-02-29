@@ -19,22 +19,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Plugin_1 = require("../../components/plugins/Plugin");
 var LoginRoute_1 = require("./login/LoginRoute");
 var path_1 = __importDefault(require("path"));
+var IndexRoute_1 = require("../../components/router/IndexRoute");
 /**
  * This core plugin handles resources related to any user, including root.
  */
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
-        return _super.call(this) || this;
-    }
-    User.prototype.routes = function () {
-        return [{
-                server: LoginRoute_1.LoginRoute,
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.routes = [{
+                server: new IndexRoute_1.IndexRoute('/login'),
                 client: path_1.default.resolve(__dirname, 'login/LoginComponent')
             }, {
-                server: LoginRoute_1.LoginAction
+                server: new LoginRoute_1.LoginAction()
             }];
-    };
+        return _this;
+    }
     return User;
 }(Plugin_1.Plugin));
 exports.default = User;

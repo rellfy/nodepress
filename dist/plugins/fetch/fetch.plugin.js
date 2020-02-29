@@ -21,13 +21,12 @@ var FetchRoute_1 = require("./FetchRoute");
 var Fetch = /** @class */ (function (_super) {
     __extends(Fetch, _super);
     function Fetch() {
-        return _super.call(this) || this;
-    }
-    Fetch.prototype.routes = function () {
-        return [{
-                server: FetchRoute_1.FetchRoute
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.routes = [{
+                server: new FetchRoute_1.FetchRoute()
             }];
-    };
+        return _this;
+    }
     return Fetch;
 }(Plugin_1.Plugin));
 exports.default = Fetch;

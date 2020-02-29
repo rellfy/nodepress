@@ -89,6 +89,8 @@ var feed_plugin_1 = __importDefault(require("./plugins/feed/feed.plugin"));
 var reader_plugin_1 = __importDefault(require("./plugins/reader/reader.plugin"));
 var user_plugin_1 = __importDefault(require("./plugins/user/user.plugin"));
 var CacheKeys_1 = __importDefault(require("./CacheKeys"));
+var IndexRoute_1 = require("./components/router/IndexRoute");
+exports.IndexRoute = IndexRoute_1.IndexRoute;
 /**
  * Server instance
  */
@@ -204,6 +206,7 @@ module.exports.Plugin = Plugin_1.Plugin;
 module.exports.Database = Database_1.Database;
 module.exports.Security = Security_1.Security;
 module.exports.Route = Route_1.Route;
+module.exports.IndexRoute = IndexRoute_1.IndexRoute;
 module.exports.RouteModel = RouteModel_1.RouteModel;
 module.exports.Router = Router_1.Router;
 //# sourceMappingURL=NodePress.js.map

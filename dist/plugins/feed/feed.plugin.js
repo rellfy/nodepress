@@ -18,21 +18,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Plugin_1 = require("../../components/plugins/Plugin");
 var path_1 = __importDefault(require("path"));
-var FeedRoute_1 = require("./FeedRoute");
+var IndexRoute_1 = require("../../components/router/IndexRoute");
 /**
  * This core plugin handles the feed/index page.
  */
 var Feed = /** @class */ (function (_super) {
     __extends(Feed, _super);
     function Feed() {
-        return _super.call(this) || this;
-    }
-    Feed.prototype.routes = function () {
-        return [{
-                server: FeedRoute_1.FeedRoute,
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.routes = [{
+                server: new IndexRoute_1.IndexRoute('/'),
                 client: path_1.default.resolve(__dirname, 'FeedComponent')
             }];
-    };
+        return _this;
+    }
+    ;
     return Feed;
 }(Plugin_1.Plugin));
 exports.default = Feed;

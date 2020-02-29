@@ -1,24 +1,19 @@
 import { Plugin, PluginRoute } from "../../components/plugins/Plugin";
-import { PostRoute, PostPublish } from "./PostRoute";
+import { PostPublish } from "./PostRoute";
 import path from "path";
+import { IndexRoute } from "../../components/router/IndexRoute";
 
 /**
  * This core plugin handles the post process and publishing page.
  */
 class Post extends Plugin {
 
-    constructor() {
-        super();
-    }
-
-    public routes(): PluginRoute[] {
-        return [{
-            server: PostRoute,
-            client: path.resolve(__dirname, 'PostComponent')
-        }, {
-            server: PostPublish
-        }];
-    }
+    public routes: PluginRoute[] = [{
+        server: new IndexRoute('/post', true, '/login?to=/post'),
+        client: path.resolve(__dirname, 'PostComponent')
+    }, {
+        server: new PostPublish()
+    }];
 }
 
 export default Post;

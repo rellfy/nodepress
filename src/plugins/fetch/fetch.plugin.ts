@@ -7,15 +7,9 @@ import path from "path";
  */
 class Fetch extends Plugin {
 
-    constructor() {
-        super();
-    }
-
-    public routes(): PluginRoute[] {
-        return [{
-            server: FetchRoute
-        }];
-    }
+    public routes: PluginRoute[] = [{
+        server: new FetchRoute()
+    }];
 }
 
 export default Fetch;

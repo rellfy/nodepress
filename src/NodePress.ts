@@ -1,6 +1,5 @@
 import { EventEmitter } from "events";
 import fs from "fs";
-import path from "path";
 
 import cache from "./Cache";
 import { Config, Arguments } from "./Config";
@@ -8,7 +7,6 @@ import { Network } from "./components/network/Network";
 import { PluginManager } from "./components/plugins/PluginManager";
 import { User } from "./plugins/user/User";
 import { Plugin, PluginRoute } from "./components/plugins/Plugin";
-import { object, array } from "joi";
 import { NodeBuilder } from "./NodeBuilder";
 import { Database } from "./components/database/Database";
 import { Security } from "./components/crypto/Security";
@@ -22,6 +20,7 @@ import Feed from "./plugins/feed/feed.plugin";
 import Reader from "./plugins/reader/reader.plugin";
 import UserPlugin from "./plugins/user/user.plugin";
 import CacheKeys from "./CacheKeys";
+import { IndexRoute } from "./components/router/IndexRoute";
 
 /**
  * Server instance
@@ -76,7 +75,7 @@ class NodePress extends EventEmitter {
         this.buildIndex();
     }
 
-    public plugin(plugin: typeof Plugin | typeof Plugin[]) {
+    public plugin(plugin: (new () => Plugin) | (new () => Plugin)[]) {
         if (Array.isArray(plugin)) {
             this.pluginManager.addPlugins(plugin);
             return;
@@ -126,6 +125,7 @@ export {
     Database,
     Security,
     Route,
+    IndexRoute,
     RouteModel,
     Router
 };
@@ -136,5 +136,6 @@ module.exports.Plugin = Plugin;
 module.exports.Database = Database;
 module.exports.Security = Security;
 module.exports.Route = Route;
+module.exports.IndexRoute = IndexRoute;
 module.exports.RouteModel = RouteModel;
 module.exports.Router = Router;

@@ -9,7 +9,7 @@ export interface Arguments {
         head: string;
         body: string;
     };
-    plugins: typeof Plugin[];
+    plugins: (new () => Plugin)[];
     ignoreCorePlugins?: boolean;
     dev?: boolean;
 }

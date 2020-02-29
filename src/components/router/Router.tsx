@@ -105,7 +105,7 @@ class Router extends EventEmitter {
      * @param routePath The path where routes are exported
      */
     private async getRoutes(input?: string): Promise<void> {
-        let routes: (new () => Route)[] = [];
+        let routes: Route[] = [];
 
         // Get routes
         if (input != null && input.length > 0) {
@@ -114,23 +114,21 @@ class Router extends EventEmitter {
         } else {
             // Retrieve from registered plugins (default)
             this.pluginManager.Plugins.forEach((plugin) => {
-                routes = routes.concat(plugin.routes().map(r => r.server));
+                routes = routes.concat(plugin.routes.map(route => route.server));
             });
         }
 
         // Register routes
-        routes.forEach(PluginRoute => {
-            const route = new PluginRoute();
+        routes.forEach(route => {
             route.Router = this;
-            
             this.routes.push(route);
         });
     }
 
-    private async getRoutesFromFiles(routePath: string): Promise<(new () => Route)[]> {
+    private async getRoutesFromFiles(routePath: string): Promise<Route[]> {
         const absolutePath = path.join(__dirname, routePath)
         const files = await Router.getFilesRecursively(absolutePath);
-        const routes: (new () => Route)[] = [];
+        const routes: Route[] = [];
 
         files.forEach((file) => {
             let Route = require(path.resolve(absolutePath, file)).Route;
@@ -146,7 +144,7 @@ class Router extends EventEmitter {
 
     private getRoute(endpoint: string): Route {
         for (let i = 0; i < this.routes.length; i++) {
-            if (this.routes[i].Endpoint == endpoint)
+            if (this.routes[i].route.endpoint == endpoint)
             return this.routes[i];
         }
         

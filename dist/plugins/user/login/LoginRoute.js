@@ -58,28 +58,6 @@ var fs_1 = __importDefault(require("fs"));
 var Cache_1 = __importDefault(require("../../../Cache"));
 var Token_1 = require("../Token");
 var User_1 = require("../User");
-var LoginRoute = /** @class */ (function (_super) {
-    __extends(LoginRoute, _super);
-    function LoginRoute() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(LoginRoute.prototype, "route", {
-        get: function () {
-            var _this = this;
-            return new RouteModel_1.RouteModel({
-                method: 'GET',
-                endpoint: '/login',
-                auth: false,
-                schema: { indexRoute: true },
-                handler: function (request, response) { return _this.process(request, response, '/'); }
-            });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return LoginRoute;
-}(Route_1.Route));
-exports.LoginRoute = LoginRoute;
 var LoginAction = /** @class */ (function (_super) {
     __extends(LoginAction, _super);
     function LoginAction() {

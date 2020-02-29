@@ -1,16 +1,10 @@
+import { ServerResponse, IncomingMessage } from 'http';
+import Fastify from 'fastify';
 import Boom from 'boom';
-import fs from 'fs';
-import path from 'path';
-
-import { RouteModel } from "./RouteModel";
-import { Router } from "./Router";
-import { NetInterface } from "../network/interface/NetInterface";
-import { Schema } from 'mongoose';
 import * as React from 'react';
 import cache from '../../Cache';
-import { NodeBuilder } from '../../NodeBuilder';
-import Fastify from 'fastify';
-import { ServerResponse, IncomingMessage } from 'http';
+import { RouteModel } from "./RouteModel";
+import { Router } from "./Router";
 import { Token } from '../../plugins/user/Token';
 import CacheKeys from '../../CacheKeys';
 
@@ -46,10 +40,6 @@ abstract class Route {
 	public set Router(value: Router) {
 		this.router = value;
 	}
-
-	public get Endpoint(): string {
-		return this.route.endpoint;
-	} 
 
 	public abstract get route(): RouteModel;
 

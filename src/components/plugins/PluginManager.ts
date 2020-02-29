@@ -10,19 +10,19 @@ class PluginManager extends EventEmitter {
         return this.plugins;
     }
 
-    public addPlugin(plugin: typeof Plugin) {
+    public addPlugin(plugin: (new () => Plugin)) {
         this.emit('add_plugin');
         this.initialisePlugin(plugin);
     }
 
-    public addPlugins(plugins: typeof Plugin[]) {
+    public addPlugins(plugins: (new () => Plugin)[]) {
         this.emit('add_plugin');
         plugins.forEach((plugin) => {
             this.initialisePlugin(plugin);
         });
     }
 
-    private initialisePlugin(PluginType: typeof Plugin) {
+    private initialisePlugin(PluginType: new () => Plugin) {
         this.plugins.push(new PluginType());
     }
 }

@@ -83,10 +83,10 @@ var LoginComponent = /** @class */ (function (_super) {
     LoginComponent.prototype.redirect = function () {
         var params = new URLSearchParams(window.location.search);
         if (params.has('to')) {
-            location.href = "/" + params.get('to');
+            location.href = location.origin + params.get('to');
             return;
         }
-        location.href = '/';
+        location.href = location.origin;
     };
     LoginComponent.prototype.render = function () {
         return (React.createElement(LoginPanel, null,

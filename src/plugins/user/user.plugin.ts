@@ -1,24 +1,19 @@
 import { Plugin, PluginRoute } from "../../components/plugins/Plugin";
-import { LoginRoute, LoginAction } from "./login/LoginRoute";
+import { LoginAction } from "./login/LoginRoute";
 import path from "path";
+import { IndexRoute } from "../../components/router/IndexRoute";
 
 /**
  * This core plugin handles resources related to any user, including root.
  */
 class User extends Plugin {
 
-    constructor() {
-        super();
-    }
-
-    public routes(): PluginRoute[] {
-        return [{
-            server: LoginRoute,
-            client: path.resolve(__dirname, 'login/LoginComponent')
-        }, {
-            server: LoginAction
-        }];
-    }
+    public routes: PluginRoute[] = [{
+        server: new IndexRoute('/login'),
+        client: path.resolve(__dirname, 'login/LoginComponent')
+    }, {
+        server: new LoginAction()
+    }];
 }
 
 export default User;

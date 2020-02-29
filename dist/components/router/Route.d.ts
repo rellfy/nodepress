@@ -1,14 +1,13 @@
 /// <reference types="node" />
+import { ServerResponse, IncomingMessage } from 'http';
+import Fastify from 'fastify';
+import * as React from 'react';
 import { RouteModel } from "./RouteModel";
 import { Router } from "./Router";
-import * as React from 'react';
-import Fastify from 'fastify';
-import { ServerResponse, IncomingMessage } from 'http';
 declare abstract class Route {
     protected router: Router;
     component: typeof React.Component;
     set Router(value: Router);
-    get Endpoint(): string;
     abstract get route(): RouteModel;
     private static getDescendantProp;
     /**

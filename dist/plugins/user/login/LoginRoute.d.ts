@@ -3,9 +3,6 @@ import Fastify from 'fastify';
 import { ServerResponse, IncomingMessage } from 'http';
 import { Route } from "../../../components/router/Route";
 import { RouteModel } from "../../../components/router/RouteModel";
-declare class LoginRoute extends Route {
-    get route(): RouteModel;
-}
 declare class LoginAction extends Route {
     private static RootLogin;
     constructor();
@@ -13,4 +10,4 @@ declare class LoginAction extends Route {
     process(request: Fastify.FastifyRequest<IncomingMessage>, reply: Fastify.FastifyReply<ServerResponse>): Promise<object>;
     private static login;
 }
-export { LoginRoute, LoginAction };
+export { LoginAction };

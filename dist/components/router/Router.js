@@ -184,13 +184,12 @@ var Router = /** @class */ (function (_super) {
                     case 2:
                         // Retrieve from registered plugins (default)
                         this.pluginManager.Plugins.forEach(function (plugin) {
-                            routes = routes.concat(plugin.routes().map(function (r) { return r.server; }));
+                            routes = routes.concat(plugin.routes.map(function (route) { return route.server; }));
                         });
                         _a.label = 3;
                     case 3:
                         // Register routes
-                        routes.forEach(function (PluginRoute) {
-                            var route = new PluginRoute();
+                        routes.forEach(function (route) {
                             route.Router = _this;
                             _this.routes.push(route);
                         });
@@ -223,7 +222,7 @@ var Router = /** @class */ (function (_super) {
     };
     Router.prototype.getRoute = function (endpoint) {
         for (var i = 0; i < this.routes.length; i++) {
-            if (this.routes[i].Endpoint == endpoint)
+            if (this.routes[i].route.endpoint == endpoint)
                 return this.routes[i];
         }
         throw new Error("route \"" + path_1.default + "\" not found");

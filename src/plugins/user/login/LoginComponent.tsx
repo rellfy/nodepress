@@ -132,11 +132,11 @@ class LoginComponent extends React.Component<IProps, IState> {
         let params = new URLSearchParams(window.location.search);
 
         if (params.has('to')) {
-            location.href = `/${params.get('to')}`;
+            location.href = location.origin + params.get('to');
             return;    
         }
 
-        location.href = '/';
+        location.href = location.origin;
     }
 
     render() {

@@ -17,22 +17,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Plugin_1 = require("../../components/plugins/Plugin");
-var ReaderRoute_1 = require("./ReaderRoute");
 var path_1 = __importDefault(require("path"));
+var IndexRoute_1 = require("../../components/router/IndexRoute");
 /**
  * This core plugin handles the individual viewing of posts.
  */
 var Reader = /** @class */ (function (_super) {
     __extends(Reader, _super);
     function Reader() {
-        return _super.call(this) || this;
-    }
-    Reader.prototype.routes = function () {
-        return [{
-                server: ReaderRoute_1.ReaderRoute,
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.routes = [{
+                server: new IndexRoute_1.IndexRoute('/read/:post'),
                 client: path_1.default.resolve(__dirname, 'ReaderComponent')
             }];
-    };
+        return _this;
+    }
     return Reader;
 }(Plugin_1.Plugin));
 exports.default = Reader;

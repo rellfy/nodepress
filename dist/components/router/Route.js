@@ -76,13 +76,6 @@ var Route = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Route.prototype, "Endpoint", {
-        get: function () {
-            return this.route.endpoint;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Route.getDescendantProp = function (object, stack) {
         var arr = stack.split('.');
         while (arr.length && (object = object[arr.shift()]))

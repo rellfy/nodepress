@@ -1,23 +1,9 @@
 import Fastify from 'fastify';
 import { Route } from "../../components/router/Route";
 import { RouteModel } from "../../components/router/RouteModel";
-import { Router } from "../../components/router/Router";
 import { IPost, IPostDocument, PostModel } from "./PostModel";
 import Mongoose from "mongoose";
 import { ServerResponse, IncomingMessage } from 'http';
-
-class PostRoute extends Route {
-
-    public get route(): RouteModel {
-        return new RouteModel({
-            method: 'GET',
-            endpoint: '/post',
-            auth: true,
-            schema : { indexRoute: true },
-            handler: (request: Fastify.FastifyRequest<IncomingMessage>, response: Fastify.FastifyReply<ServerResponse>) => this.process(request, response, '/login')
-        });
-    }
-}
 
 class PostPublish extends Route {
 
@@ -62,4 +48,4 @@ class PostPublish extends Route {
     }
 }
 
-export { PostRoute, PostPublish }
+export { PostPublish }

@@ -3,23 +3,13 @@ import { Router } from "../router/Router";
 import * as React from 'react';
 
 interface PluginRoute {
-    server: new () => Route;
+    server: Route;
     client?: string;
 }
 
-class Plugin {
+abstract class Plugin {
 
-    constructor() {
-
-    }
-
-    public static load(path: string) {
-        
-    }
-    
-    public routes(): PluginRoute[] {
-        return [ ];
-    }
+    public abstract routes: PluginRoute[];
 }
 
 export { Plugin, PluginRoute };

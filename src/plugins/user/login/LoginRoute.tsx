@@ -15,19 +15,6 @@ type LoginData = {
     password: string
 };
 
-class LoginRoute extends Route {
-
-    public get route(): RouteModel {
-        return new RouteModel({
-            method: 'GET',
-            endpoint: '/login',
-            auth: false,
-            schema : { indexRoute: true },
-            handler: (request: Fastify.FastifyRequest<IncomingMessage>, response: Fastify.FastifyReply<ServerResponse>) => this.process(request, response, '/')
-        });
-    }
-}
-
 class LoginAction extends Route {
 
     private static RootLogin: LoginData;
@@ -94,4 +81,4 @@ class LoginAction extends Route {
     }
 }
 
-export { LoginRoute, LoginAction }
+export { LoginAction }

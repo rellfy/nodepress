@@ -1,1 +1,1 @@
-{"version":3,"file":"Plugin.js","sourceRoot":"","sources":["../../../src/components/plugins/Plugin.ts"],"names":[],"mappings":";;AASA;IAEI;IAEA,CAAC;IAEa,WAAI,GAAlB,UAAmB,IAAY;IAE/B,CAAC;IAEM,uBAAM,GAAb;QACI,OAAO,EAAG,CAAC;IACf,CAAC;IACL,aAAC;AAAD,CAAC,AAbD,IAaC;AAEQ,wBAAM"}
+{"version":3,"file":"Plugin.js","sourceRoot":"","sources":["../../../src/components/plugins/Plugin.ts"],"names":[],"mappings":";;AASA;IAAA;IAGA,CAAC;IAAD,aAAC;AAAD,CAAC,AAHD,IAGC;AAEQ,wBAAM"}

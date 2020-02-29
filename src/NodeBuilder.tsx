@@ -23,7 +23,7 @@ class NodeBuilder {
         const routes: PluginRoute[] = [];
 
         plugins.forEach((plugin, i) => {
-            plugin.routes().forEach((route) => {
+            plugin.routes.forEach((route) => {
                 if (route.client == null)
                     return;
 
@@ -43,10 +43,7 @@ class NodeBuilder {
         let routeDeclarationStr: string = '';
 
         routes.forEach((route, i) => {
-            // Instantiate plugin server route and grab the route;
-            // Typescript does not allow for properties that are
-            // both static and abstract.
-            let model: RouteModel = (new (route.server)).route;
+            let model: RouteModel = route.server.route;
             routeDeclarationStr += `React.createElement(Route, { ${model.exactPath ? 'exact:true,':''} path:"${model.endpoint}", component:Plugin${i} })${i < routes.length-1 ? ',\n':''}`;
         });
 

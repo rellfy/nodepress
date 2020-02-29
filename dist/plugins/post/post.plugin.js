@@ -19,22 +19,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Plugin_1 = require("../../components/plugins/Plugin");
 var PostRoute_1 = require("./PostRoute");
 var path_1 = __importDefault(require("path"));
+var IndexRoute_1 = require("../../components/router/IndexRoute");
 /**
  * This core plugin handles the post process and publishing page.
  */
 var Post = /** @class */ (function (_super) {
     __extends(Post, _super);
     function Post() {
-        return _super.call(this) || this;
-    }
-    Post.prototype.routes = function () {
-        return [{
-                server: PostRoute_1.PostRoute,
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.routes = [{
+                server: new IndexRoute_1.IndexRoute('/post', true, '/login?to=/post'),
                 client: path_1.default.resolve(__dirname, 'PostComponent')
             }, {
-                server: PostRoute_1.PostPublish
+                server: new PostRoute_1.PostPublish()
             }];
-    };
+        return _this;
+    }
     return Post;
 }(Plugin_1.Plugin));
 exports.default = Post;
