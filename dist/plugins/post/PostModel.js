@@ -108,17 +108,18 @@ var Model = /** @class */ (function () {
         return Schema;
     };
     Model.DuplicatePostVerification = function (model) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var query, users;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         query = {
-                            title: new RegExp('^' + model.title + '$', 'i')
+                            title: new RegExp((_a = model.title, (_a !== null && _a !== void 0 ? _a : '')), 'i')
                         };
                         return [4 /*yield*/, PostModel.find(query)];
                     case 1:
-                        users = _a.sent();
+                        users = _b.sent();
                         if (users.length > 0)
                             throw boom_1.default.badRequest('This title is used in another post');
                         return [2 /*return*/];

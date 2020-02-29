@@ -24,8 +24,8 @@ var FeedTagRoute = /** @class */ (function (_super) {
         get: function () {
             return new RouteModel_1.RouteModel({
                 method: 'GET',
-                endpoint: '/tag/',
-                // auth: true,
+                endpoint: '/tag/:tag',
+                auth: false,
                 schema: { indexRoute: true },
                 handler: this.process.bind(this)
             });

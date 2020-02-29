@@ -56,28 +56,6 @@ var Route_1 = require("../../components/router/Route");
 var RouteModel_1 = require("../../components/router/RouteModel");
 var PostModel_1 = require("./PostModel");
 var mongoose_1 = __importDefault(require("mongoose"));
-var PostRoute = /** @class */ (function (_super) {
-    __extends(PostRoute, _super);
-    function PostRoute() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(PostRoute.prototype, "route", {
-        get: function () {
-            var _this = this;
-            return new RouteModel_1.RouteModel({
-                method: 'GET',
-                endpoint: '/post',
-                auth: true,
-                schema: { indexRoute: true },
-                handler: function (request, response) { return _this.process(request, response, '/login'); }
-            });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return PostRoute;
-}(Route_1.Route));
-exports.PostRoute = PostRoute;
 var PostPublish = /** @class */ (function (_super) {
     __extends(PostPublish, _super);
     function PostPublish() {

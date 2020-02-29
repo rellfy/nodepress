@@ -71,7 +71,7 @@ class Model {
     static async DuplicatePostVerification(model: IPostDocument) {
 
         const query: any = {
-            title: new RegExp('^' + model.title + '$', 'i')
+            title: new RegExp(model.title ?? '', 'i')
         }
         
         const users = await PostModel.find(query);
