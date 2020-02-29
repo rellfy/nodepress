@@ -56,7 +56,7 @@ class Router extends EventEmitter {
         // const udp: NetInterfaceModule = netInterface.get('udp')
         
         for (let i = 0; i < this.routes.length; i++) {
-            http.route(this.routes[i].model);
+            http.route(this.routes[i].route);
         }
     }
 
@@ -102,10 +102,10 @@ class Router extends EventEmitter {
     
     /**
      * Retrieve routes from path
-     * @param routePath The path where routes are exportes
+     * @param routePath The path where routes are exported
      */
     private async getRoutes(input?: string): Promise<void> {
-        let routes: typeof Route[] = [];
+        let routes: (new () => Route)[] = [];
 
         // Get routes
         if (input != null && input.length > 0) {
@@ -119,7 +119,7 @@ class Router extends EventEmitter {
         }
 
         // Register routes
-        routes.forEach((PluginRoute: typeof Route) => {
+        routes.forEach(PluginRoute => {
             const route = new PluginRoute();
             route.Router = this;
             
@@ -127,10 +127,10 @@ class Router extends EventEmitter {
         });
     }
 
-    private async getRoutesFromFiles(routePath: string): Promise<typeof Route[]> {
+    private async getRoutesFromFiles(routePath: string): Promise<(new () => Route)[]> {
         const absolutePath = path.join(__dirname, routePath)
         const files = await Router.getFilesRecursively(absolutePath);
-        const routes: typeof Route[] = [];
+        const routes: (new () => Route)[] = [];
 
         files.forEach((file) => {
             let Route = require(path.resolve(absolutePath, file)).Route;

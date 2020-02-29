@@ -40,7 +40,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var boom_1 = __importDefault(require("boom"));
-var RouteModel_1 = require("./RouteModel");
 var Cache_1 = __importDefault(require("../../Cache"));
 var Token_1 = require("../../plugins/user/Token");
 var CacheKeys_1 = __importDefault(require("../../CacheKeys"));
@@ -70,13 +69,6 @@ var CacheKeys_1 = __importDefault(require("../../CacheKeys"));
 var Route = /** @class */ (function () {
     function Route() {
     }
-    Object.defineProperty(Route.prototype, "Model", {
-        get: function () {
-            return this.model || 'empty model';
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(Route.prototype, "Router", {
         set: function (value) {
             this.router = value;
@@ -84,34 +76,13 @@ var Route = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Route.parse = function (request) {
-        try {
-            JSON.parse(request);
-        }
-        catch (e) {
-            throw e;
-        }
-    };
     Object.defineProperty(Route.prototype, "Endpoint", {
         get: function () {
-            return this.model.endpoint;
+            return this.route.endpoint;
         },
         enumerable: true,
         configurable: true
     });
-    Route.route = function () {
-        return new RouteModel_1.RouteModel({
-            method: 'GET',
-            endpoint: '/',
-            schema: {},
-            handler: this.process.bind(this)
-        });
-    };
-    Route.prototype.initialise = function (route) {
-        // Todo: remove the need for manually initialising with the RouterModel
-        // (should get own type's RouterModel)
-        this.model = route;
-    };
     Route.getDescendantProp = function (object, stack) {
         var arr = stack.split('.');
         while (arr.length && (object = object[arr.shift()]))
@@ -145,32 +116,32 @@ var Route = /** @class */ (function () {
             return false;
         return Token_1.Token.validate(authCookie == null ? request.headers['auth'] : authCookie);
     };
-    Route.process = function (request, reply, redirectUrl) {
+    Route.prototype.process = function (request, reply, redirectUrl) {
         return __awaiter(this, void 0, void 0, function () {
             var isAuthenticated, schemaNullOrEmpty;
             return __generator(this, function (_a) {
-                isAuthenticated = Route.isAuthenticated(this.route(), request);
-                if (this.route().auth == true && !isAuthenticated) {
+                isAuthenticated = Route.isAuthenticated(this.route, request);
+                if (this.route.auth == true && !isAuthenticated) {
                     // redirectUrl here is 'unauthorized redirect url', e.g. from post page to login.
                     if (!redirectUrl)
                         throw boom_1.default.unauthorized();
                     reply.redirect(redirectUrl);
                     return [2 /*return*/];
                 }
-                if (this.route().auth == false && isAuthenticated && redirectUrl) {
+                if (this.route.auth == false && isAuthenticated && redirectUrl) {
                     // redirectUrl here is 'authorised redirect url', e.g. from login page to index.
                     reply.redirect(redirectUrl);
                     return [2 /*return*/];
                 }
-                schemaNullOrEmpty = this.route().schema == null || Object.keys(this.route().schema).length < 1;
-                if (!schemaNullOrEmpty && this.route().schema.indexRoute) {
+                schemaNullOrEmpty = this.route.schema == null || Object.keys(this.route.schema).length < 1;
+                if (!schemaNullOrEmpty && this.route.schema.indexRoute) {
                     // Send index react-router route.
                     reply.header('Content-Type', 'text/html');
                     return [2 /*return*/, Cache_1.default.get(CacheKeys_1.default.ROUTER_INDEX_SRC)];
                 }
                 if (request == null || (request.body == null && !schemaNullOrEmpty))
                     throw boom_1.default.badRequest();
-                Route.iterate(request, this.route().schema);
+                Route.iterate(request, this.route.schema);
                 return [2 /*return*/];
             });
         });

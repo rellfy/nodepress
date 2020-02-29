@@ -18,38 +18,42 @@ var RouteModel_1 = require("../../components/router/RouteModel");
 var FeedRoute = /** @class */ (function (_super) {
     __extends(FeedRoute, _super);
     function FeedRoute() {
-        var _this = _super.call(this) || this;
-        _this.initialise(FeedRoute.route());
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    FeedRoute.route = function () {
-        return new RouteModel_1.RouteModel({
-            method: 'GET',
-            endpoint: '/',
-            // auth: true,
-            schema: { indexRoute: true },
-            handler: this.process.bind(this)
-        });
-    };
+    Object.defineProperty(FeedRoute.prototype, "route", {
+        get: function () {
+            return new RouteModel_1.RouteModel({
+                method: 'GET',
+                endpoint: '/',
+                // auth: true,
+                schema: { indexRoute: true },
+                handler: this.process.bind(this)
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
     return FeedRoute;
 }(Route_1.Route));
 exports.FeedRoute = FeedRoute;
 var FeedTagRoute = /** @class */ (function (_super) {
     __extends(FeedTagRoute, _super);
     function FeedTagRoute() {
-        var _this = _super.call(this) || this;
-        _this.initialise(FeedRoute.route());
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    FeedTagRoute.route = function () {
-        return new RouteModel_1.RouteModel({
-            method: 'GET',
-            endpoint: '/tag/',
-            // auth: true,
-            schema: { indexRoute: true },
-            handler: this.process.bind(this)
-        });
-    };
+    Object.defineProperty(FeedTagRoute.prototype, "route", {
+        get: function () {
+            return new RouteModel_1.RouteModel({
+                method: 'GET',
+                endpoint: '/tag/',
+                // auth: true,
+                schema: { indexRoute: true },
+                handler: this.process.bind(this)
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
     return FeedTagRoute;
 }(Route_1.Route));
 exports.FeedTagRoute = FeedTagRoute;

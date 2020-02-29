@@ -28,7 +28,7 @@ declare class Router extends EventEmitter {
     private static getFilesRecursively;
     /**
      * Retrieve routes from path
-     * @param routePath The path where routes are exportes
+     * @param routePath The path where routes are exported
      */
     private getRoutes;
     private getRoutesFromFiles;

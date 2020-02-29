@@ -61,20 +61,22 @@ var User_1 = require("../User");
 var LoginRoute = /** @class */ (function (_super) {
     __extends(LoginRoute, _super);
     function LoginRoute() {
-        var _this = _super.call(this) || this;
-        _this.initialise(LoginRoute.route());
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    LoginRoute.route = function () {
-        var _this = this;
-        return new RouteModel_1.RouteModel({
-            method: 'GET',
-            endpoint: '/login',
-            auth: false,
-            schema: { indexRoute: true },
-            handler: function (request, response) { return _this.process(request, response, '/'); }
-        });
-    };
+    Object.defineProperty(LoginRoute.prototype, "route", {
+        get: function () {
+            var _this = this;
+            return new RouteModel_1.RouteModel({
+                method: 'GET',
+                endpoint: '/login',
+                auth: false,
+                schema: { indexRoute: true },
+                handler: function (request, response) { return _this.process(request, response, '/'); }
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
     return LoginRoute;
 }(Route_1.Route));
 exports.LoginRoute = LoginRoute;
@@ -88,36 +90,39 @@ var LoginAction = /** @class */ (function (_super) {
             username: 'root',
             password: config.user.root.password
         };
-        _this.initialise(LoginAction.route());
         return _this;
     }
-    LoginAction.route = function () {
-        return new RouteModel_1.RouteModel({
-            method: 'POST',
-            endpoint: '/login',
-            auth: false,
-            schema: {
-                body: {
-                    username: { type: 'string', required: true },
-                    password: { type: 'string', required: true }
-                }
-            },
-            handler: this.process.bind(this)
-        });
-    };
-    LoginAction.process = function (request, reply) {
+    Object.defineProperty(LoginAction.prototype, "route", {
+        get: function () {
+            return new RouteModel_1.RouteModel({
+                method: 'POST',
+                endpoint: '/login',
+                auth: false,
+                schema: {
+                    body: {
+                        username: { type: 'string', required: true },
+                        password: { type: 'string', required: true }
+                    }
+                },
+                handler: this.process.bind(this)
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    LoginAction.prototype.process = function (request, reply) {
         return __awaiter(this, void 0, void 0, function () {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, _super.process.call(this, request, reply)];
+                    case 0: return [4 /*yield*/, _super.prototype.process.call(this, request, reply)];
                     case 1:
                         _a.sent();
                         data = {
                             username: request.body.username,
                             password: request.body.password
                         };
-                        return [4 /*yield*/, this.login(data)];
+                        return [4 /*yield*/, LoginAction.login(data)];
                     case 2: return [2 /*return*/, _a.sent()];
                 }
             });

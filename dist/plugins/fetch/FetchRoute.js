@@ -60,32 +60,34 @@ var boom_1 = __importDefault(require("boom"));
 var FetchRoute = /** @class */ (function (_super) {
     __extends(FetchRoute, _super);
     function FetchRoute() {
-        var _this = _super.call(this) || this;
-        _this.initialise(FetchRoute.route());
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    FetchRoute.route = function () {
-        return new RouteModel_1.RouteModel({
-            method: 'POST',
-            endpoint: '/fetch',
-            // auth: true,
-            schema: {
-                body: {
-                    post_id: { type: 'string', required: false },
-                    post_title: { type: 'string', required: false },
-                    from_descending_index: { type: 'string', required: false },
-                    to_descending_index: { type: 'string', required: false },
-                }
-            },
-            handler: this.process.bind(this)
-        });
-    };
-    FetchRoute.process = function (request, reply) {
+    Object.defineProperty(FetchRoute.prototype, "route", {
+        get: function () {
+            return new RouteModel_1.RouteModel({
+                method: 'POST',
+                endpoint: '/fetch',
+                // auth: true,
+                schema: {
+                    body: {
+                        post_id: { type: 'string', required: false },
+                        post_title: { type: 'string', required: false },
+                        from_descending_index: { type: 'string', required: false },
+                        to_descending_index: { type: 'string', required: false },
+                    }
+                },
+                handler: this.process.bind(this)
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    FetchRoute.prototype.process = function (request, reply) {
         return __awaiter(this, void 0, void 0, function () {
             var fetchMultiple, query, toReturn;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, _super.process.call(this, request, reply)];
+                    case 0: return [4 /*yield*/, _super.prototype.process.call(this, request, reply)];
                     case 1:
                         _a.sent();
                         fetchMultiple = false;
@@ -104,11 +106,11 @@ var FetchRoute = /** @class */ (function (_super) {
                             throw boom_1.default.badRequest();
                         }
                         if (!!fetchMultiple) return [3 /*break*/, 3];
-                        return [4 /*yield*/, this.fetchPost(query)];
+                        return [4 /*yield*/, FetchRoute.fetchPost(query)];
                     case 2:
                         toReturn = _a.sent();
                         return [3 /*break*/, 5];
-                    case 3: return [4 /*yield*/, this.fetchPosts(parseInt(request.body.from_descending_index), parseInt(request.body.to_descending_index))];
+                    case 3: return [4 /*yield*/, FetchRoute.fetchPosts(parseInt(request.body.from_descending_index), parseInt(request.body.to_descending_index))];
                     case 4:
                         toReturn = _a.sent();
                         _a.label = 5;

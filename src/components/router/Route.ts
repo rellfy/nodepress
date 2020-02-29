@@ -38,48 +38,22 @@ import CacheKeys from '../../CacheKeys';
 }
 */
 
-class Route {
+abstract class Route {
 
 	protected router!: Router;
-	public model!: RouteModel;
 	public component!: typeof React.Component;
-	
-	public get Model(): RouteModel {
-		return this.model || 'empty model';
-	}
 	
 	public set Router(value: Router) {
 		this.router = value;
 	}
 
-	static parse(request: string) {
-		try {
-			JSON.parse(request);
-		} catch(e) {
-			throw e;
-		}
-	}
-
 	public get Endpoint(): string {
-		return this.model.endpoint;
+		return this.route.endpoint;
 	} 
 
-	public static route(): RouteModel {
-		return new RouteModel({
-			method: 'GET',
-			endpoint: '/',
-			schema: { },
-			handler: this.process.bind(this)
-		});
-	}
-	
-	protected initialise(route: RouteModel) {
-		// Todo: remove the need for manually initialising with the RouterModel
-		// (should get own type's RouterModel)
-		this.model = route;
-	}
+	public abstract get route(): RouteModel;
 
-	static getDescendantProp(object: any, stack: string) {
+	private static getDescendantProp(object: any, stack: string) {
 		let arr: any = stack.split('.');
 		while (arr.length && (object = object[arr.shift()]));
 		return object;
@@ -90,7 +64,7 @@ class Route {
 	 * match the schema for the route. 
 	 * TODO: This should also be requested from the front-end when browsing via react router.
 	 */
-	static iterate(request: any, object: any, stack?: string) {
+	public static iterate(request: any, object: any, stack?: string) {
 		for (let key in object) {
 			if (key == 'type')
 				continue;
@@ -108,7 +82,7 @@ class Route {
 		}
 	}
 
-	static isAuthenticated(route: RouteModel, request: Fastify.FastifyRequest<IncomingMessage>): boolean {
+	public static isAuthenticated(route: RouteModel, request: Fastify.FastifyRequest<IncomingMessage>): boolean {
 		let cookie: string = request.headers['cookie'];
 		let authCookie: string = cookie?.replace('auth=', '');
 
@@ -118,11 +92,11 @@ class Route {
 		return Token.validate(authCookie == null ? request.headers['auth'] : authCookie);
 	}
 
-	public static async process(request: any, reply: Fastify.FastifyReply<ServerResponse>, redirectUrl?: string) {
+	public async process(request: any, reply: Fastify.FastifyReply<ServerResponse>, redirectUrl?: string) {
 		// Check authentication
-		const isAuthenticated: boolean = Route.isAuthenticated(this.route(), request);
+		const isAuthenticated: boolean = Route.isAuthenticated(this.route, request);
 
-		if (this.route().auth == true && !isAuthenticated) {
+		if (this.route.auth == true && !isAuthenticated) {
 			// redirectUrl here is 'unauthorized redirect url', e.g. from post page to login.
 			if (!redirectUrl)
 				throw Boom.unauthorized();
@@ -131,15 +105,15 @@ class Route {
 			return;
 		}
 
-		if (this.route().auth == false && isAuthenticated && redirectUrl) {
+		if (this.route.auth == false && isAuthenticated && redirectUrl) {
 			// redirectUrl here is 'authorised redirect url', e.g. from login page to index.
 			reply.redirect(redirectUrl);
 			return;
 		}
 
-		const schemaNullOrEmpty = this.route().schema == null || Object.keys(this.route().schema).length < 1;
+		const schemaNullOrEmpty = this.route.schema == null || Object.keys(this.route.schema).length < 1;
 
-		if (!schemaNullOrEmpty && this.route().schema.indexRoute) {
+		if (!schemaNullOrEmpty && this.route.schema.indexRoute) {
 			// Send index react-router route.
 			reply.header('Content-Type', 'text/html');
 			return cache.get(CacheKeys.ROUTER_INDEX_SRC);
@@ -148,7 +122,7 @@ class Route {
 		if (request == null || (request.body == null && !schemaNullOrEmpty))
 			throw Boom.badRequest();
 
-		Route.iterate(request, this.route().schema);
+		Route.iterate(request, this.route.schema);
 	}
 }
 

@@ -10,13 +10,7 @@ import Boom from 'boom';
 
 class FetchRoute extends Route {
 
-    constructor() {
-        super();
-
-        this.initialise(FetchRoute.route());
-    }
-
-    public static route(): RouteModel {
+    public get route(): RouteModel {
         return new RouteModel({
             method: 'POST',
             endpoint: '/fetch',
@@ -33,7 +27,7 @@ class FetchRoute extends Route {
         });
     }
 
-    public static async process(request: Fastify.FastifyRequest<IncomingMessage>, reply: Fastify.FastifyReply<ServerResponse>) {
+    public async process(request: Fastify.FastifyRequest<IncomingMessage>, reply: Fastify.FastifyReply<ServerResponse>) {
         await super.process(request, reply);
         let fetchMultiple = false;
 
@@ -53,9 +47,9 @@ class FetchRoute extends Route {
         let toReturn: IPostDocument | IPostDocument[];
 
         if (!fetchMultiple) {
-            toReturn = await this.fetchPost(query);
+            toReturn = await FetchRoute.fetchPost(query);
         } else {
-            toReturn = await this.fetchPosts(parseInt(request.body.from_descending_index), parseInt(request.body.to_descending_index));
+            toReturn = await FetchRoute.fetchPosts(parseInt(request.body.from_descending_index), parseInt(request.body.to_descending_index));
         }
 
         return toReturn;
@@ -74,7 +68,6 @@ class FetchRoute extends Route {
     }
 
     public static async fetchPosts(from: number, to: number): Promise<IPostDocument[]> {
-
         const document: IPostDocument[] = await PostModel.find().sort('-date').skip(from).limit(Math.abs(to - from) || 1);
 
         if (document == null)

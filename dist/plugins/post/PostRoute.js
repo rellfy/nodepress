@@ -59,51 +59,55 @@ var mongoose_1 = __importDefault(require("mongoose"));
 var PostRoute = /** @class */ (function (_super) {
     __extends(PostRoute, _super);
     function PostRoute() {
-        var _this = _super.call(this) || this;
-        _this.initialise(PostRoute.route());
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    PostRoute.route = function () {
-        var _this = this;
-        return new RouteModel_1.RouteModel({
-            method: 'GET',
-            endpoint: '/post',
-            auth: true,
-            schema: { indexRoute: true },
-            handler: function (request, response) { return _this.process(request, response, '/login'); }
-        });
-    };
+    Object.defineProperty(PostRoute.prototype, "route", {
+        get: function () {
+            var _this = this;
+            return new RouteModel_1.RouteModel({
+                method: 'GET',
+                endpoint: '/post',
+                auth: true,
+                schema: { indexRoute: true },
+                handler: function (request, response) { return _this.process(request, response, '/login'); }
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
     return PostRoute;
 }(Route_1.Route));
 exports.PostRoute = PostRoute;
 var PostPublish = /** @class */ (function (_super) {
     __extends(PostPublish, _super);
     function PostPublish() {
-        var _this = _super.call(this) || this;
-        _this.initialise(PostPublish.route());
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    PostPublish.route = function () {
-        return new RouteModel_1.RouteModel({
-            method: 'POST',
-            endpoint: '/post',
-            auth: true,
-            schema: {
-                body: {
-                    post_title: { type: 'string', required: true },
-                    content: { type: 'string', required: true },
-                    author: { type: 'string', required: true },
-                }
-            },
-            handler: this.process.bind(this)
-        });
-    };
-    PostPublish.process = function (request, reply) {
+    Object.defineProperty(PostPublish.prototype, "route", {
+        get: function () {
+            return new RouteModel_1.RouteModel({
+                method: 'POST',
+                endpoint: '/post',
+                auth: true,
+                schema: {
+                    body: {
+                        post_title: { type: 'string', required: true },
+                        content: { type: 'string', required: true },
+                        author: { type: 'string', required: true },
+                    }
+                },
+                handler: this.process.bind(this)
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    PostPublish.prototype.process = function (request, reply) {
         return __awaiter(this, void 0, void 0, function () {
             var post;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, _super.process.call(this, request, reply)];
+                    case 0: return [4 /*yield*/, _super.prototype.process.call(this, request, reply)];
                     case 1:
                         _a.sent();
                         post = {
@@ -114,7 +118,7 @@ var PostPublish = /** @class */ (function (_super) {
                                 author: request.body.author,
                             }
                         };
-                        return [4 /*yield*/, this.createPost(post)];
+                        return [4 /*yield*/, PostPublish.createPost(post)];
                     case 2:
                         _a.sent();
                         return [2 /*return*/, { success: true }];

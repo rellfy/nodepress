@@ -8,13 +8,7 @@ import { ServerResponse, IncomingMessage, ClientRequest } from 'http';
 
 class ReaderRoute extends Route {
 
-    constructor() {
-        super();
-
-        this.initialise(ReaderRoute.route());
-    }
-
-    public static route(): RouteModel {
+    public get route(): RouteModel {
         return new RouteModel({
             method: 'GET',
             endpoint: '/read/:post',

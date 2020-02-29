@@ -8,13 +8,7 @@ import { ServerResponse, IncomingMessage } from 'http';
 
 class PostRoute extends Route {
 
-    constructor() {
-        super();
-
-        this.initialise(PostRoute.route());
-    }
-
-    public static route(): RouteModel {
+    public get route(): RouteModel {
         return new RouteModel({
             method: 'GET',
             endpoint: '/post',
@@ -27,13 +21,7 @@ class PostRoute extends Route {
 
 class PostPublish extends Route {
 
-    constructor() {
-        super();
-
-        this.initialise(PostPublish.route());
-    }
-
-    public static route(): RouteModel {
+    public get route(): RouteModel {
         return new RouteModel({
             method: 'POST',
             endpoint: '/post',
@@ -49,7 +37,7 @@ class PostPublish extends Route {
         });
     }
 
-    public static async process(request: Fastify.FastifyRequest<IncomingMessage>, reply: Fastify.FastifyReply<ServerResponse>) {
+    public async process(request: Fastify.FastifyRequest<IncomingMessage>, reply: Fastify.FastifyReply<ServerResponse>) {
         await super.process(request, reply);
 
         const post: IPost = {
@@ -61,7 +49,7 @@ class PostPublish extends Route {
             }
         }
 
-        await this.createPost(post);
+        await PostPublish.createPost(post);
         return { success: true };
     }
 

@@ -115,7 +115,7 @@ var Router = /** @class */ (function (_super) {
         var http = netInterface.get('http');
         // const udp: NetInterfaceModule = netInterface.get('udp')
         for (var i = 0; i < this.routes.length; i++) {
-            http.route(this.routes[i].model);
+            http.route(this.routes[i].route);
         }
     };
     Router.getFilesRecursively = function (directory) {
@@ -165,7 +165,7 @@ var Router = /** @class */ (function (_super) {
     };
     /**
      * Retrieve routes from path
-     * @param routePath The path where routes are exportes
+     * @param routePath The path where routes are exported
      */
     Router.prototype.getRoutes = function (input) {
         return __awaiter(this, void 0, void 0, function () {

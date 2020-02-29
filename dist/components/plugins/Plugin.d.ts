@@ -1,6 +1,6 @@
 import { Route } from "../router/Route";
 interface PluginRoute {
-    server: typeof Route;
+    server: new () => Route;
     client?: string;
 }
 declare class Plugin {

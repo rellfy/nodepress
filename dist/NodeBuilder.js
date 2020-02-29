@@ -73,7 +73,10 @@ var NodeBuilder = /** @class */ (function () {
         });
         var routeDeclarationStr = '';
         routes.forEach(function (route, i) {
-            var model = route.server.route();
+            // Instantiate plugin server route and grab the route;
+            // Typescript does not allow for properties that are
+            // both static and abstract.
+            var model = (new (route.server)).route;
             routeDeclarationStr += "React.createElement(Route, { " + (model.exactPath ? 'exact:true,' : '') + " path:\"" + model.endpoint + "\", component:Plugin" + i + " })" + (i < routes.length - 1 ? ',\n' : '');
         });
         // Note this is not transpiled by Typescript, and hence needs to be written in JS.
@@ -136,10 +139,10 @@ var NodeBuilder = /** @class */ (function () {
             var head, body;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, util_1.default.promisify(fs_1.default.readFile)(bodyPath)];
+                    case 0: return [4 /*yield*/, util_1.default.promisify(fs_1.default.readFile)(headPath)];
                     case 1:
                         head = _a.sent();
-                        return [4 /*yield*/, util_1.default.promisify(fs_1.default.readFile)(headPath)];
+                        return [4 /*yield*/, util_1.default.promisify(fs_1.default.readFile)(bodyPath)];
                     case 2:
                         body = _a.sent();
                         return [2 /*return*/, "<!DOCTYPE html><html><head>" + head.toString('utf8') + "</head><body><div id=\"root\"></div>" + body.toString('utf8') + "<script type=\"text/javascript\">" + script + "</script></body></html>"];

@@ -3,7 +3,7 @@ import { Router } from "../router/Router";
 import * as React from 'react';
 
 interface PluginRoute {
-    server: typeof Route;
+    server: new () => Route;
     client?: string;
 }
 

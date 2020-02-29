@@ -5,13 +5,11 @@ import { RouteModel } from "../../components/router/RouteModel";
 import { IPost } from "./PostModel";
 import { ServerResponse, IncomingMessage } from 'http';
 declare class PostRoute extends Route {
-    constructor();
-    static route(): RouteModel;
+    get route(): RouteModel;
 }
 declare class PostPublish extends Route {
-    constructor();
-    static route(): RouteModel;
-    static process(request: Fastify.FastifyRequest<IncomingMessage>, reply: Fastify.FastifyReply<ServerResponse>): Promise<{
+    get route(): RouteModel;
+    process(request: Fastify.FastifyRequest<IncomingMessage>, reply: Fastify.FastifyReply<ServerResponse>): Promise<{
         success: boolean;
     }>;
     static createPost(post: IPost): Promise<void>;

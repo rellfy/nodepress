@@ -17,13 +17,7 @@ type LoginData = {
 
 class LoginRoute extends Route {
 
-    constructor() {
-        super();
-
-        this.initialise(LoginRoute.route());
-    }
-
-    public static route(): RouteModel {
+    public get route(): RouteModel {
         return new RouteModel({
             method: 'GET',
             endpoint: '/login',
@@ -48,11 +42,9 @@ class LoginAction extends Route {
             username: 'root',
             password: config.user.root.password
         };
-
-        this.initialise(LoginAction.route());
     }
 
-    public static route(): RouteModel {
+    public get route(): RouteModel {
         return new RouteModel({
             method: 'POST',
             endpoint: '/login',
@@ -67,7 +59,7 @@ class LoginAction extends Route {
         });
     }
 
-    public static async process(request: Fastify.FastifyRequest<IncomingMessage>, reply: Fastify.FastifyReply<ServerResponse>) {
+    public async process(request: Fastify.FastifyRequest<IncomingMessage>, reply: Fastify.FastifyReply<ServerResponse>) {
         await super.process(request, reply);
 
         const data: LoginData = {
@@ -75,7 +67,7 @@ class LoginAction extends Route {
             password: request.body.password
         };
 
-        return await this.login(data);
+        return await LoginAction.login(data);
     }
 
     private static async login(data: LoginData): Promise<object> {

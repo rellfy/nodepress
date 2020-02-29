@@ -18,19 +18,21 @@ var RouteModel_1 = require("../../components/router/RouteModel");
 var ReaderRoute = /** @class */ (function (_super) {
     __extends(ReaderRoute, _super);
     function ReaderRoute() {
-        var _this = _super.call(this) || this;
-        _this.initialise(ReaderRoute.route());
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    ReaderRoute.route = function () {
-        return new RouteModel_1.RouteModel({
-            method: 'GET',
-            endpoint: '/read/:post',
-            // auth: true,
-            schema: { indexRoute: true },
-            handler: this.process.bind(this)
-        });
-    };
+    Object.defineProperty(ReaderRoute.prototype, "route", {
+        get: function () {
+            return new RouteModel_1.RouteModel({
+                method: 'GET',
+                endpoint: '/read/:post',
+                // auth: true,
+                schema: { indexRoute: true },
+                handler: this.process.bind(this)
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
     return ReaderRoute;
 }(Route_1.Route));
 exports.ReaderRoute = ReaderRoute;

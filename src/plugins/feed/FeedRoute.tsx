@@ -7,13 +7,7 @@ import { ServerResponse, IncomingMessage } from 'http';
 
 class FeedRoute extends Route {
 
-    constructor() {
-        super();
-
-        this.initialise(FeedRoute.route());
-    }
-
-    public static route(): RouteModel {
+    public get route(): RouteModel {
         return new RouteModel({
             method: 'GET',
             endpoint: '/',
@@ -26,13 +20,7 @@ class FeedRoute extends Route {
 
 class FeedTagRoute extends Route {
 
-    constructor() {
-        super();
-
-        this.initialise(FeedRoute.route());
-    }
-
-    public static route(): RouteModel {
+    public get route(): RouteModel {
         return new RouteModel({
             method: 'GET',
             endpoint: '/tag/',
