@@ -65,6 +65,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = require("events");
 var fs_1 = __importDefault(require("fs"));
+var path_1 = __importDefault(require("path"));
 var Cache_1 = __importDefault(require("./Cache"));
 exports.cache = Cache_1.default;
 var Network_1 = require("./components/network/Network");
@@ -110,7 +111,7 @@ var NodePress = /** @class */ (function (_super) {
             dev: (_a = args.dev, (_a !== null && _a !== void 0 ? _a : false)), ignoreCorePlugins: (_b = args.ignoreCorePlugins, (_b !== null && _b !== void 0 ? _b : false)) });
         // Set cache
         Cache_1.default.set(CacheKeys_1.default.IS_DEV_ENV, _this.config.args.dev);
-        Cache_1.default.set(CacheKeys_1.default.ROOT_PATH, __dirname);
+        Cache_1.default.set(CacheKeys_1.default.ROOT_PATH, path_1.default.dirname(args.config));
         Cache_1.default.set(CacheKeys_1.default.NP_EPOCH, _this.config.api.np_epoch);
         // Load modules
         _this.pluginManager = new PluginManager_1.PluginManager();

@@ -1,6 +1,6 @@
 {
   "name": "nodepress",
-  "version": "2.0.19-beta",
+  "version": "2.0.20-beta",
   "description": "Lightweight blog engine for node",
   "main": "dist/NodePress.js",
   "types": "dist/NodePress.d.ts",

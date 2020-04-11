@@ -26,20 +26,21 @@ class HttpModule extends NetInterfaceModule {
         this.server = Fastify(this.getServerConfig(https));
         let publicPath: string = path.resolve(cache.get(CacheKeys.ROOT_PATH), 'public/');
 
-        if (!fs.existsSync(publicPath))
-            return;
-
-        this.server.register(require('fastify-static'), {
-            root: publicPath,
-            prefix: '/public-np/'
-        });
-
         // Configure all static folders.
         folders.forEach(staticFolder => {
             this.server.register(require('fastify-static'), {
                 root: path.resolve(cache.get(CacheKeys.ROOT_PATH), staticFolder.path),
                 prefix: staticFolder.prefix
             });
+        });
+
+        // Abort default registering of static publicPath if it doesn't exist.
+        if (!fs.existsSync(publicPath))
+            return;
+
+        this.server.register(require('fastify-static'), {
+            root: publicPath,
+            prefix: '/public-np/'
         });
     }
 

@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import fs from "fs";
+import path from "path";
 
 import cache from "./Cache";
 import { Config, Arguments } from "./Config";
@@ -42,7 +43,7 @@ class NodePress extends EventEmitter {
         // Load configuration files
         this.fetchConfig(args.config);
         User.fetchConfig();
-
+        
         // Set config.args.
         this.config.args = {
             ...args,
@@ -53,7 +54,7 @@ class NodePress extends EventEmitter {
         
         // Set cache
         cache.set(CacheKeys.IS_DEV_ENV, this.config.args.dev);
-        cache.set(CacheKeys.ROOT_PATH, __dirname);
+        cache.set(CacheKeys.ROOT_PATH, path.dirname(args.config));
         cache.set(CacheKeys.NP_EPOCH, this.config.api.np_epoch);
 
         // Load modules
