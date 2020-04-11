@@ -62,7 +62,7 @@ var Cache_1 = __importDefault(require("../../../Cache"));
 var CacheKeys_1 = __importDefault(require("../../../CacheKeys"));
 var HttpModule = /** @class */ (function (_super) {
     __extends(HttpModule, _super);
-    function HttpModule(https) {
+    function HttpModule(https, folders) {
         var _this = _super.call(this) || this;
         _this.server = fastify_1.default(_this.getServerConfig(https));
         var publicPath = path_1.default.resolve(Cache_1.default.get(CacheKeys_1.default.ROOT_PATH), 'public/');
@@ -71,6 +71,13 @@ var HttpModule = /** @class */ (function (_super) {
         _this.server.register(require('fastify-static'), {
             root: publicPath,
             prefix: '/public-np/'
+        });
+        // Configure all static folders.
+        folders.forEach(function (staticFolder) {
+            _this.server.register(require('fastify-static'), {
+                root: path_1.default.resolve(Cache_1.default.get(CacheKeys_1.default.ROOT_PATH), staticFolder.path),
+                prefix: staticFolder.prefix
+            });
         });
         return _this;
     }

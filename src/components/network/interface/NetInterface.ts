@@ -3,7 +3,13 @@ import EventEmitter from 'events';
 import { NetInterfaceModule } from './NetInterfaceModule';
 import { HttpModule } from './HttpModule';
 
+export interface StaticFolder {
+    path: string,
+    prefix: string
+}
+
 export interface NetInterfaceConfig {
+    static: StaticFolder[] | null,
     ports: {
         https: number,
         udp: number
@@ -23,7 +29,7 @@ class NetInterface {
     }
 
     constructor(config: NetInterfaceConfig) {
-        this.httpModule = new HttpModule(config.https);
+        this.httpModule = new HttpModule(config.https, config.static ?? []);
     }
     
     public async initialise(config: NetInterfaceConfig) {

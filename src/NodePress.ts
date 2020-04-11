@@ -127,7 +127,9 @@ export {
     Route,
     IndexRoute,
     RouteModel,
-    Router
+    Router,
+    CacheKeys,
+    cache
 };
 
 module.exports = NodePress;
@@ -139,3 +141,5 @@ module.exports.Route = Route;
 module.exports.IndexRoute = IndexRoute;
 module.exports.RouteModel = RouteModel;
 module.exports.Router = Router;
+module.exports.CacheKeys = CacheKeys;
+module.exports.cache = cache;

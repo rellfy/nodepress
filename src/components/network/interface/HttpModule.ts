@@ -8,6 +8,7 @@ import { RouteModel } from '../../router/RouteModel';
 import fs from 'fs';
 import cache from '../../../Cache';
 import CacheKeys from '../../../CacheKeys';
+import { StaticFolder } from './NetInterface';
 
 class HttpModule extends NetInterfaceModule {
 
@@ -19,7 +20,7 @@ class HttpModule extends NetInterfaceModule {
         return this.server;
     }
 
-    constructor(https: { cert: string, key: string }) {
+    constructor(https: { cert: string, key: string }, folders: StaticFolder[]) {
         super();
         
         this.server = Fastify(this.getServerConfig(https));
@@ -31,6 +32,14 @@ class HttpModule extends NetInterfaceModule {
         this.server.register(require('fastify-static'), {
             root: publicPath,
             prefix: '/public-np/'
+        });
+
+        // Configure all static folders.
+        folders.forEach(staticFolder => {
+            this.server.register(require('fastify-static'), {
+                root: path.resolve(cache.get(CacheKeys.ROOT_PATH), staticFolder.path),
+                prefix: staticFolder.prefix
+            });
         });
     }
 

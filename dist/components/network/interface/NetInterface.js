@@ -39,7 +39,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var HttpModule_1 = require("./HttpModule");
 var NetInterface = /** @class */ (function () {
     function NetInterface(config) {
-        this.httpModule = new HttpModule_1.HttpModule(config.https);
+        var _a;
+        this.httpModule = new HttpModule_1.HttpModule(config.https, (_a = config.static, (_a !== null && _a !== void 0 ? _a : [])));
     }
     Object.defineProperty(NetInterface.prototype, "HttpModule", {
         get: function () {

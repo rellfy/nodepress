@@ -7,7 +7,11 @@
             "https": {
                 "cert": "./some/path/fullchain.pem",
                 "key": "./some/path/privkey.pem"
-            }
+            },
+            "static": [{
+                "path": "../some/path",
+                "prefix": "/public_folder/"
+            }]
         }
     },
     "db": {

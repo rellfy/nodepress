@@ -1,6 +1,11 @@
 import { NetInterfaceModule } from './NetInterfaceModule';
 import { HttpModule } from './HttpModule';
+export interface StaticFolder {
+    path: string;
+    prefix: string;
+}
 export interface NetInterfaceConfig {
+    static: StaticFolder[] | null;
     ports: {
         https: number;
         udp: number;

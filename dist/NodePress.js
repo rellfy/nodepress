@@ -66,6 +66,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = require("events");
 var fs_1 = __importDefault(require("fs"));
 var Cache_1 = __importDefault(require("./Cache"));
+exports.cache = Cache_1.default;
 var Network_1 = require("./components/network/Network");
 var PluginManager_1 = require("./components/plugins/PluginManager");
 var User_1 = require("./plugins/user/User");
@@ -89,6 +90,7 @@ var feed_plugin_1 = __importDefault(require("./plugins/feed/feed.plugin"));
 var reader_plugin_1 = __importDefault(require("./plugins/reader/reader.plugin"));
 var user_plugin_1 = __importDefault(require("./plugins/user/user.plugin"));
 var CacheKeys_1 = __importDefault(require("./CacheKeys"));
+exports.CacheKeys = CacheKeys_1.default;
 var IndexRoute_1 = require("./components/router/IndexRoute");
 exports.IndexRoute = IndexRoute_1.IndexRoute;
 /**
@@ -209,4 +211,6 @@ module.exports.Route = Route_1.Route;
 module.exports.IndexRoute = IndexRoute_1.IndexRoute;
 module.exports.RouteModel = RouteModel_1.RouteModel;
 module.exports.Router = Router_1.Router;
+module.exports.CacheKeys = CacheKeys_1.default;
+module.exports.cache = Cache_1.default;
 //# sourceMappingURL=NodePress.js.map
