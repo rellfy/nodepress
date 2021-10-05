@@ -35,7 +35,7 @@
     "boom": "^7.3.0",
     "fastify": "^1.14.6",
     "fastify-formbody": "^2.0.3",
-    "fastify-static": "^1.1.0",
+    "fastify-static": "^4.2.4",
     "gulp": "^4.0.2",
     "history": "^4.10.1",
     "katex": "^0.11.1",
