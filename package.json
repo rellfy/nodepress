@@ -33,7 +33,7 @@
     "babel-loader": "^8.0.6",
     "bluebird": "^3.7.2",
     "boom": "^7.3.0",
-    "fastify": "^1.14.6",
+    "fastify": "^4.11.0",
     "fastify-formbody": "^2.0.3",
     "fastify-static": "^4.4.1",
     "gulp": "^4.0.2",
